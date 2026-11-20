@@ -1,605 +1,261 @@
+<!-- === START index.html v18 === -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>الهندسة الكهربائية • جامعة بغداد</title>
+  <title>الهَنْدَسَةُ الكَهْرَبَائِيَّةُ • جَامِعَةُ بَغْدَادَ</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Aref+Ruqaa:wght@700&family=Cairo:wght@600;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --phantom: #040406;
-      --phantom-deep: #08080b;
-      --phantom-card: linear-gradient(145deg, #15120c 0%, #060609 58%, #120f0a 100%);
-      --gold-strong: linear-gradient(135deg, #8c6211 0%, #f9e28c 42%, #d4af37 70%, #7a520b 100%);
-      --gold-text: linear-gradient(90deg, #fff6cf 0%, #f7da73 48%, #d4af37 100%);
-      --gold-border: rgba(212, 175, 55, 0.44);
-      --gold-soft: rgba(212, 175, 55, 0.12);
-      --muted: #b9ac8f;
+      --surface: linear-gradient(155deg, #14120d 0%, #07070a 58%, #100e09 100%);
+      --gold-metal: linear-gradient(135deg, #875e10 0%, #fce594 38%, #d4af37 68%, #734d08 100%);
+      --gold-text: linear-gradient(90deg, #fff8db 0%, #f9de7e 48%, #d4af37 100%);
+      --gold-rim: rgba(212, 175, 55, 0.45);
+      --muted: #bfb399;
+      --font-royal: 'Aref Ruqaa', 'Amiri', serif;
+      --font-callig: 'Amiri', serif;
+      --font-ui: 'Tajawal', 'Amiri', sans-serif;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
     body {
-      font-family: 'Amiri', 'Cairo', serif;
-      background-color: var(--phantom);
-      background-image:
-        radial-gradient(circle at 50% -12%, rgba(212, 175, 55, 0.25) 0%, rgba(4, 4, 6, 0) 56%),
-        radial-gradient(circle at 85% 92%, rgba(212, 175, 55, 0.08) 0%, rgba(4, 4, 6, 0) 45%),
-        linear-gradient(180deg, #0a0806 0%, #040406 45%, #070609 100%);
-      color: #faf4e6;
-      min-height: 100vh;
-      padding: 14px 13px 38px;
-      overflow-x: hidden;
+      font-family: var(--font-callig); background-color: var(--phantom);
+      background-image: radial-gradient(ellipse at 50% -8%, rgba(212, 175, 55, 0.24) 0%, transparent 58%), radial-gradient(circle at 88% 92%, rgba(212, 175, 55, 0.08) 0%, transparent 48%), linear-gradient(180deg, #0a0806 0%, #040406 42%, #070609 100%);
+      color: #fcf7eb; min-height: 100vh; padding: 10px 12px 26px; overflow-x: hidden;
     }
+    .banned-screen { display: none; min-height: 86vh; align-items: center; justify-content: center; padding: 20px; }
+    .banned-screen.show { display: flex; }
+    .banned-card { width: 100%; max-width: 360px; background: linear-gradient(155deg, #1e0b0e 0%, #070609 65%, #16090b 100%); border: 1.5px solid rgba(239, 68, 68, 0.65); border-top: 3px solid #ef4444; border-radius: 22px; padding: 34px 20px; text-align: center; box-shadow: 0 20px 44px rgba(0, 0, 0, 0.92); }
+    .banned-title { font-family: var(--font-royal); font-size: 25px; color: #fca5a5; margin-bottom: 10px; line-height: 1.6; }
+    .banned-sub { font-family: var(--font-ui); font-size: 14.5px; color: #c7b8b8; line-height: 1.7; }
 
-    /* الترويسة الملكية الفانتوم والذهبي مع خطوط الدائرة الإلكترونية */
-    .hero {
-      position: relative;
-      background: var(--phantom-card);
-      border: 1.5px solid var(--gold-border);
-      border-top: 3px solid #f7da73;
-      border-radius: 24px;
-      padding: 20px 14px 18px;
-      text-align: center;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(212, 175, 55, 0.09);
-      margin-bottom: 14px;
-      overflow: hidden;
-    }
-    .hero-circuit {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.22;
-    }
+    .hero { position: relative; background: linear-gradient(160deg, #13100a 0%, #050508 54%, #110e08 100%); border: 1px solid var(--gold-rim); border-top: 2.5px solid #f9de7e; border-radius: 24px; padding: 16px 14px 18px; text-align: center; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.94), inset 0 0 42px rgba(212, 175, 55, 0.09); margin-bottom: 13px; overflow: hidden; }
+    .pcb-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; display: block; }
     .hero-inner { position: relative; z-index: 2; }
+    .hero-emblem-row { display: flex; align-items: center; justify-content: center; position: relative; min-height: 118px; margin-bottom: 6px; }
+    .adm-badge-side { display: none; position: absolute; top: 0; left: 0; background: var(--gold-metal); color: #080705; font-family: var(--font-ui); font-size: 11.5px; font-weight: 800; padding: 4px 11px; border-radius: 99px; border: 1px solid #fff5cc; cursor: pointer; z-index: 5; box-shadow: 0 4px 16px rgba(212, 175, 55, 0.45); direction: ltr; }
+    .adm-badge-side.show { display: inline-flex; align-items: center; gap: 4px; }
+    .emblem-wrap { width: 114px; height: 114px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(6, 6, 9, 0.98) 64%, transparent 100%); filter: drop-shadow(0 0 22px rgba(212, 175, 55, 0.52)); }
+    .emblem-wrap img { width: 108px; height: 108px; border-radius: 50%; object-fit: cover; border: 2.5px solid #f9de7e; }
+    .hero-title { font-family: var(--font-royal); font-size: 29px; line-height: 1.72; background: var(--gold-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.28)); }
+    .hero-dev { display: inline-block; margin-top: 5px; padding: 4px 20px; border-radius: 99px; font-family: var(--font-callig); font-size: 15.5px; font-weight: 700; color: #080705; background: var(--gold-metal); box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.45); }
 
-    .adm-badge-top {
-      display: none;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: var(--gold-strong);
-      color: #080705;
-      font-family: 'Cairo', sans-serif;
-      font-size: 11px;
-      font-weight: 900;
-      padding: 4px 11px;
-      border-radius: 99px;
-      border: 1px solid #fff3c4;
-      cursor: pointer;
-      z-index: 5;
-      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.45);
-    }
-    .adm-badge-top.show { display: inline-flex; align-items: center; gap: 4px; }
+    .main-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(13, 12, 17, 0.92); border: 1px solid var(--gold-rim); padding: 5px; border-radius: 16px; margin-bottom: 14px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65); }
+    .main-nav.is-adm { grid-template-columns: 1fr 1fr 1fr; }
+    .nav-pill { border: none; background: transparent; color: var(--muted); font-family: var(--font-callig); font-size: 16.5px; font-weight: 700; padding: 8px 6px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .nav-pill.active { background: var(--gold-metal); color: #080705; box-shadow: 0 4px 14px rgba(212, 175, 55, 0.32); }
+    .nav-badge { display: none; background: #dc2626; color: #fff; font-family: var(--font-ui); font-size: 11px; font-weight: 800; padding: 0 6px; min-width: 19px; height: 19px; line-height: 19px; border-radius: 99px; text-align: center; }
+    .nav-badge.show { display: inline-block; }
 
-    .emblem-wrap {
-      width: 116px;
-      height: 116px;
-      margin: 0 auto 8px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.52));
-    }
-    .emblem-wrap img {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2.5px solid #f7da73;
-      box-shadow: 0 0 18px rgba(212, 175, 55, 0.4);
-    }
-
-    .hero-title {
-      font-family: 'Aref Ruqaa', serif;
-      font-size: 31px;
-      line-height: 1.5;
-      background: var(--gold-text);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.28));
-    }
-    .hero-dev {
-      display: inline-block;
-      margin-top: 5px;
-      padding: 4px 18px;
-      border-radius: 99px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 12px;
-      font-weight: 900;
-      color: #080705;
-      background: var(--gold-strong);
-      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
-    }
-
-    /* البنرات الاختيارية */
     .banners { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 13px; }
     .banners.single { grid-template-columns: 1fr; }
-    .banners img {
-      width: 100%;
-      height: 136px;
-      object-fit: cover;
-      border-radius: 16px;
-      border: 1.5px solid var(--gold-border);
-      display: block;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.65);
-    }
+    .banners img { width: 100%; height: 136px; object-fit: cover; border-radius: 16px; border: 1px solid var(--gold-rim); display: block; }
     .banners.single img { height: 170px; }
-
-    /* مسار التنقل (ملف داخل ملف) */
-    .crumb {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(9, 9, 13, 0.96));
-      border: 1px solid var(--gold-border);
-      border-radius: 15px;
-      padding: 9px 12px;
-      margin-bottom: 12px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
-    }
+    .crumb { display: none; align-items: center; justify-content: space-between; gap: 8px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.14), rgba(9, 9, 13, 0.96)); border: 1px solid var(--gold-rim); border-radius: 15px; padding: 8px 12px; margin-bottom: 12px; }
     .crumb.show { display: flex; }
-    .crumb-path {
-      font-family: 'Aref Ruqaa', serif;
-      font-size: 17px;
-      color: #f7da73;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-    .crumb-act {
-      border: 1px solid var(--gold-border);
-      background: #12100a;
-      color: #f7da73;
-      font-family: 'Cairo', sans-serif;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 5px 10px;
-      border-radius: 9px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+    .crumb-path { font-family: var(--font-callig); font-size: 17.5px; font-weight: 700; color: #f9de7e; line-height: 1.6; }
+    .crumb-act { border: 1px solid var(--gold-rim); background: rgba(18, 16, 11, 0.95); color: #f9de7e; font-family: var(--font-ui); font-size: 12.5px; font-weight: 700; padding: 5px 11px; border-radius: 10px; cursor: pointer; white-space: nowrap; }
+    .folder-shell.nested { background: linear-gradient(180deg, rgba(212, 175, 55, 0.09) 0%, rgba(8, 8, 12, 0.92) 100%); border: 1px solid rgba(212, 175, 55, 0.36); border-top: 2px solid #f9de7e; border-radius: 20px; padding: 14px 11px; box-shadow: 0 -4px 0 -1px rgba(212, 175, 55, 0.2), 0 14px 30px rgba(0, 0, 0, 0.72); }
 
-    /* حاوية المجلدات المتداخلة والأزرار */
-    .folder-shell {
-      animation: fadeUp 0.2s ease;
-    }
-    .folder-shell.nested {
-      background: linear-gradient(180deg, rgba(212, 175, 55, 0.09) 0%, rgba(8, 8, 12, 0.85) 100%);
-      border: 1px solid rgba(212, 175, 55, 0.34);
-      border-top: 2px solid #f7da73;
-      border-radius: 18px;
-      padding: 12px 11px;
-      box-shadow: 0 -4px 0 -1px rgba(212, 175, 55, 0.22), 0 10px 26px rgba(0, 0, 0, 0.65);
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .rows-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .rows-wrap { display: flex; flex-direction: column; gap: 11px; }
     .btn-row { display: grid; gap: 10px; }
+    .bcard { position: relative; border-radius: 18px; padding: 16px 14px; text-align: center; cursor: pointer; transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1); border: 1px solid var(--gold-rim); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.45); overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 68px; }
+    .bcard::before { content: ""; position: absolute; top: 0; left: 16%; right: 16%; height: 1.5px; background: linear-gradient(90deg, transparent, rgba(255, 244, 200, 0.68), transparent); pointer-events: none; }
+    .bcard::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% -20%, rgba(255, 255, 255, 0.14) 0%, transparent 62%); pointer-events: none; }
+    .bcard:active { transform: scale(0.965); }
 
-    /* الأزرار الملكية بـ 8 ألوان متدرجة */
-    .bcard {
-      position: relative;
-      border-radius: 16px;
-      padding: 16px 13px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.15s ease;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      border: 1.5px solid var(--gold-border);
-      background: var(--phantom-card);
-      color: #fff6dc;
-      overflow: hidden;
-    }
-    .bcard:active { transform: scale(0.96); }
+    .c-phantom { background: linear-gradient(155deg, #1b1812 0%, #09090d 55%, #15120c 100%); border-color: rgba(212, 175, 55, 0.56); color: #fae596; }
+    .c-gold { background: linear-gradient(135deg, #8f6311 0%, #fae494 40%, #cfa42c 74%, #754e09 100%); border-color: #fff6cf; color: #090805; box-shadow: 0 10px 28px rgba(212, 175, 55, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.55); }
+    .c-gold .blabel { color: #090805 !important; text-shadow: 0 1px 0 rgba(255, 250, 224, 0.45); }
+    .c-ruby { background: linear-gradient(155deg, #690e1c 0%, #99182b 48%, #3b060e 100%); border-color: rgba(244, 155, 165, 0.48); color: #fff5f6; }
+    .c-emerald { background: linear-gradient(155deg, #074736 0%, #0c785a 48%, #03241b 100%); border-color: rgba(125, 232, 195, 0.46); color: #effdf8; }
+    .c-azure { background: linear-gradient(155deg, #0d2759 0%, #1a479e 48%, #071430 100%); border-color: rgba(147, 197, 253, 0.48); color: #f0f6ff; }
+    .c-imperial { background: linear-gradient(155deg, #350b5c 0%, #641ea3 48%, #1d0536 100%); border-color: rgba(216, 180, 254, 0.48); color: #faf5ff; }
+    .c-fiery { background: linear-gradient(155deg, #70260c 0%, #bd4b16 48%, #3a1205 100%); border-color: rgba(253, 186, 116, 0.5); color: #fff8f1; }
+    .c-silver { background: linear-gradient(155deg, #272932 0%, #4b4f5e 48%, #15161c 100%); border-color: rgba(220, 224, 235, 0.48); color: #f6f7fa; }
+    .blabel { position: relative; z-index: 2; font-family: var(--font-callig); font-size: 21.5px; font-weight: 700; line-height: 1.65; letter-spacing: 0.2px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55); pointer-events: none; }
 
-    /* 1. أسود ملكي فانتوم */
-    .c-phantom {
-      background: linear-gradient(145deg, #17140f 0%, #050507 55%, #12100b 100%);
-      border-color: rgba(212, 175, 55, 0.55);
-      color: #f9e28c;
-    }
-    /* 2. ذهبي معدني قوي */
-    .c-gold {
-      background: linear-gradient(135deg, #9a6d14 0%, #fae38f 44%, #d4af37 72%, #7a520b 100%);
-      border-color: #fff4c6;
-      color: #080705;
-      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.36);
-    }
-    .c-gold .blabel, .c-gold .bmeta { color: #080705 !important; }
-    /* 3. ياقوتي ملكي */
-    .c-ruby {
-      background: linear-gradient(135deg, #750d1a 0%, #c81e2b 50%, #45070c 100%);
-      border-color: rgba(248, 113, 113, 0.7);
-      color: #fff5f5;
-    }
-    /* 4. زمردي فاخر */
-    .c-emerald {
-      background: linear-gradient(135deg, #06523e 0%, #059669 52%, #022c22 100%);
-      border-color: rgba(52, 211, 153, 0.68);
-      color: #ecfdf5;
-    }
-    /* 5. لازوردي عميق */
-    .c-azure {
-      background: linear-gradient(135deg, #0b2f66 0%, #1d4ed8 52%, #081838 100%);
-      border-color: rgba(96, 165, 250, 0.68);
-      color: #eff6ff;
-    }
-    /* 6. بنفسجي إمبراطوري */
-    .c-imperial {
-      background: linear-gradient(135deg, #3f086b 0%, #7e22ce 52%, #240442 100%);
-      border-color: rgba(192, 132, 252, 0.68);
-      color: #faf5ff;
-    }
-    /* 7. ناري متوهج */
-    .c-fiery {
-      background: linear-gradient(135deg, #822f10 0%, #ea580c 52%, #431407 100%);
-      border-color: rgba(251, 146, 60, 0.72);
-      color: #fff7ed;
-    }
-    /* 8. فضي نيزكي */
-    .c-silver {
-      background: linear-gradient(135deg, #2b2b30 0%, #585862 50%, #17171a 100%);
-      border-color: rgba(212, 212, 216, 0.68);
-      color: #f4f4f5;
-    }
-
-    .blabel {
-      font-family: 'Aref Ruqaa', 'Amiri', serif;
-      font-size: 20.5px;
-      font-weight: 700;
-      line-height: 1.55;
-      letter-spacing: 0.2px;
-    }
-    .bmeta {
-      font-family: 'Cairo', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      opacity: 0.9;
-      margin-top: 4px;
-    }
-
-    /* وصف الزر والملفات الداخلية */
-    .desc-box {
-      background: rgba(212, 175, 55, 0.08);
-      border: 1px solid var(--gold-border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      font-family: 'Amiri', serif;
-      font-size: 17.5px;
-      line-height: 1.8;
-      white-space: pre-wrap;
-    }
+    .desc-box { background: rgba(212, 175, 55, 0.08); border: 1px solid var(--gold-rim); border-radius: 15px; padding: 12px 14px; margin-bottom: 12px; font-size: 17.5px; line-height: 1.85; white-space: pre-wrap; }
     .items-wrap { margin-top: 12px; }
-    .item {
-      background: linear-gradient(145deg, rgba(24, 20, 12, 0.94), rgba(8, 8, 12, 0.97));
-      border: 1px solid var(--gold-border);
-      border-radius: 15px;
-      padding: 12px 13px;
-      margin-bottom: 9px;
-      font-family: 'Amiri', serif;
-      font-size: 17px;
-      line-height: 1.75;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .item a { color: #f9e28c; text-decoration: underline; }
-    .file-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .file-send {
-      border: none;
-      background: var(--gold-strong);
-      color: #080705;
-      font-family: 'Cairo', sans-serif;
-      font-size: 11.5px;
-      font-weight: 900;
-      padding: 8px 13px;
-      border-radius: 10px;
-      cursor: pointer;
-      white-space: nowrap;
-      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
-    }
-    .file-send:active { transform: scale(0.95); }
+    .item { background: linear-gradient(155deg, rgba(22, 19, 13, 0.96), rgba(8, 8, 12, 0.98)); border: 1px solid var(--gold-rim); border-radius: 16px; padding: 13px; margin-bottom: 10px; font-size: 17.5px; line-height: 1.8; white-space: pre-wrap; word-break: break-word; }
+    .item a { color: #fae596; text-decoration: underline; }
+    .file-name { font-family: var(--font-callig); font-size: 18px; font-weight: 700; color: #fae596; line-height: 1.55; }
+    .file-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .fbtn-read { flex: 1; border: 1px solid var(--gold-rim); background: rgba(212, 175, 55, 0.11); color: #fae596; font-family: var(--font-callig); font-size: 16px; font-weight: 700; padding: 8px 10px; border-radius: 12px; cursor: pointer; }
+    .fbtn-dl { flex: 1; border: none; background: var(--gold-metal); color: #080705; font-family: var(--font-callig); font-size: 16px; font-weight: 700; padding: 8px 10px; border-radius: 12px; cursor: pointer; }
 
-    /* لوحة الإدارة والداشبورد (تظهر حصراً لـ @tessla22) */
-    .admin-bar {
-      display: none;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      background: rgba(14, 13, 18, 0.96);
-      border: 1px solid var(--gold-border);
-      padding: 5px;
-      border-radius: 15px;
-      margin-bottom: 13px;
-    }
-    .admin-bar.show { display: grid; }
-    .nav-pill {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-family: 'Cairo', sans-serif;
-      font-size: 12.5px;
-      font-weight: 800;
-      padding: 9px 6px;
-      border-radius: 11px;
-      cursor: pointer;
-    }
-    .nav-pill.active { background: var(--gold-strong); color: #080705; }
+    .chat-shell { background: linear-gradient(160deg, #13100b 0%, #060609 55%, #100d08 100%); border: 1px solid var(--gold-rim); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; height: 69vh; min-height: 440px; box-shadow: 0 16px 38px rgba(0, 0, 0, 0.88); }
+    .chat-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 13px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(9, 9, 13, 0.98)); border-bottom: 1px solid rgba(212, 175, 55, 0.34); }
+    .chat-peer { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .chat-avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1.5px solid #f9de7e; background: #090806; box-shadow: 0 0 12px rgba(212, 175, 55, 0.42); overflow: hidden; }
+    .chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .chat-peer-name { font-family: var(--font-callig); font-size: 20px; font-weight: 700; color: #fae596; line-height: 1.3; }
+    .chat-peer-sub { font-family: var(--font-ui); font-size: 12px; color: #a8dfbe; display: flex; align-items: center; gap: 5px; }
+    .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #34d399; display: inline-block; box-shadow: 0 0 6px #34d399; }
+    .chat-pin-bar { background: linear-gradient(90deg, rgba(212, 175, 55, 0.14), rgba(248, 220, 120, 0.08), rgba(212, 175, 55, 0.14)); border-bottom: 1px solid rgba(212, 175, 55, 0.28); padding: 6px 12px; text-align: center; font-family: var(--font-callig); font-size: 15px; font-weight: 700; color: #f8e5a5; line-height: 1.55; }
+    .chat-adm-info { background: rgba(255, 255, 255, 0.025); border-bottom: 1px dashed rgba(212, 175, 55, 0.25); padding: 7px 11px; font-family: var(--font-ui); font-size: 12px; color: #d6cbb2; line-height: 1.7; }
+    .chat-msgs { flex: 1; overflow-y: auto; padding: 12px 11px; display: flex; flex-direction: column; gap: 9px; scroll-behavior: smooth; }
+    .msg-row { display: flex; flex-direction: column; max-width: 85%; }
+    .msg-row.mine { align-self: flex-start; }
+    .msg-row.other { align-self: flex-end; }
+    .msg-bubble { padding: 9px 13px 7px; border-radius: 16px; font-size: 16.5px; line-height: 1.65; white-space: pre-wrap; word-break: break-word; }
+    .msg-row.mine .msg-bubble { background: linear-gradient(150deg, #2a210f 0%, #161108 100%); border: 1px solid rgba(248, 220, 120, 0.5); color: #fff8e2; border-bottom-right-radius: 4px; }
+    .msg-row.other .msg-bubble { background: linear-gradient(150deg, #17171f 0%, #0b0b10 100%); border: 1px solid rgba(212, 175, 55, 0.34); color: #f3ecdb; border-bottom-left-radius: 4px; }
+    .msg-bubble.hidden-u { border-style: dashed; border-color: rgba(239, 68, 68, 0.65); opacity: 0.78; }
+    .msg-sender { font-family: var(--font-callig); font-size: 13.5px; font-weight: 700; color: #f9de7e; margin-bottom: 3px; }
+    .msg-media-img { width: 100%; max-width: 230px; max-height: 240px; object-fit: cover; border-radius: 11px; border: 1px solid rgba(248, 220, 120, 0.45); display: block; margin: 5px 0; cursor: pointer; }
+    .msg-media-card { background: rgba(0, 0, 0, 0.34); border: 1px solid rgba(212, 175, 55, 0.36); border-radius: 11px; padding: 8px 9px; margin: 5px 0; }
+    .msg-media-title { font-family: var(--font-ui); font-size: 12.5px; font-weight: 700; color: #fae596; margin-bottom: 6px; word-break: break-all; }
+    .msg-media-btns { display: flex; gap: 6px; }
+    .msg-mbtn { flex: 1; border: 1px solid var(--gold-rim); background: rgba(212, 175, 55, 0.14); color: #fae596; font-family: var(--font-ui); font-size: 11.5px; font-weight: 700; padding: 5px 7px; border-radius: 8px; cursor: pointer; }
+    .msg-mbtn.dl { border: none; background: var(--gold-metal); color: #080705; }
+    .msg-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; font-family: var(--font-ui); font-size: 11px; color: #b8ab8e; }
+    .msg-adm-acts { display: flex; gap: 5px; }
+    .msg-mini-btn { border: none; background: rgba(255, 255, 255, 0.08); color: #fca5a5; font-size: 10.5px; padding: 2px 6px; border-radius: 6px; cursor: pointer; font-family: var(--font-ui); }
+    .attach-preview { display: none; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 11px; background: rgba(212, 175, 55, 0.12); border-top: 1px solid rgba(212, 175, 55, 0.35); font-family: var(--font-ui); font-size: 12.5px; color: #fae596; }
+    .attach-preview.show { display: flex; }
+    .chat-composer { display: flex; align-items: flex-end; gap: 6px; padding: 8px 9px; background: #08080c; border-top: 1px solid rgba(212, 175, 55, 0.34); }
+    .chat-attach-btn { border: 1px solid var(--gold-rim); background: rgba(212, 175, 55, 0.12); color: #fae596; width: 42px; height: 42px; border-radius: 12px; font-size: 19px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .chat-input { flex: 1; background: #121218; border: 1px solid var(--gold-rim); border-radius: 13px; color: #fff6dc; font-family: var(--font-callig); font-size: 16.5px; padding: 8px 11px; outline: none; resize: none; max-height: 92px; min-height: 42px; line-height: 1.45; }
+    .chat-send-btn { border: none; background: var(--gold-metal); color: #080705; font-family: var(--font-callig); font-size: 16.5px; font-weight: 700; padding: 9px 14px; height: 42px; border-radius: 12px; cursor: pointer; white-space: nowrap; }
+    .chat-send-btn:disabled { opacity: 0.55; }
+    .inbox-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 12px; border-radius: 14px; margin-bottom: 8px; cursor: pointer; background: linear-gradient(150deg, rgba(22, 19, 13, 0.94), rgba(9, 9, 13, 0.98)); border: 1px solid rgba(212, 175, 55, 0.28); }
+    .inbox-item.has-unread { border-color: #f9de7e; box-shadow: 0 0 14px rgba(212, 175, 55, 0.22); }
+    .inbox-preview { font-family: var(--font-ui); font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 210px; }
+
+    .viewer-bg { display: none; position: fixed; inset: 0; background: rgba(4, 4, 6, 0.98); z-index: 1200; flex-direction: column; padding: 12px; }
+    .viewer-bg.show { display: flex; }
+    .viewer-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid var(--gold-rim); margin-bottom: 10px; }
+    .viewer-title { font-family: var(--font-callig); font-size: 18px; font-weight: 700; color: #fae596; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .viewer-body { flex: 1; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background: #0a0a0e; border: 1px solid var(--gold-rim); border-radius: 14px; padding: 8px; gap: 10px; }
+    .viewer-body iframe { width: 100%; height: 100%; min-height: 70vh; border: none; border-radius: 10px; background: #fff; }
+    .viewer-body img { max-width: 100%; max-height: 74vh; border-radius: 10px; object-fit: contain; margin: auto; }
+    .viewer-body video { width: 100%; max-height: 74vh; border-radius: 10px; margin: auto; }
+    .viewer-body canvas { width: 100%; max-width: 780px; height: auto; border-radius: 8px; background: #fff; }
+    .viewer-pre { width: 100%; color: #f6eedb; font-family: monospace; font-size: 13.5px; white-space: pre-wrap; word-break: break-word; padding: 10px; direction: auto; }
+    .viewer-foot { display: flex; gap: 8px; margin-top: 10px; }
 
     .subtabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
-    .subtab {
-      border: 1px solid var(--gold-border);
-      background: #100f14;
-      color: var(--muted);
-      font-family: 'Cairo', sans-serif;
-      font-size: 11.5px;
-      font-weight: 800;
-      padding: 8px 4px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .subtab.active { background: var(--gold-strong); color: #080705; border-color: transparent; }
-
+    .subtab { border: 1px solid var(--gold-rim); background: #100f14; color: var(--muted); font-family: var(--font-ui); font-size: 12.5px; font-weight: 700; padding: 8px 4px; border-radius: 11px; cursor: pointer; }
+    .subtab.active { background: var(--gold-metal); color: #080705; border-color: transparent; }
     .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .kpi {
-      background: #0e0d12;
-      border: 1px solid var(--gold-border);
-      border-radius: 14px;
-      padding: 12px 10px;
-      text-align: center;
-    }
-    .kpi.danger-kpi {
-      border-color: rgba(239, 68, 68, 0.65);
-      background: linear-gradient(145deg, #270c10, #0d0809);
-    }
-    .kpi-num { font-family: 'Cairo', sans-serif; font-size: 22px; font-weight: 900; color: #f9e28c; }
+    .kpi { background: #0e0d12; border: 1px solid var(--gold-rim); border-radius: 14px; padding: 12px 10px; text-align: center; }
+    .kpi.danger-kpi { border-color: rgba(239, 68, 68, 0.65); background: linear-gradient(145deg, #270c10, #0d0809); }
+    .kpi-num { font-family: var(--font-ui); font-size: 24px; font-weight: 800; color: #fae596; }
     .kpi.danger-kpi .kpi-num { color: #f87171; }
-    .kpi-lbl { font-family: 'Cairo', sans-serif; font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-    .card-box {
-      background: #0e0d12;
-      border: 1px solid var(--gold-border);
-      border-radius: 15px;
-      padding: 13px;
-      margin-bottom: 11px;
-      font-family: 'Cairo', sans-serif;
-    }
-    .sec-h { font-size: 13.5px; font-weight: 900; color: #f9e28c; margin-bottom: 9px; }
-
-    .filter-row { display: flex; gap: 6px; margin-bottom: 10px; }
-    .f-pill {
-      flex: 1;
-      border: 1px solid var(--gold-border);
-      background: #121116;
-      color: var(--muted);
-      font-family: 'Cairo', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 6px 4px;
-      border-radius: 9px;
-      cursor: pointer;
-    }
-    .f-pill.active { background: var(--gold-strong); color: #080705; border-color: transparent; }
-
+    .kpi-lbl { font-family: var(--font-ui); font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .card-box { background: #0e0d12; border: 1px solid var(--gold-rim); border-radius: 15px; padding: 13px; margin-bottom: 11px; }
+    .sec-h { font-family: var(--font-callig); font-size: 18px; font-weight: 700; color: #fae596; margin-bottom: 9px; }
+    .filter-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 10px; }
+    .f-pill { border: 1px solid var(--gold-rim); background: #121116; color: var(--muted); font-family: var(--font-ui); font-size: 12px; font-weight: 700; padding: 7px 4px; border-radius: 9px; cursor: pointer; }
+    .f-pill.active { background: var(--gold-metal); color: #080705; border-color: transparent; }
     .bar-row { margin-bottom: 8px; }
-    .bar-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+    .bar-top { display: flex; justify-content: space-between; font-family: var(--font-ui); font-size: 13px; margin-bottom: 4px; }
     .bar-track { height: 7px; background: rgba(255, 255, 255, 0.08); border-radius: 99px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--gold-strong); border-radius: 99px; }
-
-    .u-row {
-      border: 1px solid rgba(212, 175, 55, 0.24);
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 8px;
-    }
+    .bar-fill { height: 100%; background: var(--gold-metal); border-radius: 99px; }
+    .u-row { border: 1px solid rgba(212, 175, 55, 0.24); background: rgba(255, 255, 255, 0.02); border-radius: 13px; padding: 10px; margin-bottom: 8px; }
     .u-row.is-blocked { border-color: rgba(239, 68, 68, 0.6); background: rgba(239, 68, 68, 0.08); }
+    .u-row.is-banned { border-color: #ef4444; background: rgba(185, 28, 28, 0.16); }
     .u-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .u-link { color: #f9e28c; font-weight: 800; font-size: 13px; text-decoration: none; cursor: pointer; }
-    .u-un { color: var(--muted); font-size: 11px; direction: ltr; display: inline-block; }
-    .u-badge {
-      background: rgba(212, 175, 55, 0.14);
-      border: 1px solid var(--gold-border);
-      color: #f9e28c;
-      font-size: 10.5px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
+    .u-link { color: #fae596; font-weight: 700; font-size: 17px; text-decoration: none; cursor: pointer; }
+    .u-un { font-family: var(--font-ui); color: var(--muted); font-size: 12px; direction: ltr; display: inline-block; }
+    .u-badge { font-family: var(--font-ui); background: rgba(212, 175, 55, 0.14); border: 1px solid var(--gold-rim); color: #fae596; font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 8px; white-space: nowrap; }
     .u-badge.blk { background: rgba(239, 68, 68, 0.22); border-color: rgba(239, 68, 68, 0.65); color: #fca5a5; }
-    .u-det {
-      display: none;
-      margin-top: 9px;
-      padding-top: 8px;
-      border-top: 1px dashed rgba(212, 175, 55, 0.25);
-      font-size: 11.5px;
-      color: #dcd3bf;
-      line-height: 1.7;
-    }
+    .u-badge.ban { background: #991b1b; border-color: #f87171; color: #fff; }
+    .u-det { display: none; margin-top: 9px; padding-top: 8px; border-top: 1px dashed rgba(212, 175, 55, 0.25); font-family: var(--font-ui); font-size: 12.5px; color: #dcd3bf; line-height: 1.8; }
     .u-det.show { display: block; }
+    .status-box { background: rgba(212, 175, 55, 0.06); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 9px; padding: 7px 9px; margin: 6px 0; }
+    .hist-box { max-height: 220px; overflow-y: auto; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 9px; padding: 7px 9px; margin-top: 5px; }
     .mini-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
-    .mbtn {
-      border: 1px solid var(--gold-border);
-      background: rgba(212, 175, 55, 0.1);
-      color: #f9e28c;
-      font-family: 'Cairo', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 5px 9px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .mbtn.del { border-color: rgba(239, 68, 68, 0.55); color: #fca5a5; background: rgba(239, 68, 68, 0.14); }
-
-    .btn {
-      width: 100%;
-      border: none;
-      border-radius: 13px;
-      padding: 11px 14px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 13px;
-      font-weight: 900;
-      color: #080705;
-      background: var(--gold-strong);
-      cursor: pointer;
-      margin-top: 7px;
-    }
+    .mbtn { border: 1px solid var(--gold-rim); background: rgba(212, 175, 55, 0.1); color: #fae596; font-family: var(--font-ui); font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 8px; cursor: pointer; }
+    .mbtn.del { border-color: rgba(239, 68, 68, 0.65); color: #fca5a5; background: rgba(239, 68, 68, 0.16); }
+    .mbtn.ok { border-color: rgba(52, 211, 153, 0.65); color: #6ee7b7; background: rgba(16, 185, 129, 0.16); }
+    .btn { width: 100%; border: none; border-radius: 13px; padding: 10px 14px; font-family: var(--font-callig); font-size: 17.5px; font-weight: 700; color: #080705; background: var(--gold-metal); cursor: pointer; margin-top: 7px; }
     .btn:disabled { opacity: 0.55; }
-    .btn-out {
-      width: 100%;
-      border: 1px solid var(--gold-border);
-      border-radius: 13px;
-      padding: 10px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 12.5px;
-      font-weight: 800;
-      color: #f9e28c;
-      background: rgba(212, 175, 55, 0.08);
-      cursor: pointer;
-      margin-top: 7px;
-    }
+    .btn-out { width: 100%; border: 1px solid var(--gold-rim); border-radius: 13px; padding: 9px; font-family: var(--font-callig); font-size: 16.5px; font-weight: 700; color: #fae596; background: rgba(212, 175, 55, 0.08); cursor: pointer; margin-top: 7px; }
     .btn-danger { border: 1px solid rgba(239, 68, 68, 0.55); background: rgba(239, 68, 68, 0.16); color: #fca5a5; }
-
-    .inp, textarea, select {
-      width: 100%;
-      background: #09090d;
-      border: 1px solid var(--gold-border);
-      border-radius: 11px;
-      color: #fff6dc;
-      font-family: 'Cairo', sans-serif;
-      font-size: 12.5px;
-      padding: 10px 12px;
-      outline: none;
-      margin-top: 6px;
-    }
-    textarea { min-height: 62px; resize: vertical; }
-
-    /* نافذة التعديل والحذف المخصصة (بديل آمن لـ prompt/confirm على الآيفون) */
-    .modal-bg {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
+    .inp, textarea, select { width: 100%; background: #09090d; border: 1px solid var(--gold-rim); border-radius: 11px; color: #fff6dc; font-family: var(--font-callig); font-size: 16.5px; padding: 9px 12px; outline: none; margin-top: 6px; }
+    textarea { min-height: 64px; resize: vertical; }
+    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 1300; align-items: center; justify-content: center; padding: 16px; }
     .modal-bg.show { display: flex; }
-    .modal-card {
-      width: 100%;
-      max-width: 370px;
-      background: var(--phantom-card);
-      border: 1.5px solid #f7da73;
-      border-radius: 18px;
-      padding: 16px;
-      font-family: 'Cairo', sans-serif;
-      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.92);
-    }
-    .modal-title { font-size: 15px; font-weight: 900; color: #f9e28c; margin-bottom: 10px; }
+    .modal-card { width: 100%; max-width: 370px; background: var(--surface); border: 1.5px solid #f9de7e; border-radius: 18px; padding: 16px; }
+    .modal-title { font-family: var(--font-callig); font-size: 20px; font-weight: 700; color: #fae596; margin-bottom: 10px; }
     .modal-actions { display: flex; gap: 8px; margin-top: 12px; }
-
-    .foot {
-      margin-top: 24px;
-      padding: 11px;
-      border-radius: 14px;
-      border: 1px solid var(--gold-border);
-      background: rgba(212, 175, 55, 0.06);
-      text-align: center;
-      font-family: 'Aref Ruqaa', serif;
-      font-size: 19px;
-      color: #f9e28c;
-    }
-    .toast {
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%) translateY(90px);
-      background: #14110a;
-      color: #f9e28c;
-      border: 1.5px solid #d4af37;
-      padding: 10px 18px;
-      border-radius: 13px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 12.5px;
-      font-weight: 800;
-      transition: transform 0.2s ease;
-      width: 90%;
-      max-width: 360px;
-      text-align: center;
-      z-index: 1100;
-    }
+    .toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%) translateY(90px); background: #14110a; color: #fae596; border: 1.5px solid #d4af37; padding: 10px 18px; border-radius: 13px; font-family: var(--font-ui); font-size: 13.5px; font-weight: 700; transition: transform 0.2s ease; width: 90%; max-width: 360px; text-align: center; z-index: 1400; }
     .toast.show { transform: translateX(-50%) translateY(0); }
-    .empty { text-align: center; color: var(--muted); padding: 28px 8px; font-family: 'Amiri', serif; font-size: 18px; }
+    .empty { text-align: center; color: var(--muted); padding: 26px 8px; font-family: var(--font-callig); font-size: 18.5px; margin: auto; }
   </style>
 </head>
 <body>
 
-  <div class="hero">
-    <svg class="hero-circuit" viewBox="0 0 400 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <g stroke="#d4af37" stroke-width="1.2" fill="none">
-        <path d="M0,45 H70 L95,70 H130" /><circle cx="130" cy="70" r="2.8" fill="#f7da73" />
-        <path d="M0,105 H55 L78,128 H115" /><circle cx="115" cy="128" r="2.8" fill="#f7da73" />
-        <path d="M0,170 H85 L108,148" /><circle cx="108" cy="148" r="2.5" fill="#d4af37" />
-        <path d="M400,45 H330 L305,70 H270" /><circle cx="270" cy="70" r="2.8" fill="#f7da73" />
-        <path d="M400,105 H345 L322,128 H285" /><circle cx="285" cy="128" r="2.8" fill="#f7da73" />
-        <path d="M400,170 H315 L292,148" /><circle cx="292" cy="148" r="2.5" fill="#d4af37" />
-      </g>
-    </svg>
-
-    <button id="admQuickBtn" class="adm-badge-top" onclick="switchMode('admin')">👑 الإدارة (@tessla22)</button>
-
-    <div class="hero-inner">
-      <div id="emblemWrap" class="emblem-wrap"></div>
-      <div class="hero-title">الهندسة الكهربائية • جامعة بغداد</div>
-      <div class="hero-dev">بإشراف المهندس حسين علاء اللامي</div>
+  <div id="bannedScreen" class="banned-screen">
+    <div class="banned-card">
+      <div style="font-size:46px;margin-bottom:10px">🚫</div>
+      <div class="banned-title">عذراً، هذه الصفحة غير متاحة</div>
+      <div class="banned-sub">تم تقييد وصول حسابك إلى هذا التطبيق من قبل الإدارة.</div>
     </div>
   </div>
 
-  <!-- شريط التبديل (يظهر حصراً لـ @tessla22) -->
-  <div id="adminBar" class="admin-bar">
-    <button class="nav-pill active" id="navMain" onclick="switchMode('main')">🏛️ الأقسام والملفات</button>
-    <button class="nav-pill" id="navAdmin" onclick="switchMode('admin')">👑 لوحة الإدارة والداشبورد</button>
-  </div>
-
-  <!-- واجهة المستخدمين (سريعة، نظيفة، بدون شريط كشف حظر أو مساعد ذكي) -->
-  <div id="viewMain">
-    <div id="bannersWrap" class="banners" style="display:none;"></div>
-
-    <div id="crumb" class="crumb">
-      <div id="crumbPath" class="crumb-path"></div>
-      <div style="display:flex;gap:5px">
-        <button class="crumb-act" onclick="goBack()">🔙 رجوع</button>
-        <button class="crumb-act" onclick="openNode('root',false)">🏠</button>
+  <div id="appShell">
+    <div class="hero" id="heroBox">
+      <canvas id="pcbCanvas" class="pcb-canvas"></canvas>
+      <div class="hero-inner">
+        <div class="hero-emblem-row">
+          <button id="admQuickBtn" class="adm-badge-side" data-act="mode" data-val="admin">👑 @TESSLA2</button>
+          <div id="emblemWrap" class="emblem-wrap"></div>
+        </div>
+        <div class="hero-title">الهَنْدَسَةُ الكَهْرَبَائِيَّةُ • جَامِعَةُ بَغْدَادَ</div>
+        <div class="hero-dev">بإشراف المهندس حسين علاء اللامي</div>
       </div>
     </div>
 
-    <div id="nodeContent"></div>
-  </div>
-
-  <!-- لوحة الإدارة الخاصة بـ @tessla22 فقط -->
-  <div id="viewAdmin" style="display:none;">
-    <div class="subtabs">
-      <button class="subtab active" id="stDash" onclick="switchAdminTab('dash')">📊 الداشبورد والحظر</button>
-      <button class="subtab" id="stBtns" onclick="switchAdminTab('btns')">📂 الأقسام والملفات</button>
-      <button class="subtab" id="stImgs" onclick="switchAdminTab('imgs')">🖼️ الشعار والصور</button>
+    <div id="mainNav" class="main-nav">
+      <button class="nav-pill active" id="navMain" data-act="mode" data-val="main">🏛️ الأَقْسَامُ</button>
+      <button class="nav-pill" id="navSupport" data-act="mode" data-val="support">💬 قِسْمُ الدَّعْمِ <span id="supBadge" class="nav-badge">0</span></button>
+      <button class="nav-pill" id="navAdmin" data-act="mode" data-val="admin" style="display:none;">👑 الإِدَارَةُ</button>
     </div>
-    <div id="admDash"></div>
-    <div id="admBtns" style="display:none;"></div>
-    <div id="admImgs" style="display:none;"></div>
+
+    <div id="viewMain">
+      <div id="bannersWrap" class="banners" style="display:none;"></div>
+      <div id="crumb" class="crumb">
+        <div id="crumbPath" class="crumb-path"></div>
+        <div style="display:flex;gap:5px">
+          <button class="crumb-act" data-act="back">🔙 رجوع</button>
+          <button class="crumb-act" data-act="home">🏠</button>
+        </div>
+      </div>
+      <div id="nodeContent"></div>
+    </div>
+
+    <div id="viewSupport" style="display:none;"></div>
+
+    <div id="viewAdmin" style="display:none;">
+      <div class="subtabs">
+        <button class="subtab active" id="stDash" data-act="atab" data-val="dash">📊 المستخدمون والحظر</button>
+        <button class="subtab" id="stBtns" data-act="atab" data-val="btns">📂 الأزرار والملفات</button>
+        <button class="subtab" id="stImgs" data-act="atab" data-val="imgs">🖼️ الشعار والصور</button>
+      </div>
+      <div id="admDash"></div>
+      <div id="admBtns" style="display:none;"></div>
+      <div id="admImgs" style="display:none;"></div>
+    </div>
   </div>
 
-  <div class="foot">المهندس حسين علاء اللامي</div>
+  <div id="viewerBg" class="viewer-bg">
+    <div class="viewer-bar">
+      <div id="viewerTitle" class="viewer-title"></div>
+      <button class="crumb-act" data-act="close_viewer">✖ إغلاق</button>
+    </div>
+    <div id="viewerBody" class="viewer-body"></div>
+    <div class="viewer-foot">
+      <button id="viewerDlBtn" class="btn" style="margin:0">⬇️ تحميل وإرسال إلى المحادثة</button>
+    </div>
+  </div>
 
-  <!-- نافذة التعديل والحذف المخصصة -->
-  <div id="modalBg" class="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div id="modalBg" class="modal-bg">
     <div class="modal-card">
       <div id="modalTitle" class="modal-title"></div>
       <div id="modalBody"></div>
@@ -609,270 +265,527 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxf7izpVY1XvxprccTS3IrHGKHQKa34pLBJXvj2aYUkV-Vh3iJ6qiSxRFwIg76XzLc/exec";
-    // (اختياري) ضع رابط Firebase Realtime Database بدون شرطة مائلة أخيرة لتسريع القراءة الفوري:
-    const FIREBASE_DB_URL = "";
-    const CACHE_KEY = "ee_uob_royal_v7";
+    const GAS_URL_FALLBACK = "https://script.google.com/macros/s/AKfycbwNegaEse1q9IyG6TcvpoLiZOUWEqSd-5zwwadQcdhGlj_xBryYbTWAQfth7KQ1m1Fm/exec";
+    const ADMIN_UN_LOCK = "tessla2";
 
-    const DEFAULT_EMBLEM_SVG = `
-      <svg viewBox="0 0 240 240" width="112" height="112" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gMain" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#fff5c8" />
-            <stop offset="38%" stop-color="#f7da73" />
-            <stop offset="72%" stop-color="#c99a26" />
-            <stop offset="100%" stop-color="#7c540b" />
-          </linearGradient>
-          <radialGradient id="gBg" cx="50%" cy="45%" r="55%">
-            <stop offset="0%" stop-color="#241b0b" />
-            <stop offset="100%" stop-color="#050507" />
-          </radialGradient>
-          <path id="topArc" d="M 46,120 A 74,74 0 1,1 194,120" />
-          <path id="botArc" d="M 196,122 A 76,76 0 1,1 44,122" />
-        </defs>
-        <circle cx="120" cy="120" r="114" fill="url(#gBg)" stroke="url(#gMain)" stroke-width="4" />
-        <circle cx="120" cy="120" r="103" fill="none" stroke="url(#gMain)" stroke-width="6" stroke-dasharray="10 6" />
-        <circle cx="120" cy="120" r="91" fill="none" stroke="url(#gMain)" stroke-width="2" />
-        <circle cx="120" cy="120" r="62" fill="#090806" stroke="url(#gMain)" stroke-width="2.2" />
-        <text fill="url(#gMain)" font-family="Cairo,sans-serif" font-size="13.5" font-weight="900" letter-spacing="1.2">
-          <textPath href="#topArc" startOffset="50%" text-anchor="middle">UNIVERSITY OF BAGHDAD</textPath>
-        </text>
-        <text fill="url(#gMain)" font-family="Cairo,sans-serif" font-size="10.8" font-weight="800" letter-spacing="0.5">
-          <textPath href="#botArc" startOffset="50%" text-anchor="middle">Department of Electrical Engineering</textPath>
-        </text>
-        <text x="41" y="124" fill="#f9e28c" font-family="Cairo,sans-serif" font-size="10" font-weight="900" text-anchor="middle">1950</text>
-        <text x="199" y="124" fill="#f9e28c" font-family="Cairo,sans-serif" font-size="10" font-weight="900" text-anchor="middle">1950</text>
-        <g stroke="url(#gMain)" stroke-width="1.6" fill="none" opacity="0.92">
-          <line x1="76" y1="98" x2="90" y2="98" /><circle cx="74" cy="98" r="2.2" fill="#f9e28c" />
-          <line x1="72" y1="120" x2="88" y2="120" /><circle cx="70" cy="120" r="2.5" fill="#f9e28c" />
-          <line x1="76" y1="142" x2="90" y2="142" /><circle cx="74" cy="142" r="2.2" fill="#f9e28c" />
-          <line x1="150" y1="98" x2="164" y2="98" /><circle cx="166" cy="98" r="2.2" fill="#f9e28c" />
-          <line x1="152" y1="120" x2="168" y2="120" /><circle cx="170" cy="120" r="2.5" fill="#f9e28c" />
-          <line x1="150" y1="142" x2="164" y2="142" /><circle cx="166" cy="142" r="2.2" fill="#f9e28c" />
-          <line x1="108" y1="68" x2="108" y2="80" /><line x1="120" y1="64" x2="120" y2="78" /><line x1="132" y1="68" x2="132" y2="80" />
-          <line x1="108" y1="160" x2="108" y2="172" /><line x1="120" y1="162" x2="120" y2="176" /><line x1="132" y1="160" x2="132" y2="172" />
-        </g>
-        <text x="120" y="148" fill="url(#gMain)" stroke="#4a3104" stroke-width="1.5" font-family="Georgia,serif" font-size="84" font-weight="900" text-anchor="middle">E</text>
-        <text x="137" y="108" fill="#fff2be" font-family="Cairo,sans-serif" font-size="8.5" font-weight="900">150</text>
-        <text x="137" y="140" fill="#fff2be" font-family="Cairo,sans-serif" font-size="8.5" font-weight="900">IST.</text>
-      </svg>
-    `;
+    if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    const QS = new URLSearchParams(location.search);
+    const API_KEY = "ee_uob_api_v18", AUTH_KEY = "ee_uob_auth_v18", CACHE_KEY = "ee_uob_state_v18";
+    let GAS_URL = QS.get("api") || "";
+    try {
+      if (GAS_URL.includes("/exec")) localStorage.setItem(API_KEY, GAS_URL);
+      else GAS_URL = localStorage.getItem(API_KEY) || GAS_URL_FALLBACK;
+    } catch (e) { if (!GAS_URL) GAS_URL = GAS_URL_FALLBACK; }
+
+    const INIT_TAB = QS.get("tab") || "";
+
+    const DEFAULT_EMBLEM_SVG =
+      '<svg viewBox="0 0 240 240" width="112" height="112" xmlns="http://www.w3.org/2000/svg">' +
+      '<defs><linearGradient id="gMain" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff8db"/><stop offset="35%" stop-color="#f9de7e"/><stop offset="70%" stop-color="#c99a26"/><stop offset="100%" stop-color="#785009"/></linearGradient>' +
+      '<linearGradient id="gLetter" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff9e3"/><stop offset="45%" stop-color="#f7da73"/><stop offset="100%" stop-color="#9e7114"/></linearGradient>' +
+      '<radialGradient id="gBg" cx="50%" cy="42%" r="58%"><stop offset="0%" stop-color="#21190b"/><stop offset="100%" stop-color="#050507"/></radialGradient>' +
+      '<path id="topArc" d="M 46,120 A 74,74 0 1,1 194,120"/><path id="botArc" d="M 196,122 A 76,76 0 1,1 44,122"/></defs>' +
+      '<circle cx="120" cy="120" r="114" fill="url(#gBg)" stroke="url(#gMain)" stroke-width="3.8"/>' +
+      '<circle cx="120" cy="120" r="103" fill="none" stroke="url(#gMain)" stroke-width="5.5" stroke-dasharray="10 6"/>' +
+      '<circle cx="120" cy="120" r="91" fill="none" stroke="url(#gMain)" stroke-width="1.8"/>' +
+      '<circle cx="120" cy="120" r="64" fill="#080706" stroke="url(#gMain)" stroke-width="2.4"/>' +
+      '<circle cx="120" cy="120" r="59" fill="none" stroke="rgba(249,222,126,0.32)" stroke-width="1"/>' +
+      '<text fill="url(#gMain)" font-family="Georgia,serif" font-size="13.2" font-weight="900" letter-spacing="1.2"><textPath href="#topArc" startOffset="50%" text-anchor="middle">UNIVERSITY OF BAGHDAD</textPath></text>' +
+      '<text fill="url(#gMain)" font-family="Georgia,serif" font-size="10.5" font-weight="800" letter-spacing="0.4"><textPath href="#botArc" startOffset="50%" text-anchor="middle">Department of Electrical Engineering</textPath></text>' +
+      '<text x="41" y="124" fill="#fae596" font-family="Georgia,serif" font-size="9.5" font-weight="900" text-anchor="middle">1950</text>' +
+      '<text x="199" y="124" fill="#fae596" font-family="Georgia,serif" font-size="9.5" font-weight="900" text-anchor="middle">1950</text>' +
+      '<text x="120" y="151" fill="url(#gLetter)" stroke="#4d3204" stroke-width="1.6" font-family="Georgia,serif" font-size="88" font-weight="900" text-anchor="middle">E</text></svg>';
 
     const COLOR_OPTIONS = [
-      { id: "phantom", label: "🖤 أسود ملكي فانتوم" },
-      { id: "gold", label: "✨ ذهبي معدني قوي" },
-      { id: "ruby", label: "♦️ ياقوتي ملكي" },
-      { id: "emerald", label: "💚 زمردي فاخر" },
-      { id: "azure", label: "💙 لازوردي عميق" },
-      { id: "imperial", label: "💜 بنفسجي إمبراطوري" },
-      { id: "fiery", label: "🔥 ناري متوهج" },
-      { id: "silver", label: "🩶 فضي نيزكي" }
+      { id: "phantom", label: "🖤 أسود ملكي فانتوم" }, { id: "gold", label: "✨ ذهبي معدني ملكي" },
+      { id: "ruby", label: "♦️ ياقوتي عميق" }, { id: "emerald", label: "💚 زمردي فاخر" },
+      { id: "azure", label: "💙 لازوردي ملكي" }, { id: "imperial", label: "💜 بنفسجي إمبراطوري" },
+      { id: "fiery", label: "🔥 برونزي متوهج" }, { id: "silver", label: "🩶 تيتانيوم فضي" }
     ];
 
+    function initPcbCanvas() {
+      const canvas = document.getElementById("pcbCanvas"), hero = document.getElementById("heroBox");
+      if (!canvas || !hero) return;
+      const ctx = canvas.getContext("2d");
+      let W = 0, H = 0, dpr = 1, traces = [], chips = [], pulses = [];
+
+      const rawLeft = [
+        [[0.00, 0.14], [0.13, 0.14], [0.20, 0.25], [0.34, 0.25]],
+        [[0.00, 0.20], [0.11, 0.20], [0.18, 0.31], [0.33, 0.31]],
+        [[0.00, 0.33], [0.09, 0.33], [0.14, 0.41], [0.24, 0.41], [0.28, 0.36], [0.35, 0.36]],
+        [[0.00, 0.46], [0.15, 0.46], [0.21, 0.37], [0.31, 0.37]],
+        [[0.00, 0.56], [0.12, 0.56], [0.19, 0.45], [0.33, 0.45]],
+        [[0.00, 0.67], [0.10, 0.67], [0.18, 0.54], [0.27, 0.54], [0.31, 0.49], [0.36, 0.49]],
+        [[0.00, 0.80], [0.16, 0.80], [0.24, 0.67], [0.34, 0.67]],
+        [[0.06, 1.00], [0.06, 0.88], [0.15, 0.74], [0.23, 0.74]],
+        [[0.22, 0.00], [0.22, 0.12], [0.29, 0.22], [0.36, 0.22]]
+      ];
+
+      function build() {
+        const r = hero.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = Math.max(280, Math.round(r.width)); H = Math.max(190, Math.round(r.height));
+        canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        traces = [];
+        const add = (np, mir) => {
+          const pts = np.map(p => ({ x: (mir ? 1 - p[0] : p[0]) * W, y: p[1] * H }));
+          const segs = []; let total = 0;
+          for (let i = 0; i < pts.length - 1; i++) {
+            const len = Math.hypot(pts[i + 1].x - pts[i].x, pts[i + 1].y - pts[i].y);
+            segs.push({ x1: pts[i].x, y1: pts[i].y, x2: pts[i + 1].x, y2: pts[i + 1].y, len, start: total });
+            total += len;
+          }
+          traces.push({ pts, segs, total, end: pts[pts.length - 1] });
+        };
+        rawLeft.forEach(p => { add(p, false); add(p, true); });
+        chips = [
+          { x: W * 0.075, y: H * 0.44, w: 16, h: 11 }, { x: W * 0.925 - 16, y: H * 0.44, w: 16, h: 11 },
+          { x: W * 0.12, y: H * 0.78, w: 13, h: 9 }, { x: W * 0.88 - 13, y: H * 0.78, w: 13, h: 9 }
+        ];
+        pulses = traces.map((tr, i) => ({ idx: i, dist: (i * 47) % Math.max(1, tr.total), speed: 38 + (i % 4) * 11, dir: i % 3 === 1 ? -1 : 1, tail: 26 + (i % 3) * 10 }));
+      }
+
+      function ptAt(tr, d) {
+        if (d <= 0) return tr.pts[0];
+        if (d >= tr.total) return tr.end;
+        for (const s of tr.segs) {
+          if (d <= s.start + s.len) { const t = s.len ? (d - s.start) / s.len : 0; return { x: s.x1 + (s.x2 - s.x1) * t, y: s.y1 + (s.y2 - s.y1) * t }; }
+        }
+        return tr.end;
+      }
+
+      let lastTs = 0;
+      function frame(ts) {
+        requestAnimationFrame(frame);
+        if (document.hidden || !W || !H) { lastTs = ts; return; }
+        const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0.016; lastTs = ts;
+        ctx.clearRect(0, 0, W, H);
+
+        ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = 1.25; ctx.strokeStyle = "rgba(212, 175, 55, 0.22)";
+        for (const tr of traces) { ctx.beginPath(); ctx.moveTo(tr.pts[0].x, tr.pts[0].y); for (let j = 1; j < tr.pts.length; j++) ctx.lineTo(tr.pts[j].x, tr.pts[j].y); ctx.stroke(); }
+
+        ctx.fillStyle = "rgba(10, 9, 7, 0.9)"; ctx.strokeStyle = "rgba(212, 175, 55, 0.42)"; ctx.lineWidth = 1;
+        for (const ch of chips) { ctx.fillRect(ch.x, ch.y, ch.w, ch.h); ctx.strokeRect(ch.x, ch.y, ch.w, ch.h); }
+
+        for (const pl of pulses) {
+          const tr = traces[pl.idx];
+          pl.dist += pl.speed * dt * pl.dir;
+          if (pl.dir > 0 && pl.dist > tr.total + pl.tail) pl.dist = -12;
+          if (pl.dir < 0 && pl.dist < -pl.tail) pl.dist = tr.total + 12;
+
+          for (let s = 0; s < 9; s++) {
+            const dA = pl.dist - s * (pl.tail / 9) * pl.dir, dB = pl.dist - (s + 1) * (pl.tail / 9) * pl.dir;
+            if ((dA < 0 && dB < 0) || (dA > tr.total && dB > tr.total)) continue;
+            const pA = ptAt(tr, Math.max(0, Math.min(tr.total, dA))), pB = ptAt(tr, Math.max(0, Math.min(tr.total, dB))), a = 1 - s / 9;
+            ctx.beginPath(); ctx.moveTo(pA.x, pA.y); ctx.lineTo(pB.x, pB.y);
+            ctx.strokeStyle = "rgba(255, 240, 178, " + (a * 0.82).toFixed(3) + ")"; ctx.lineWidth = 1.1 + a * 1.4; ctx.stroke();
+          }
+          if (pl.dist >= 0 && pl.dist <= tr.total) {
+            const hd = ptAt(tr, pl.dist), g = ctx.createRadialGradient(hd.x, hd.y, 0.5, hd.x, hd.y, 6);
+            g.addColorStop(0, "rgba(255, 250, 224, 0.95)"); g.addColorStop(0.45, "rgba(248, 220, 120, 0.42)"); g.addColorStop(1, "rgba(212, 175, 55, 0)");
+            ctx.fillStyle = g; ctx.beginPath(); ctx.arc(hd.x, hd.y, 6, 0, Math.PI * 2); ctx.fill();
+          }
+        }
+
+        const pa = 0.45 + 0.4 * Math.sin(ts * 0.0026);
+        for (let v = 0; v < traces.length; v++) {
+          const ep = traces[v].end;
+          ctx.beginPath(); ctx.arc(ep.x, ep.y, 3.1, 0, Math.PI * 2); ctx.fillStyle = "#090806"; ctx.fill(); ctx.lineWidth = 1.25; ctx.strokeStyle = "rgba(212, 175, 55, 0.58)"; ctx.stroke();
+          ctx.beginPath(); ctx.arc(ep.x, ep.y, 1.35, 0, Math.PI * 2); ctx.fillStyle = "rgba(255, 244, 198, " + (v % 2 === 0 ? pa : 1.1 - pa).toFixed(2) + ")"; ctx.fill();
+        }
+      }
+      build(); window.addEventListener("resize", build); requestAnimationFrame(frame);
+    }
+
     const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      try { tg.setHeaderColor("#040406"); tg.setBackgroundColor("#040406"); } catch (e) {}
-    }
+    if (tg) { tg.ready(); tg.expand(); try { tg.setHeaderColor("#040406"); tg.setBackgroundColor("#040406"); } catch (e) {} }
 
-    const qs = new URLSearchParams(window.location.search);
+    const INIT_DATA = tg && tg.initData ? tg.initData : "";
     const tgU = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user : null;
-    const UID = tgU ? String(tgU.id) : (qs.get("uid") || "0");
-    const UN = (tgU && tgU.username ? tgU.username : (qs.get("un") || "")).replace(/^@/, "");
-    const NAME = tgU ? [tgU.first_name, tgU.last_name].filter(Boolean).join(" ") : (qs.get("name") || "");
+    const CLIENT_UN = tgU && tgU.username ? String(tgU.username).replace(/^@/, "").toLowerCase() : "";
 
-    let STATE = {
-      isAdmin: false,
-      logo: "",
-      banners: [],
-      nodes: { root: { id: "root", label: "الرئيسية", desc: "", color: "phantom", rows: [], items: [] } }
-    };
-    let CUR_NODE = "root";
-    let ADM_NODE = "root";
-    let DASH_DATA = null;
-    let USER_FILTER = "all";
+    let UID = QS.get("uid") || (tgU && tgU.id ? String(tgU.id) : "0");
+    let ASIG = QS.get("asig") || "", USIG = QS.get("usig") || "";
+    let NAME = QS.get("name") || (tgU ? [tgU.first_name, tgU.last_name].filter(Boolean).join(" ") : "");
 
-    function ex(s) {
-      return String(s || "").replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
-    }
-    function linkify(s) {
-      return ex(s).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank">$1</a>');
-    }
-    function toast(m) {
-      const t = document.getElementById("toast");
-      t.textContent = m;
-      t.classList.add("show");
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
-    }
-    function haptic() {
-      try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light"); } catch (e) {}
-    }
-    function openModal(title, bodyHtml) {
-      document.getElementById("modalTitle").textContent = title;
-      document.getElementById("modalBody").innerHTML = bodyHtml;
-      document.getElementById("modalBg").classList.add("show");
-    }
-    function closeModal() {
-      document.getElementById("modalBg").classList.remove("show");
+    try {
+      if (UID && UID !== "0" && (USIG || ASIG)) localStorage.setItem(AUTH_KEY, JSON.stringify({ uid: UID, usig: USIG, asig: ASIG, name: NAME }));
+      else {
+        const sA = JSON.parse(localStorage.getItem(AUTH_KEY) || "null");
+        if (sA && sA.uid) { UID = String(sA.uid); USIG = sA.usig || ""; ASIG = sA.asig || ""; if (!NAME && sA.name) NAME = sA.name; }
+      }
+    } catch (e) {}
+    if (CLIENT_UN && CLIENT_UN !== ADMIN_UN_LOCK) ASIG = "";
+
+    let STATE = { ok: true, isAdmin: false, logo: "", banners: [], nodes: { root: { id: "root", label: "الرَّئِيسِيَّةُ", rows: [], items: [] } } };
+    try { const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); if (c && c.nodes) STATE = Object.assign(STATE, c); } catch (e) {}
+
+    let CUR_MODE = "main", CUR_NODE = "root", ADM_NODE = "root", DASH_DATA = null, USER_FILTER = "all";
+    let SUP_POLL_TIMER = null, SUP_USER_REV = -1, SUP_USER_MSGS = [];
+    let SUP_ADM_LIST = [], SUP_ADM_FILTER = "chats", SUP_ADM_SEARCH = "", SUP_ADM_ACTIVE_UID = "", SUP_ADM_ACTIVE_USER = null, SUP_ADM_REV = -1, SUP_ADM_MSGS = [];
+    let STAGED_FILE = null, ACTIVE_BLOB_URL = "";
+
+    const ex = s => String(s || "").replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
+    const linkify = s => ex(s).replace(/https?:\/\/[^\s<]+/g, m => '<a href="' + m + '" target="_blank">' + m + '</a>');
+    const haptic = () => { try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light"); } catch (e) {} };
+    function toast(m) { const t = document.getElementById("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(window._tt); window._tt = setTimeout(() => t.classList.remove("show"), 2700); }
+    function openModal(title, html) { document.getElementById("modalTitle").textContent = title; document.getElementById("modalBody").innerHTML = html; document.getElementById("modalBg").classList.add("show"); }
+    function closeModal() { document.getElementById("modalBg").classList.remove("show"); }
+    function showBannedView() { stopSupportPoll(); document.getElementById("appShell").style.display = "none"; document.getElementById("bannedScreen").classList.add("show"); }
+
+    function callServer(payload) {
+      if (!GAS_URL || !GAS_URL.startsWith("http")) return Promise.reject(new Error("Missing GAS_URL"));
+      const full = Object.assign({ initData: INIT_DATA, uid: UID, asig: ASIG, usig: USIG, clientUn: CLIENT_UN, name: NAME }, payload);
+      return fetch(GAS_URL, { method: "POST", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(full) }).then(r => r.json());
     }
 
-    async function apiPost(payload) {
-      const res = await fetch(GAS_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(Object.assign({ uid: UID, un: UN, name: NAME }, payload))
-      });
-      return await res.json();
-    }
-
-    function applyLogo() {
-      const wrap = document.getElementById("emblemWrap");
-      wrap.innerHTML = STATE.logo ? `<img src="${STATE.logo}" alt="شعار القسم" />` : DEFAULT_EMBLEM_SVG;
-    }
+    const miniLogoHtml = () => STATE.logo ? '<img src="' + STATE.logo + '" alt="" />' : DEFAULT_EMBLEM_SVG.replace('width="112" height="112"', 'width="40" height="40"');
+    const applyLogo = () => { document.getElementById("emblemWrap").innerHTML = STATE.logo ? '<img src="' + STATE.logo + '" alt="" />' : DEFAULT_EMBLEM_SVG; };
+    function updateUnreadBadge(n) { const b = document.getElementById("supBadge"), num = Number(n || 0); b.textContent = num > 99 ? "99+" : String(num); b.classList.toggle("show", num > 0); }
 
     function renderBanners() {
-      const wrap = document.getElementById("bannersWrap");
-      const imgs = (STATE.banners || []).filter(Boolean);
-      if (!imgs.length || CUR_NODE !== "root") {
-        wrap.style.display = "none";
-        return;
-      }
+      const wrap = document.getElementById("bannersWrap"), imgs = (STATE.banners || []).filter(Boolean);
+      if (!imgs.length || CUR_NODE !== "root") { wrap.style.display = "none"; return; }
       wrap.className = "banners" + (imgs.length === 1 ? " single" : "");
-      wrap.innerHTML = imgs.map(src => `<img src="${src}" alt="" />`).join("");
-      wrap.style.display = "grid";
+      wrap.innerHTML = imgs.map(src => '<img src="' + src + '" alt="" />').join(""); wrap.style.display = "grid";
     }
 
     function buildBreadcrumb(id) {
-      const parts = [];
-      let cur = STATE.nodes[id];
-      let guard = 0;
-      while (cur && cur.id !== "root" && guard < 15) {
-        parts.unshift(cur.label);
-        cur = STATE.nodes[cur.parent];
-        guard++;
-      }
-      return "🏠 الرئيسية ◂ " + parts.join(" ◂ ");
+      const parts = []; let cur = STATE.nodes[id], g = 0;
+      while (cur && cur.id !== "root" && g++ < 15) { parts.unshift(cur.label); cur = STATE.nodes[cur.parent]; }
+      return "🏠 الرَّئِيسِيَّةُ ◂ " + parts.join(" ◂ ");
     }
 
-    function openNode(id, deliverToChat) {
-      haptic();
-      const node = STATE.nodes[id] || STATE.nodes.root;
+    function openNode(id, logClick) {
+      haptic(); const node = STATE.nodes[id] || STATE.nodes.root; if (!node) return;
       CUR_NODE = node.id;
-
-      // عند الضغط على أي زر يتم إرسال اسم الزر وتفاصيله وملفاته مباشرة للمحادثة
-      if (deliverToChat && node.id !== "root") {
-        if (UID && UID !== "0") {
-          const hasFiles = (node.items || []).length > 0;
-          toast(hasFiles ? "⚡ تم إرسال التفاصيل والملفات إلى محادثتك فوراً" : "⚡ تم إرسال تفاصيل القسم إلى محادثتك");
-        }
-        fetch(GAS_URL, {
-          method: "POST",
-          keepalive: true,
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ app_action: "open_and_send", uid: UID, un: UN, name: NAME, btnId: node.id })
-        }).catch(() => {});
-      }
+      if (logClick && node.id !== "root") setTimeout(() => callServer({ app_action: "log_click", btnId: node.id }).then(r => { if (r && r.banned) showBannedView(); }).catch(() => {}), 15);
 
       renderBanners();
       const crumb = document.getElementById("crumb");
-      if (node.id === "root") {
-        crumb.classList.remove("show");
-      } else {
-        document.getElementById("crumbPath").textContent = buildBreadcrumb(node.id);
-        crumb.classList.add("show");
-      }
+      if (node.id === "root") crumb.classList.remove("show");
+      else { document.getElementById("crumbPath").textContent = buildBreadcrumb(node.id); crumb.classList.add("show"); }
 
-      let html = `<div class="folder-shell ${node.id !== "root" ? "nested" : ""}">`;
-      if (node.desc) html += `<div class="desc-box">${linkify(node.desc)}</div>`;
+      let html = '<div class="folder-shell ' + (node.id !== "root" ? "nested" : "") + '">';
+      if (node.desc) html += '<div class="desc-box">' + linkify(node.desc) + '</div>';
 
-      // عرض المجلدات والأزرار المتداخلة بالألوان الـ 8 والخط المزخرف
       const rows = node.rows || [];
       if (rows.length) {
         html += '<div class="rows-wrap">';
         rows.forEach(row => {
-          const kids = row.map(cid => STATE.nodes[cid]).filter(Boolean);
-          if (!kids.length) return;
-          html += `<div class="btn-row" style="grid-template-columns:repeat(${kids.length},1fr)">`;
-          kids.forEach(k => {
-            const subC = (k.rows || []).reduce((a, r) => a + r.length, 0);
-            const itC = (k.items || []).length;
-            const cClass = "c-" + (k.color || "phantom");
-            const meta = [subC ? ("📂 " + subC + " فرعي") : "", itC ? ("📎 " + itC + " ملف") : ""].filter(Boolean).join(" • ");
-            html += `<div class="bcard ${cClass}" onclick="openNode('${k.id}',true)">
-              <div class="blabel">${ex(k.label)}</div>
-              ${meta ? `<div class="bmeta">${meta}</div>` : ""}
-            </div>`;
-          });
-          html += "</div>";
+          const kids = row.map(cid => STATE.nodes[cid]).filter(Boolean); if (!kids.length) return;
+          html += '<div class="btn-row" style="grid-template-columns:repeat(' + kids.length + ',1fr)">' +
+            kids.map(k => '<div class="bcard c-' + (k.color || "phantom") + '" data-act="open_node" data-id="' + ex(k.id) + '"><div class="blabel">' + ex(k.label) + '</div></div>').join("") + '</div>';
         });
-        html += "</div>";
+        html += '</div>';
       }
 
-      // عرض الملفات والشروحات مع إرسال فوري فردي للمحادثة
       const items = node.items || [];
       if (items.length) {
-        const ic = { photo: "🖼️ صورة", document: "📄 ملف", video: "🎬 فيديو", audio: "🎵 صوت", voice: "🎙️ بصمة" };
-        html += '<div class="items-wrap">';
-        items.forEach((it, idx) => {
-          if (it.type === "text") {
-            html += `<div class="item">${linkify(it.text)}</div>`;
-          } else {
-            const title = (ic[it.type] || "📎 ملف") + (it.file_name ? " : " + ex(it.file_name) : "");
-            const cap = it.text ? `<div style="margin-top:4px;color:#cfc6b0;font-size:13px">${linkify(it.text)}</div>` : "";
-            html += `<div class="item">
-              <div class="file-row">
-                <div><b style="color:#f9e28c">${title}</b>${cap}</div>
-                <button class="file-send" onclick="sendSingle('${node.id}',${idx},this)">⚡ إرسال</button>
-              </div>
-            </div>`;
-          }
-        });
-        html += "</div>";
+        const ic = { photo: "🖼️", document: "📄", video: "🎬", audio: "🎵", voice: "🎙️" };
+        html += '<div class="items-wrap">' + items.map((it, idx) => it.type === "text"
+          ? '<div class="item"><div>' + linkify(it.text) + '</div><div class="file-actions"><button class="fbtn-dl" data-act="dl_item" data-id="' + ex(node.id) + '" data-idx="' + idx + '">⬇️ تحميل للمحادثة</button></div></div>'
+          : '<div class="item"><div class="file-name">' + (ic[it.type] || "📎") + ' ' + ex(it.file_name || "ملف") + '</div>' + (it.text ? '<div style="margin-top:4px;color:#d6cbb2;font-size:15px">' + linkify(it.text) + '</div>' : '') +
+            '<div class="file-actions"><button class="fbtn-read" data-act="read_item" data-id="' + ex(node.id) + '" data-idx="' + idx + '">👁️ قراءة داخل التطبيق</button><button class="fbtn-dl" data-act="dl_item" data-id="' + ex(node.id) + '" data-idx="' + idx + '">⬇️ تحميل</button></div></div>'
+        ).join("") + '</div>';
       }
-
-      if (!rows.length && !items.length && !node.desc) {
-        html += '<div class="empty">لا توجد أقسام أو ملفات مضافة في هذا القسم حالياً.</div>';
-      }
-      html += "</div>";
-      document.getElementById("nodeContent").innerHTML = html;
+      if (!rows.length && !items.length && !node.desc) html += '<div class="empty">لَا تُوجَدُ أَقْسَامٌ أَوْ مَلَفَّاتٌ مُضَافَةٌ هُنَا حَالِيّاً.</div>';
+      document.getElementById("nodeContent").innerHTML = html + '</div>';
     }
 
-    function goBack() {
-      const cur = STATE.nodes[CUR_NODE];
-      openNode(cur && cur.parent ? cur.parent : "root", false);
+    function b64ToBytes(b64) { const bin = atob(b64), arr = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i); return arr; }
+
+    function renderPdfCanvas(b64, bodyEl) {
+      if (!window.pdfjsLib) { bodyEl.innerHTML = '<div class="empty">اضغط زر التحميل لإرسال ملف PDF إلى محادثتك.</div>'; return; }
+      bodyEl.innerHTML = '<div class="empty">⏳ جاري تجهيز صفحات PDF للقراءة...</div>';
+      pdfjsLib.getDocument({ data: b64ToBytes(b64) }).promise.then(pdf => {
+        bodyEl.innerHTML = ""; let pIdx = 1;
+        const next = () => {
+          if (pIdx > pdf.numPages) return;
+          pdf.getPage(pIdx++).then(page => {
+            const vp = page.getViewport({ scale: 1.5 }), c = document.createElement("canvas");
+            c.width = vp.width; c.height = vp.height; bodyEl.appendChild(c);
+            page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise.then(next);
+          });
+        };
+        next();
+      }).catch(() => { bodyEl.innerHTML = '<div class="empty">تعذّر العرض المباشر، اضغط زر التحميل لإرسال الملف للمحادثة.</div>'; });
     }
 
-    function sendSingle(btnId, idx, btnEl) {
-      haptic();
-      const orig = btnEl.textContent;
-      btnEl.textContent = "✅ أُرسل";
-      toast("⚡ تم إرسال الملف إلى محادثتك في تليجرام فوراً");
-      fetch(GAS_URL, {
-        method: "POST",
-        keepalive: true,
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ app_action: "deliver_item", uid: UID, un: UN, name: NAME, btnId: btnId, idx: idx })
+    function showPreviewResult(r, bodyEl) {
+      if (r && r.banned) return showBannedView();
+      if (!r || !r.ok) { bodyEl.innerHTML = '<div class="empty">' + ex((r && r.error) || "اضغط زر التحميل بالأسفل.") + '</div>'; return; }
+      if (r.mode === "image") bodyEl.innerHTML = '<img src="' + r.dataUrl + '" alt="" />';
+      else if (r.mode === "pdf_b64") renderPdfCanvas(r.b64, bodyEl);
+      else if (r.mode === "text") bodyEl.innerHTML = '<pre class="viewer-pre">' + ex(r.textContent) + '</pre>';
+      else if (r.mode === "video_b64" || r.mode === "audio_b64") {
+        ACTIVE_BLOB_URL = URL.createObjectURL(new Blob([b64ToBytes(r.b64)], { type: r.mime || "application/octet-stream" }));
+        bodyEl.innerHTML = r.mode === "video_b64" ? '<video controls playsinline src="' + ACTIVE_BLOB_URL + '"></video>' : '<audio controls src="' + ACTIVE_BLOB_URL + '" style="width:94%;margin:auto"></audio>';
+      } else if (r.mode === "drive" && r.driveUrl) bodyEl.innerHTML = '<iframe src="' + r.driveUrl + '" allow="autoplay"></iframe>';
+      else bodyEl.innerHTML = '<div class="empty">اضغط زر التحميل لإرسال الملف إلى محادثتك.</div>';
+    }
+
+    function openFileViewer(btnId, idx) {
+      haptic(); const it = STATE.nodes[btnId] && STATE.nodes[btnId].items ? STATE.nodes[btnId].items[idx] : null; if (!it) return;
+      if (ACTIVE_BLOB_URL) { try { URL.revokeObjectURL(ACTIVE_BLOB_URL); } catch (e) {} ACTIVE_BLOB_URL = ""; }
+      document.getElementById("viewerTitle").textContent = it.file_name || "عرض الملف";
+      const body = document.getElementById("viewerBody"), dlBtn = document.getElementById("viewerDlBtn");
+      dlBtn.setAttribute("data-act", "dl_item"); dlBtn.setAttribute("data-id", btnId); dlBtn.setAttribute("data-idx", String(idx));
+      document.getElementById("viewerBg").classList.add("show");
+      body.innerHTML = '<div class="empty">⏳ جاري فتح الملف للقراءة...</div>';
+      callServer({ app_action: "preview_item", btnId, idx }).then(r => showPreviewResult(r, body)).catch(() => { body.innerHTML = '<div class="empty">تعذّر التحميل، اضغط زر التحميل.</div>'; });
+    }
+
+    function openChatMediaViewer(msgId, fileName, ownerUid) {
+      haptic(); if (ACTIVE_BLOB_URL) { try { URL.revokeObjectURL(ACTIVE_BLOB_URL); } catch (e) {} ACTIVE_BLOB_URL = ""; }
+      document.getElementById("viewerTitle").textContent = fileName || "عرض المرفق";
+      const body = document.getElementById("viewerBody"), dlBtn = document.getElementById("viewerDlBtn");
+      dlBtn.setAttribute("data-act", "sup_dl_media"); dlBtn.setAttribute("data-id", String(msgId)); dlBtn.setAttribute("data-val", String(ownerUid || ""));
+      document.getElementById("viewerBg").classList.add("show");
+      body.innerHTML = '<div class="empty">⏳ جاري تحميل المرفق...</div>';
+      callServer({ app_action: "sup_preview_media", msgId, targetUid: ownerUid || "" }).then(r => showPreviewResult(r, body)).catch(() => { body.innerHTML = '<div class="empty">اضغط زر التحميل بالأسفل.</div>'; });
+    }
+
+    function downloadToChat(btnId, idx, btnEl) {
+      haptic(); const orig = btnEl.textContent; btnEl.disabled = true; btnEl.textContent = "⏳ جاري الإرسال...";
+      callServer({ app_action: "deliver_item", btnId, idx }).then(r => {
+        if (r && r.banned) return showBannedView();
+        if (r && r.ok) { btnEl.textContent = "✅ تم الإرسال"; toast("✅ تم إرسال الملف إلى المحادثة"); }
+        else { btnEl.textContent = orig; toast("⚠️ " + ((r && r.error) || "أرسل /start في البوت أولاً")); }
+        btnEl.disabled = false; setTimeout(() => { btnEl.textContent = orig; }, 1800);
+      }).catch(() => { btnEl.disabled = false; btnEl.textContent = orig; toast("⚠️ تعذّر الاتصال"); });
+    }
+
+    function downloadChatMedia(msgId, ownerUid, btnEl) {
+      haptic(); const orig = btnEl.textContent; btnEl.disabled = true; btnEl.textContent = "⏳...";
+      callServer({ app_action: "sup_deliver_media", msgId, targetUid: ownerUid || "" }).then(r => {
+        if (r && r.banned) return showBannedView();
+        if (r && r.ok) { btnEl.textContent = "✅ أُرسل"; toast("✅ تم إرسال المرفق إلى محادثتك بالبوت"); }
+        else { btnEl.textContent = orig; toast("⚠️ " + ((r && r.error) || "تعذّر الإرسال")); }
+        btnEl.disabled = false; setTimeout(() => { btnEl.textContent = orig; }, 1800);
+      }).catch(() => { btnEl.disabled = false; btnEl.textContent = orig; toast("⚠️ تعذّر الإرسال"); });
+    }
+
+    function stopSupportPoll() { if (SUP_POLL_TIMER) { clearInterval(SUP_POLL_TIMER); SUP_POLL_TIMER = null; } }
+    function scrollChatBottom() { const box = document.getElementById("chatMsgsBox"); if (box) box.scrollTop = box.scrollHeight + 300; }
+    const readFileBase64 = file => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+    function compressImage(file, maxW, q) {
+      return new Promise((res, rej) => {
+        const img = new Image();
+        img.onload = () => { const sc = Math.min(1, maxW / img.width), c = document.createElement("canvas"); c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); res(c.toDataURL("image/jpeg", q)); };
+        img.onerror = rej; img.src = URL.createObjectURL(file);
+      });
+    }
+
+    function clearStagedFile() { STAGED_FILE = null; const b = document.getElementById("attachBar"), i = document.getElementById("chatFileInp"); if (b) { b.classList.remove("show"); b.innerHTML = ""; } if (i) i.value = ""; }
+    function bindChatFilePicker() {
+      const inp = document.getElementById("chatFileInp"); if (!inp) return;
+      inp.onchange = () => {
+        if (!inp.files || !inp.files[0]) return;
+        const file = inp.files[0]; if (file.size > 15 * 1024 * 1024) { toast("⚠️ الحد الأقصى 15MB"); inp.value = ""; return; }
+        const isImg = String(file.type || "").startsWith("image/");
+        const sz = file.size > 1048576 ? (file.size / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(file.size / 1024)) + " KB";
+        STAGED_FILE = { file, isImage: isImg, thumb: "" };
+        const bar = document.getElementById("attachBar");
+        if (bar) { bar.innerHTML = '<span>' + (isImg ? "🖼️ " : "📎 ") + ex(file.name) + ' (' + sz + ')</span><button class="mbtn del" style="padding:2px 8px" data-act="clr_attach">✖</button>'; bar.classList.add("show"); }
+        if (isImg) compressImage(file, 320, 0.58).then(th => { if (STAGED_FILE && STAGED_FILE.file === file) STAGED_FILE.thumb = th; }).catch(() => {});
+      };
+    }
+
+    function buildBubbleMediaHtml(m, ownerUid) {
+      if (!m.media) return "";
+      const md = m.media, fn = ex(md.file_name || "ملف"), ow = ex(ownerUid || "");
+      if (md.type === "photo" && md.thumb) {
+        return '<img class="msg-media-img" src="' + md.thumb + '" data-act="sup_view_media" data-id="' + m.id + '" data-val="' + ow + '" data-fn="' + fn + '" alt="" />' +
+          (!m.pending ? '<div class="msg-media-btns"><button class="msg-mbtn" data-act="sup_view_media" data-id="' + m.id + '" data-val="' + ow + '" data-fn="' + fn + '">👁️ تكبير</button><button class="msg-mbtn dl" data-act="sup_dl_media" data-id="' + m.id + '" data-val="' + ow + '">⬇️ حفظ</button></div>' : '');
+      }
+      const ic = md.type === "photo" ? "🖼️" : md.type === "video" ? "🎬" : md.type === "audio" ? "🎵" : "📄";
+      return '<div class="msg-media-card"><div class="msg-media-title">' + ic + ' ' + fn + '</div>' +
+        (!m.pending ? '<div class="msg-media-btns"><button class="msg-mbtn" data-act="sup_view_media" data-id="' + m.id + '" data-val="' + ow + '" data-fn="' + fn + '">👁️ قراءة</button><button class="msg-mbtn dl" data-act="sup_dl_media" data-id="' + m.id + '" data-val="' + ow + '">⬇️ تحميل</button></div>' : '<div style="font-size:11px;color:#d6cbb2">⏳ جاري الرفع...</div>') + '</div>';
+    }
+
+    function prepareStagedMedia(staged) {
+      if (!staged || !staged.file) return Promise.resolve(null);
+      const f = staged.file;
+      if (staged.isImage) return Promise.all([compressImage(f, 1280, 0.82), staged.thumb ? Promise.resolve(staged.thumb) : compressImage(f, 320, 0.58)]).then(r => ({ fileName: f.name, mimeType: "image/jpeg", base64: r[0], thumb: r[1] }));
+      return readFileBase64(f).then(b64 => ({ fileName: f.name, mimeType: f.type || "application/octet-stream", base64: b64, thumb: "" }));
+    }
+
+    function renderUserSupportShell() {
+      STAGED_FILE = null;
+      document.getElementById("viewSupport").innerHTML =
+        '<div class="chat-shell"><div class="chat-head"><div class="chat-peer"><div class="chat-avatar">' + miniLogoHtml() + '</div>' +
+        '<div><div class="chat-peer-name">الإِدَارَةُ</div><div class="chat-peer-sub"><span class="online-dot"></span> الدَّعْمُ المُبَاشِرُ</div></div></div></div>' +
+        '<div class="chat-pin-bar">✨ أَرْسِلْ مَا تَحْتَاجُهُ هُنَا، وَسَيَتِمُّ مُسَاعَدَتُكَ فِي أَقْرَبِ وَقْتٍ.</div>' +
+        '<div id="chatMsgsBox" class="chat-msgs"><div class="empty">⏳ جاري تحميل المحادثة...</div></div><div id="attachBar" class="attach-preview"></div>' +
+        '<div class="chat-composer"><input type="file" id="chatFileInp" style="display:none" /><button class="chat-attach-btn" data-act="pick_attach">📎</button>' +
+        '<textarea id="chatInput" class="chat-input" rows="1" placeholder="اكتب رسالتك للإدارة هنا..."></textarea><button id="chatSendBtn" class="chat-send-btn" data-act="sup_u_send">إرسال ➤</button></div></div>';
+
+      bindChatFilePicker(); SUP_USER_REV = -1;
+      callServer({ app_action: "sup_user_open" }).then(r => {
+        if (r && r.banned) return showBannedView();
+        if (!r || !r.ok) { document.getElementById("chatMsgsBox").innerHTML = '<div class="empty">' + ex((r && r.error) || "أرسل /start في البوت ثم افتح التطبيق.") + '</div>'; return; }
+        SUP_USER_REV = r.rev; SUP_USER_MSGS = r.msgs || []; updateUnreadBadge(0); renderUserChatBubbles(true);
       }).catch(() => {});
-      setTimeout(() => { btnEl.textContent = orig; }, 1400);
+
+      stopSupportPoll();
+      SUP_POLL_TIMER = setInterval(() => {
+        if (CUR_MODE !== "support" || STATE.isAdmin) return;
+        callServer({ app_action: "sup_user_poll", rev: SUP_USER_REV }).then(r => {
+          if (r && r.banned) return showBannedView();
+          if (r && r.ok && !r.unchanged) { SUP_USER_REV = r.rev; SUP_USER_MSGS = r.msgs || []; renderUserChatBubbles(true); }
+        }).catch(() => {});
+      }, 3000);
     }
 
-    // ==================== لوحة الإدارة والداشبورد (خاصة بـ @tessla22 فقط) ====================
+    function renderUserChatBubbles(scrollEnd) {
+      const box = document.getElementById("chatMsgsBox"); if (!box) return;
+      if (!SUP_USER_MSGS.length) { box.innerHTML = '<div class="empty">أهلاً بك في قسم الدعم، اكتب رسالتك أو أرفق صورة أو ملفاً من الأسفل.</div>'; return; }
+      box.innerHTML = SUP_USER_MSGS.map(m => {
+        const isMine = m.from === "user";
+        return '<div class="msg-row ' + (isMine ? "mine" : "other") + '"><div class="msg-bubble">' + (!isMine ? '<div class="msg-sender">الإِدَارَةُ</div>' : '') +
+          buildBubbleMediaHtml(m, "") + (m.text ? '<div>' + linkify(m.text) + '</div>' : '') +
+          '<div class="msg-meta"><span>' + ex(m.d || "") + ' ' + ex(m.t || "") + '</span><span>' + (m.pending ? "⏳" : "✓") + '</span></div></div></div>';
+      }).join("");
+      if (scrollEnd) scrollChatBottom();
+    }
+
+    function sendUserSupportMsg() {
+      const inp = document.getElementById("chatInput"), sBtn = document.getElementById("chatSendBtn"); if (!inp) return;
+      const txt = inp.value.trim(), staged = STAGED_FILE; if (!txt && !staged) return;
+      haptic(); inp.value = ""; clearStagedFile(); if (sBtn) sBtn.disabled = true;
+
+      const d = new Date(), hh = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+      SUP_USER_MSGS.push({ id: "tmp_" + Date.now(), from: "user", text: txt, media: staged ? { type: staged.isImage ? "photo" : "document", file_name: staged.file.name, thumb: staged.thumb || "" } : null, d: "", t: hh, pending: true });
+      renderUserChatBubbles(true);
+
+      prepareStagedMedia(staged).then(mp => callServer({ app_action: "sup_user_send", text: txt, media: mp })).then(r => {
+        if (sBtn) sBtn.disabled = false;
+        if (r && r.banned) return showBannedView();
+        if (r && r.ok) { SUP_USER_REV = r.rev; SUP_USER_MSGS = r.msgs || []; renderUserChatBubbles(true); }
+        else toast("⚠️ " + ((r && r.error) || "تعذّر الإرسال"));
+      }).catch(() => { if (sBtn) sBtn.disabled = false; toast("⚠️ تعذّر الإرسال"); });
+    }
+
+    function loadAdminSupportInbox() {
+      stopSupportPoll(); STAGED_FILE = null; SUP_ADM_ACTIVE_UID = "";
+      document.getElementById("viewSupport").innerHTML = '<div class="card-box" style="text-align:center;color:#c2b495">⏳ جاري تحميل محادثات الدعم...</div>';
+      callServer({ app_action: "sup_adm_inbox" }).then(r => {
+        if (!r || !r.ok) { document.getElementById("viewSupport").innerHTML = '<div class="card-box">⛔ غير مصرح.</div>'; return; }
+        SUP_ADM_LIST = r.list || []; updateUnreadBadge(r.unreadSupport || 0); renderAdminSupportInbox();
+      }).catch(() => { document.getElementById("viewSupport").innerHTML = '<div class="card-box">⚠️ تعذّر التحميل.</div>'; });
+    }
+
+    function renderAdminSupportInbox() {
+      const q = SUP_ADM_SEARCH.trim().toLowerCase(), chatsCount = SUP_ADM_LIST.filter(x => x.has_chat).length;
+      const filtered = SUP_ADM_LIST.filter(x => (SUP_ADM_FILTER !== "chats" || x.has_chat) && (!q || (x.name + " " + x.un + " " + x.id).toLowerCase().includes(q)));
+      const rows = filtered.map(u =>
+        '<div class="inbox-item ' + (u.unread_admin > 0 ? "has-unread" : "") + '" data-act="sup_a_open" data-id="' + u.id + '">' +
+        '<div style="min-width:0"><div style="color:#fae596;font-size:17px;font-weight:700">' + ex(u.name) + (u.banned ? ' 🔒' : '') + (u.blocked ? ' 🚫' : '') + '</div>' +
+        '<div style="font-family:var(--font-ui);font-size:11.5px;color:#b8ab8e;direction:ltr;display:inline-block">' + (u.un ? "@" + ex(u.un) : "ID: " + u.id) + '</div>' +
+        '<div class="inbox-preview">' + ex(u.has_chat ? ((u.last_from === "admin" ? "أنت: " : "") + (u.last_text || "محادثة")) : "اضغط لبدء مراسلة هذا المستخدم") + '</div></div>' +
+        '<div style="text-align:left;flex-shrink:0"><div style="font-family:var(--font-ui);font-size:11px;color:#b8ab8e">' + ex(u.last_time || u.last_seen || "") + '</div>' +
+        (u.unread_admin > 0 ? '<div style="margin-top:4px"><span class="nav-badge show">' + u.unread_admin + '</span></div>' : '<div style="margin-top:4px;font-family:var(--font-ui);font-size:12px;color:#f9de7e">💬 فتح</div>') + '</div></div>'
+      ).join("") || '<div class="empty">لا توجد محادثات مطابقة.</div>';
+
+      document.getElementById("viewSupport").innerHTML =
+        '<div class="card-box"><div class="sec-h">💬 مركز الدعم والمراسلة المباشرة</div>' +
+        '<input id="supSearchInp" class="inp" style="margin-bottom:8px" value="' + ex(SUP_ADM_SEARCH) + '" placeholder="🔍 ابحث بالاسم أو المعرف أو الآيدي لمراسلة أي شخص..." />' +
+        '<div class="filter-row"><button class="f-pill ' + (SUP_ADM_FILTER === "chats" ? "active" : "") + '" data-act="sup_a_flt" data-val="chats">💬 المحادثات (' + chatsCount + ')</button>' +
+        '<button class="f-pill ' + (SUP_ADM_FILTER === "all" ? "active" : "") + '" data-act="sup_a_flt" data-val="all">👥 جميع المستخدمين (' + SUP_ADM_LIST.length + ')</button></div>' + rows + '</div>';
+
+      const sInp = document.getElementById("supSearchInp");
+      if (sInp) sInp.oninput = () => {
+        SUP_ADM_SEARCH = sInp.value; if (SUP_ADM_SEARCH.trim() && SUP_ADM_FILTER === "chats") SUP_ADM_FILTER = "all";
+        renderAdminSupportInbox(); const e2 = document.getElementById("supSearchInp"); if (e2) { e2.focus(); e2.setSelectionRange(e2.value.length, e2.value.length); }
+      };
+    }
+
+    function openAdminChatRoom(targetUid) {
+      haptic(); STAGED_FILE = null; SUP_ADM_ACTIVE_UID = String(targetUid); SUP_ADM_REV = -1;
+      document.getElementById("viewSupport").innerHTML =
+        '<div class="chat-shell"><div class="chat-head"><div class="chat-peer"><button class="crumb-act" data-act="sup_a_back">🔙</button>' +
+        '<div><div id="admChatName" class="chat-peer-name">⏳ جاري التحميل...</div><div id="admChatSub" class="chat-peer-sub"></div></div></div>' +
+        '<div style="display:flex;gap:5px"><button class="mbtn" data-act="sup_a_prof">👤</button><button class="mbtn del" data-act="sup_a_clear_menu">🗑️</button></div></div>' +
+        '<div id="admChatInfo" class="chat-adm-info"></div><div id="chatMsgsBox" class="chat-msgs"><div class="empty">⏳ جاري التحميل...</div></div><div id="attachBar" class="attach-preview"></div>' +
+        '<div class="chat-composer"><input type="file" id="chatFileInp" style="display:none" /><button class="chat-attach-btn" data-act="pick_attach">📎</button>' +
+        '<textarea id="chatInput" class="chat-input" rows="1" placeholder="اكتب ردك أو أرفق ملفاً للمستخدم..."></textarea><button id="chatSendBtn" class="chat-send-btn" data-act="sup_a_send">إرسال ➤</button></div></div>';
+
+      bindChatFilePicker();
+      callServer({ app_action: "sup_adm_chat", targetUid: SUP_ADM_ACTIVE_UID }).then(r => {
+        if (!r || !r.ok) return toast("⚠️ تعذّر فتح المحادثة");
+        SUP_ADM_ACTIVE_USER = r.user; SUP_ADM_REV = r.rev; SUP_ADM_MSGS = r.msgs || []; renderAdminChatHeader(); renderAdminChatBubbles(true);
+      }).catch(() => {});
+
+      stopSupportPoll();
+      SUP_POLL_TIMER = setInterval(() => {
+        if (CUR_MODE !== "support" || !STATE.isAdmin || !SUP_ADM_ACTIVE_UID) return;
+        callServer({ app_action: "sup_adm_poll", targetUid: SUP_ADM_ACTIVE_UID, rev: SUP_ADM_REV }).then(r => {
+          if (r && r.ok && !r.unchanged) { SUP_ADM_ACTIVE_USER = r.user || SUP_ADM_ACTIVE_USER; SUP_ADM_REV = r.rev; SUP_ADM_MSGS = r.msgs || []; renderAdminChatHeader(); renderAdminChatBubbles(true); }
+        }).catch(() => {});
+      }, 3000);
+    }
+
+    function renderAdminChatHeader() {
+      const u = SUP_ADM_ACTIVE_USER; if (!u) return;
+      const nm = document.getElementById("admChatName"), sb = document.getElementById("admChatSub"), inf = document.getElementById("admChatInfo");
+      if (nm) nm.textContent = u.name || ("مستخدم #" + u.id);
+      if (sb) sb.innerHTML = u.online ? '<span class="online-dot"></span> فاتح الدعم الآن' : ('آخر تواجد: ' + ex(u.last_seen || "-"));
+      if (inf) inf.innerHTML = '<span>🆔 <b>ID:</b> ' + ex(u.id) + '</span> • <span style="direction:ltr;display:inline-block">' + (u.un ? "@" + ex(u.un) : "بدون معرف") + '</span> • <span>📅 انضم: ' + ex(u.joined || "-") + '</span>' +
+        (u.blocked_at ? ' • <span style="color:#fca5a5">🚫 حظر: ' + ex(u.blocked_at) + '</span>' : '') + (u.returned_at ? ' • <span style="color:#6ee7b7">🔄 عاد: ' + ex(u.returned_at) + '</span>' : '') + (u.banned ? ' • <b style="color:#fca5a5">🔒 محظور</b>' : '');
+    }
+
+    function renderAdminChatBubbles(scrollEnd) {
+      const box = document.getElementById("chatMsgsBox"); if (!box) return;
+      if (!SUP_ADM_MSGS.length) { box.innerHTML = '<div class="empty">لا توجد رسائل بعد — اكتب أول رسالة أو أرفق ملفاً.</div>'; return; }
+      box.innerHTML = SUP_ADM_MSGS.map(m => {
+        const isAdm = m.from === "admin";
+        const hidNote = m.hidden_for_user ? '<div style="font-family:var(--font-ui);font-size:11px;color:#fca5a5;margin-top:2px">👁️‍🗨️ محذوفة من عند المستخدم (محفوظة عندك)</div>' : '';
+        const acts = m.pending ? '' : '<div class="msg-adm-acts">' + (!m.hidden_for_user ? '<button class="msg-mini-btn" data-act="sup_a_hid" data-id="' + m.id + '">إخفاء عن المستخدم</button>' : '') + '<button class="msg-mini-btn" data-act="sup_a_del" data-id="' + m.id + '">حذف نهائي</button></div>';
+        return '<div class="msg-row ' + (isAdm ? "mine" : "other") + '"><div class="msg-bubble ' + (m.hidden_for_user ? "hidden-u" : "") + '">' +
+          '<div class="msg-sender">' + (isAdm ? "👑 الإدارة (أنت)" : ("👤 " + ex((SUP_ADM_ACTIVE_USER && SUP_ADM_ACTIVE_USER.name) || "المستخدم"))) + '</div>' +
+          buildBubbleMediaHtml(m, SUP_ADM_ACTIVE_UID) + (m.text ? '<div>' + linkify(m.text) + '</div>' : '') + hidNote +
+          '<div class="msg-meta"><span>' + ex(m.d || "") + ' ' + ex(m.t || "") + '</span>' + acts + '</div></div></div>';
+      }).join("");
+      if (scrollEnd) scrollChatBottom();
+    }
+
+    function sendAdminSupportMsg() {
+      const inp = document.getElementById("chatInput"), sBtn = document.getElementById("chatSendBtn"); if (!inp || !SUP_ADM_ACTIVE_UID) return;
+      const txt = inp.value.trim(), staged = STAGED_FILE; if (!txt && !staged) return;
+      haptic(); inp.value = ""; clearStagedFile(); if (sBtn) sBtn.disabled = true;
+
+      const d = new Date(), hh = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+      SUP_ADM_MSGS.push({ id: "tmp_" + Date.now(), from: "admin", text: txt, media: staged ? { type: staged.isImage ? "photo" : "document", file_name: staged.file.name, thumb: staged.thumb || "" } : null, d: "", t: hh, pending: true });
+      renderAdminChatBubbles(true);
+
+      prepareStagedMedia(staged).then(mp => callServer({ app_action: "sup_adm_send", targetUid: SUP_ADM_ACTIVE_UID, text: txt, media: mp })).then(r => {
+        if (sBtn) sBtn.disabled = false;
+        if (r && r.ok) { SUP_ADM_REV = r.rev; SUP_ADM_MSGS = r.msgs || []; renderAdminChatBubbles(true); }
+        else toast("⚠️ " + ((r && r.error) || "تعذّر الإرسال"));
+      }).catch(() => { if (sBtn) sBtn.disabled = false; toast("⚠️ تعذّر الإرسال"); });
+    }
+
     function switchMode(m) {
-      haptic();
-      document.getElementById("navMain").classList.toggle("active", m === "main");
-      document.getElementById("navAdmin").classList.toggle("active", m === "admin");
-      document.getElementById("viewMain").style.display = m === "main" ? "block" : "none";
-      document.getElementById("viewAdmin").style.display = m === "admin" ? "block" : "none";
+      if (m === "admin" && !STATE.isAdmin) return;
+      haptic(); CUR_MODE = m; stopSupportPoll();
+      ["main", "support", "admin"].forEach(k => {
+        const cap = k[0].toUpperCase() + k.slice(1);
+        document.getElementById("nav" + cap).classList.toggle("active", k === m);
+        document.getElementById("view" + cap).style.display = k === m ? "block" : "none";
+      });
       if (m === "admin") loadAdminDashboard();
+      if (m === "support") { if (STATE.isAdmin) loadAdminSupportInbox(); else renderUserSupportShell(); }
     }
 
     function switchAdminTab(t) {
       haptic();
       ["dash", "btns", "imgs"].forEach(k => {
-        document.getElementById("st" + k[0].toUpperCase() + k.slice(1)).classList.toggle("active", k === t);
-        document.getElementById("adm" + k[0].toUpperCase() + k.slice(1)).style.display = k === t ? "block" : "none";
+        const cap = k[0].toUpperCase() + k.slice(1);
+        document.getElementById("st" + cap).classList.toggle("active", k === t);
+        document.getElementById("adm" + cap).style.display = k === t ? "block" : "none";
       });
       if (t === "dash") loadAdminDashboard();
       if (t === "btns") renderAdminButtons();
@@ -881,424 +794,226 @@
 
     function openUserProfile(un, id) {
       const link = un ? ("https://t.me/" + un) : ("tg://user?id=" + id);
-      if (tg && tg.openTelegramLink && un) tg.openTelegramLink(link);
-      else window.open(link, "_blank");
+      if (tg && tg.openTelegramLink && un) tg.openTelegramLink(link); else window.open(link, "_blank");
     }
 
-    async function loadAdminDashboard() {
+    function loadAdminDashboard() {
       const wrap = document.getElementById("admDash");
-      wrap.innerHTML = '<div class="card-box" style="text-align:center;color:#b9ac8f">⏳ جاري تحديث الداشبورد...</div>';
-      try {
-        const r = await apiPost({ app_action: "admin_stats" });
-        if (!r.ok) {
-          wrap.innerHTML = '<div class="card-box">⛔ الإدارة محصورة على @tessla22 فقط.</div>';
-          return;
-        }
-        DASH_DATA = r.dash;
-        renderDashboardView();
-      } catch (e) {
-        wrap.innerHTML = '<div class="card-box">⚠️ تعذّر تحميل الإحصائيات.</div>';
-      }
+      wrap.innerHTML = '<div class="card-box" style="text-align:center;color:#c2b495">⏳ جاري تحديث الداشبورد...</div>';
+      callServer({ app_action: "admin_stats" }).then(r => {
+        if (!r || !r.ok) { wrap.innerHTML = '<div class="card-box">⛔ الإدارة محصورة حصراً للمعرف @TESSLA2.</div>'; return; }
+        DASH_DATA = r.dash; renderDashboardView();
+      }).catch(() => { wrap.innerHTML = '<div class="card-box">⚠️ تعذّر تحميل الإحصائيات.</div>'; });
     }
 
-    function setUserFilter(f) {
-      USER_FILTER = f;
-      renderDashboardView();
-    }
+    const actIcon = t => ({ start: "🚀", read: "👁️ قراءة:", download: "⬇️ تحميل:", support: "💬 دعم:", blocked: "🚫", returned: "🔄" }[t] || "📂 قسم:");
 
     function renderDashboardView() {
-      const d = DASH_DATA;
-      if (!d) return;
+      const d = DASH_DATA; if (!d) return;
       const maxC = d.top_buttons.length ? Math.max(1, d.top_buttons[0].clicks) : 1;
+      const bars = d.top_buttons.slice(0, 10).map(b =>
+        '<div class="bar-row"><div class="bar-top"><span>' + ex(b.label) + '</span><span style="color:#fae596">' + b.clicks + ' (اليوم: ' + b.today_clicks + ')</span></div>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + Math.round((b.clicks / maxC) * 100) + '%"></div></div></div>'
+      ).join("") || '<div style="font-size:13px;color:#c2b495">لا توجد نقرات بعد.</div>';
 
-      const bars = d.top_buttons.slice(0, 10).map(b => `
-        <div class="bar-row">
-          <div class="bar-top"><span>${ex(b.label)}</span><span style="color:#f9e28c">${b.clicks} (اليوم: ${b.today_clicks})</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:${Math.round((b.clicks / maxC) * 100)}%"></div></div>
-        </div>`).join("") || '<div style="font-size:12px;color:#b9ac8f">لا توجد نقرات مسجلة بعد.</div>';
+      const list = d.users.filter(u => USER_FILTER === "banned" ? u.banned : USER_FILTER === "blocked" ? u.blocked : USER_FILTER === "active" ? (!u.blocked && !u.banned) : true);
+      const usersHtml = list.map((u, i) => {
+        const hist = (u.history || []).map(h => '• [' + ex(h.d) + ' ' + ex(h.t) + '] ' + actIcon(h.type) + ' <b>' + ex(h.label) + '</b>').join("<br>") || "لا يوجد سجل.";
+        const statusRows = (u.status_log || []).map(s => '<div style="color:' + (s.type === "blocked" ? "#fca5a5" : s.type === "returned" ? "#6ee7b7" : "#fae596") + '">' + (s.type === "blocked" ? "🚫" : s.type === "returned" ? "🔄" : "✨") + ' [' + ex(s.d) + ' ' + ex(s.t) + '] ' + ex(s.text) + '</div>').join("");
+        const counts = Object.entries(u.btn_counts || {}).sort((a, b) => b[1] - a[1]).map(p => ex(p[0]) + ": " + p[1]).join(" • ");
+        const badge = u.banned ? '<div class="u-badge ban">🔒 محظور إدارياً</div>' : u.blocked ? '<div class="u-badge blk">🚫 حظر/حذف البوت</div>' : '<div class="u-badge">✅ نشط • اليوم: ' + u.today_clicks + '</div>';
+        const banBtn = u.is_admin ? '' : (u.banned ? '<button class="mbtn ok" data-act="toggle_ban" data-id="' + u.id + '" data-val="0">✅ فك الحظر</button>' : '<button class="mbtn del" data-act="toggle_ban" data-id="' + u.id + '" data-val="1">🚫 حظر</button>');
+        const msgBtn = u.is_admin ? '' : '<button class="mbtn" data-act="adm_msg_user" data-id="' + u.id + '">💬 مراسلة</button>';
 
-      const filteredUsers = d.users.filter(u => {
-        if (USER_FILTER === "blocked") return u.blocked;
-        if (USER_FILTER === "active") return !u.blocked;
-        return true;
-      });
+        return '<div class="u-row ' + (u.banned ? "is-banned" : u.blocked ? "is-blocked" : "") + '">' +
+          '<div class="u-head"><div><a class="u-link" data-act="open_prof" data-un="' + ex(u.un) + '" data-id="' + u.id + '">' + ex(u.name) + '</a><br><span class="u-un">' + (u.un ? "@" + ex(u.un) : "ID: " + u.id) + '</span></div><div>' + badge + '</div></div>' +
+          '<div class="mini-btns"><button class="mbtn" data-act="open_prof" data-un="' + ex(u.un) + '" data-id="' + u.id + '">👤 الحساب</button>' + msgBtn +
+          '<button class="mbtn" data-act="toggle_det" data-val="ud_' + i + '">📋 التفاصيل (' + (u.history || []).length + ')</button>' + banBtn + '</div>' +
+          '<div id="ud_' + i + '" class="u-det"><div class="status-box"><div>📅 <b>أول استخدام:</b> ' + ex(u.joined || "-") + '</div><div>🕒 <b>آخر استخدام:</b> ' + ex(u.last_seen || "-") + '</div>' +
+          (u.blocked_at ? '<div style="color:#fca5a5">🚫 <b>حظر/حذف البوت:</b> ' + ex(u.blocked_at) + (u.block_count > 1 ? ' (' + u.block_count + ' مرات)' : '') + '</div>' : '') +
+          (u.returned_at ? '<div style="color:#6ee7b7">🔄 <b>إرجاع البوت والعودة:</b> ' + ex(u.returned_at) + (u.return_count > 1 ? ' (' + u.return_count + ' مرات)' : '') + '</div>' : '') +
+          (u.banned ? '<div style="color:#fca5a5">🔒 <b>حظر إداري:</b> ' + ex(u.banned_at) + '</div>' : '') +
+          (statusRows ? '<div style="margin-top:5px;border-top:1px dashed rgba(212,175,55,0.22);padding-top:4px"><b style="color:#fae596">⏱️ سجل الحظر والإرجاع:</b>' + statusRows + '</div>' : '') +
+          '</div><div>📊 <b>الأقسام:</b> ' + u.total_clicks + ' • <b>قراءة:</b> ' + u.reads + ' • <b>تحميل:</b> ' + u.downloads + '</div>' +
+          (counts ? '<div style="margin-top:4px">📌 <b>الأقسام:</b> ' + counts + '</div>' : '') +
+          '<div style="margin-top:6px;color:#fae596"><b>📝 سجل نشاط المستخدم:</b></div><div class="hist-box">' + hist + '</div></div></div>';
+      }).join("") || '<div style="font-size:13.5px;color:#c2b495;text-align:center;padding:10px">لا يوجد مستخدمون.</div>';
 
-      const usersHtml = filteredUsers.map((u, i) => {
-        const hist = (u.history || []).map(h => `• [${h.d} ${h.t}] <b>${ex(h.label)}</b>`).join("<br>") || "لا يوجد سجل.";
-        const counts = Object.entries(u.btn_counts || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${ex(k)}: ${v}`).join(" • ");
-        return `<div class="u-row ${u.blocked ? "is-blocked" : ""}">
-          <div class="u-head">
-            <div>
-              <a class="u-link" onclick="openUserProfile('${ex(u.un)}','${u.id}')">${ex(u.name)}</a><br>
-              <span class="u-un">${u.un ? "@" + ex(u.un) : "ID: " + u.id}</span>
-            </div>
-            <div style="text-align:left">
-              ${u.blocked ? `<div class="u-badge blk">🚫 حظر البوت</div>` : `<div class="u-badge">✅ نشط • اليوم: ${u.today_clicks}</div>`}
-            </div>
-          </div>
-          <div class="mini-btns">
-            <button class="mbtn" onclick="openUserProfile('${ex(u.un)}','${u.id}')">👤 فتح الحساب</button>
-            <button class="mbtn" onclick="document.getElementById('ud_${i}').classList.toggle('show')">📋 التفاصيل (${u.total_clicks})</button>
-          </div>
-          <div id="ud_${i}" class="u-det">
-            ${u.blocked ? `<div style="color:#fca5a5"><b>⚠️ تاريخ حظر البوت:</b> ${ex(u.blocked_at || u.last_seen)}</div>` : ""}
-            <div>🕒 <b>آخر تواجد:</b> ${ex(u.last_seen)}</div>
-            ${counts ? `<div style="margin-top:4px">📌 <b>الأقسام:</b> ${counts}</div>` : ""}
-            <div style="margin-top:5px;color:#f9e28c"><b>سجل الدخول الأخير:</b></div>
-            <div>${hist}</div>
-          </div>
-        </div>`;
-      }).join("") || '<div style="font-size:12px;color:#b9ac8f;text-align:center;padding:12px 0">لا يوجد مستخدمون ضمن هذا الفلتر.</div>';
-
-      document.getElementById("admDash").innerHTML = `
-        <div class="kpi-grid">
-          <div class="kpi"><div class="kpi-num">${d.total_users}</div><div class="kpi-lbl">إجمالي المستخدمين</div></div>
-          <div class="kpi danger-kpi"><div class="kpi-num">${d.blocked_users}</div><div class="kpi-lbl">🚫 حظروا البوت</div></div>
-          <div class="kpi"><div class="kpi-num">${d.today_clicks}</div><div class="kpi-lbl">استخدام اليوم</div></div>
-          <div class="kpi"><div class="kpi-num">${d.total_clicks}</div><div class="kpi-lbl">إجمالي النقرات</div></div>
-        </div>
-        <div class="card-box"><div class="sec-h">🏆 الأقسام الأكثر استخداماً</div>${bars}</div>
-        <div class="card-box">
-          <div class="sec-h">👥 المستخدمون وإحصائية الحظر (${filteredUsers.length})</div>
-          <div class="filter-row">
-            <button class="f-pill ${USER_FILTER === "all" ? "active" : ""}" onclick="setUserFilter('all')">الكل (${d.total_users})</button>
-            <button class="f-pill ${USER_FILTER === "blocked" ? "active" : ""}" onclick="setUserFilter('blocked')">🚫 المحظورين (${d.blocked_users})</button>
-            <button class="f-pill ${USER_FILTER === "active" ? "active" : ""}" onclick="setUserFilter('active')">✅ النشطين (${d.active_users})</button>
-          </div>
-          ${usersHtml}
-        </div>
-      `;
+      document.getElementById("admDash").innerHTML =
+        '<div class="kpi-grid"><div class="kpi"><div class="kpi-num">' + d.total_users + '</div><div class="kpi-lbl">إجمالي المستخدمين</div></div>' +
+        '<div class="kpi danger-kpi"><div class="kpi-num">' + d.banned_users + '</div><div class="kpi-lbl">🔒 محظورون إدارياً</div></div>' +
+        '<div class="kpi danger-kpi"><div class="kpi-num">' + d.blocked_users + '</div><div class="kpi-lbl">🚫 حظروا/حذفوا البوت</div></div>' +
+        '<div class="kpi"><div class="kpi-num">' + d.today_clicks + '</div><div class="kpi-lbl">نشاط اليوم</div></div></div>' +
+        '<div class="card-box"><div class="sec-h">🏆 الأقسام الأكثر استخداماً</div>' + bars + '</div>' +
+        '<div class="card-box"><div class="sec-h">👥 المستخدمون وسجل الحظر والعودة (' + list.length + ')</div>' +
+        '<div class="filter-row">' +
+        '<button class="f-pill ' + (USER_FILTER === "all" ? "active" : "") + '" data-act="ufilter" data-val="all">الكل (' + d.total_users + ')</button>' +
+        '<button class="f-pill ' + (USER_FILTER === "banned" ? "active" : "") + '" data-act="ufilter" data-val="banned">🔒 محظور إدارياً (' + d.banned_users + ')</button>' +
+        '<button class="f-pill ' + (USER_FILTER === "blocked" ? "active" : "") + '" data-act="ufilter" data-val="blocked">🚫 حظر البوت (' + d.blocked_users + ')</button>' +
+        '<button class="f-pill ' + (USER_FILTER === "active" ? "active" : "") + '" data-act="ufilter" data-val="active">✅ النشطين (' + d.active_users + ')</button></div>' + usersHtml + '</div>';
     }
 
     function renderAdminButtons() {
-      const node = STATE.nodes[ADM_NODE] || STATE.nodes.root;
-      ADM_NODE = node.id;
+      const node = STATE.nodes[ADM_NODE] || STATE.nodes.root; ADM_NODE = node.id;
+      const colorOpts = COLOR_OPTIONS.map(c => '<option value="' + c.id + '">' + c.label + '</option>').join("");
+      const navTop = node.id !== "root" ? '<div class="card-box" style="display:flex;justify-content:space-between;align-items:center"><b style="color:#fae596;font-size:17px">📂 داخل: ' + ex(node.label) + '</b><div style="display:flex;gap:5px"><button class="mbtn" data-act="adm_go" data-id="' + ex(node.parent || "root") + '">🔙 للأعلى</button><button class="mbtn" data-act="adm_go" data-id="root">🏠</button></div></div>' : '';
 
-      const colorOpts = COLOR_OPTIONS.map(c => `<option value="${c.id}">${c.label}</option>`).join("");
-      const navTop = node.id !== "root"
-        ? `<div class="card-box" style="display:flex;justify-content:space-between;align-items:center">
-            <b style="color:#f9e28c">📂 أنت داخل: ${ex(node.label)}</b>
-            <div style="display:flex;gap:5px">
-              <button class="mbtn" onclick="ADM_NODE='${node.parent || "root"}';renderAdminButtons()">🔙 للأعلى</button>
-              <button class="mbtn" onclick="ADM_NODE='root';renderAdminButtons()">🏠</button>
-            </div>
-          </div>` : "";
+      const kids = []; (node.rows || []).forEach(r => r.forEach(cid => { if (STATE.nodes[cid]) kids.push(STATE.nodes[cid]); }));
+      const kidsHtml = kids.map(b =>
+        '<div class="card-box"><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><b style="color:#fff6dc;font-size:18px">' + ex(b.label) + '</b>' +
+        '<span class="u-badge">أزرار: ' + (b.rows || []).reduce((a, r) => a + r.length, 0) + ' | ملفات: ' + (b.items || []).length + '</span></div>' +
+        '<div class="mini-btns"><button class="mbtn" data-act="adm_go" data-id="' + ex(b.id) + '">📂 دخول (أزرار وملفات)</button>' +
+        '<button class="mbtn" data-act="adm_mv" data-id="' + ex(b.id) + '" data-val="-1">⬆️</button><button class="mbtn" data-act="adm_mv" data-id="' + ex(b.id) + '" data-val="1">⬇️</button>' +
+        '<button class="mbtn" data-act="adm_edit" data-id="' + ex(b.id) + '">✏️ تعديل</button><button class="mbtn del" data-act="adm_del" data-id="' + ex(b.id) + '">🗑️ حذف</button></div></div>'
+      ).join("");
 
-      const kidsList = [];
-      (node.rows || []).forEach(r => r.forEach(cid => { if (STATE.nodes[cid]) kidsList.push(STATE.nodes[cid]); }));
-
-      const kidsHtml = kidsList.map(b => `
-        <div class="card-box">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-            <b style="color:#fff6dc">${ex(b.label)}</b>
-            <span class="u-badge">فرعي: ${(b.rows || []).reduce((a, r) => a + r.length, 0)} | ملفات: ${(b.items || []).length}</span>
-          </div>
-          <div class="mini-btns">
-            <button class="mbtn" onclick="ADM_NODE='${b.id}';renderAdminButtons()">📂 دخول (ملف داخل ملف)</button>
-            <button class="mbtn" onclick="admMove('${b.id}',-1)">⬆️</button>
-            <button class="mbtn" onclick="admMove('${b.id}',1)">⬇️</button>
-            <button class="mbtn" onclick="openEditModal('${b.id}')">✏️ تعديل واللون</button>
-            <button class="mbtn del" onclick="openDeleteModal('${b.id}')">🗑️ حذف</button>
-          </div>
-        </div>`).join("");
-
-      const itemsBlock = node.id !== "root" ? `
-        <div class="card-box">
-          <div class="sec-h">📎 ملفات ومحتويات (${ex(node.label)}) — تُرسل فوراً عند الضغط</div>
-          ${(node.items || []).map((it, idx) => `
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:5px;font-size:12px">
-              <span>${it.type === "text" ? "📝 " + ex(it.text.slice(0, 38)) : "📎 " + ex(it.file_name || it.type)}</span>
-              <button class="mbtn del" onclick="admDelItem('${node.id}',${idx})">حذف</button>
-            </div>`).join("") || '<div style="font-size:12px;color:#b9ac8f;margin-bottom:8px">لا توجد ملفات داخل هذا القسم بعد.</div>'}
-          <textarea id="txtCur" placeholder="أضف شرحاً أو رابطاً أو ملاحظة..."></textarea>
-          <button class="btn" style="padding:8px;font-size:12px" onclick="admAddText('${node.id}',this)">➕ حفظ النص</button>
-          <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
-            <input type="file" id="flCur" class="inp" style="padding:6px;margin:0;font-size:11px" />
-            <button class="file-send" onclick="admUploadFile('${node.id}',this)">📤 رفع ملف/صورة</button>
-          </div>
-        </div>` : "";
-
-      document.getElementById("admBtns").innerHTML = `
-        ${navTop}
-        <div class="card-box">
-          <div class="sec-h">➕ إضافة قسم / مجلد داخل (${ex(node.label)})</div>
-          <input id="newBtnName" class="inp" placeholder="اسم القسم (مثال: المرحلة الرابعة)" />
-          <input id="newBtnDesc" class="inp" placeholder="وصف مختصر يُرسل للمحادثة عند الضغط (اختياري)" />
-          <select id="newBtnCol">${colorOpts}</select>
-          <select id="newBtnW">
-            <option value="full">عرض كامل (صف مستقل)</option>
-            <option value="pair">بجانب الزر السابق (زرين في صف واحد)</option>
-          </select>
-          <button class="btn" onclick="admCreateBtn(this)">➕ إضافة الآن</button>
-        </div>
-        ${itemsBlock}
-        ${kidsHtml || '<div class="card-box" style="text-align:center;color:#b9ac8f">لا توجد أقسام فرعية هنا بعد.</div>'}
-      `;
-    }
-
-    function openEditModal(id) {
-      const b = STATE.nodes[id];
-      if (!b) return;
-      const opts = COLOR_OPTIONS.map(c => `<option value="${c.id}" ${b.color === c.id ? "selected" : ""}>${c.label}</option>`).join("");
-      openModal("✏️ تعديل القسم واللون", `
-        <input id="edLbl" class="inp" value="${ex(b.label)}" placeholder="اسم القسم" />
-        <textarea id="edDesc" placeholder="الوصف (اختياري)">${ex(b.desc || "")}</textarea>
-        <select id="edCol">${opts}</select>
-        <div class="modal-actions">
-          <button class="btn" style="margin:0" onclick="saveEditModal('${id}',this)">💾 حفظ التعديلات</button>
-          <button class="btn-out" style="margin:0;width:auto;padding:0 16px" onclick="closeModal()">إلغاء</button>
-        </div>
-      `);
-    }
-
-    async function saveEditModal(id, btn) {
-      const label = document.getElementById("edLbl").value.trim();
-      const desc = document.getElementById("edDesc").value.trim();
-      const color = document.getElementById("edCol").value;
-      if (!label) return toast("الاسم لا يمكن أن يكون فارغاً");
-      btn.disabled = true;
-      try {
-        applyState(await apiPost({ app_action: "update_btn", btnId: id, label, desc, color }));
-        closeModal();
-        toast("✅ تم حفظ التعديلات");
-      } catch (e) { toast("⚠️ تعذّر الحفظ"); }
-      btn.disabled = false;
-    }
-
-    function openDeleteModal(id) {
-      const b = STATE.nodes[id];
-      if (!b) return;
-      openModal("🗑️ تأكيد الحذف النهائي", `
-        <div style="font-size:13px;color:#e5dcc6;line-height:1.7">هل تريد حذف قسم <b>${ex(b.label)}</b> وجميع مجلداته الفرعية وملفاته نهائياً؟</div>
-        <div class="modal-actions">
-          <button class="btn btn-danger" style="margin:0" onclick="confirmDeleteBtn('${id}',this)">🗑️ نعم، احذف نهائياً</button>
-          <button class="btn-out" style="margin:0;width:auto;padding:0 16px" onclick="closeModal()">إلغاء</button>
-        </div>
-      `);
-    }
-
-    async function confirmDeleteBtn(id, btn) {
-      btn.disabled = true;
-      try {
-        applyState(await apiPost({ app_action: "del_btn", btnId: id }));
-        closeModal();
-        toast("🗑️ تم الحذف بنجاح");
-      } catch (e) { toast("⚠️ تعذّر الحذف"); }
-      btn.disabled = false;
-    }
-
-    function applyState(r, preserveAdmin) {
-      if (!r || !r.ok) return;
-      const admFlag = preserveAdmin ? STATE.isAdmin : !!r.isAdmin;
-      STATE = {
-        isAdmin: admFlag,
-        logo: r.logo || "",
-        banners: r.banners || [],
-        nodes: r.nodes || STATE.nodes
-      };
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify(STATE)); } catch (e) {}
-      applyLogo();
-      openNode(STATE.nodes[CUR_NODE] ? CUR_NODE : "root", false);
-      if (STATE.isAdmin) {
-        document.getElementById("adminBar").classList.add("show");
-        document.getElementById("admQuickBtn").classList.add("show");
-        if (document.getElementById("admBtns").style.display === "block") renderAdminButtons();
-        if (document.getElementById("admImgs").style.display === "block") renderAdminMedia();
+      let itemsBlock = "";
+      if (node.id !== "root") {
+        const listItems = (node.items || []).map((it, idx) =>
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 9px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:6px;font-family:var(--font-ui);font-size:13px">' +
+          '<span>' + (it.type === "text" ? "📝 " + ex(it.text.slice(0, 38)) : "📎 " + ex(it.file_name || it.type)) + '</span>' +
+          '<button class="mbtn del" data-act="adm_del_item" data-id="' + ex(node.id) + '" data-idx="' + idx + '">حذف</button></div>'
+        ).join("") || '<div style="font-family:var(--font-ui);font-size:13px;color:#c2b495;margin-bottom:8px">لا توجد ملفات هنا بعد.</div>';
+        itemsBlock = '<div class="card-box"><div class="sec-h">📎 ملفات ومحتويات (' + ex(node.label) + ')</div>' + listItems +
+          '<textarea id="txtCur" placeholder="أضف شرحاً أو رابطاً أو ملاحظة..."></textarea>' +
+          '<button class="btn" style="padding:8px" data-act="adm_add_txt" data-id="' + ex(node.id) + '">➕ حفظ النص</button>' +
+          '<div style="margin-top:9px;display:flex;gap:6px;align-items:center"><input type="file" id="flCur" class="inp" style="padding:6px;margin:0;font-size:13px" />' +
+          '<button class="fbtn-dl" style="flex:0 0 auto;padding:9px 14px" data-act="adm_up_file" data-id="' + ex(node.id) + '">📤 رفع ملف</button></div></div>';
       }
-    }
 
-    async function admCreateBtn(btn) {
-      const label = document.getElementById("newBtnName").value.trim();
-      const desc = document.getElementById("newBtnDesc").value.trim();
-      const color = document.getElementById("newBtnCol").value;
-      const widthMode = document.getElementById("newBtnW").value;
-      if (!label) return toast("اكتب اسم القسم أولاً");
-      btn.disabled = true;
-      try {
-        applyState(await apiPost({ app_action: "add_btn", parentId: ADM_NODE, label, desc, color, widthMode }));
-        toast("✅ تمت الإضافة بنجاح");
-      } catch (e) { toast("⚠️ تعذّرت الإضافة"); }
-      btn.disabled = false;
-    }
-
-    async function admMove(id, dir) {
-      try {
-        applyState(await apiPost({ app_action: "move_btn", btnId: id, dir }));
-      } catch (e) { toast("⚠️ تعذّر تعديل الترتيب"); }
-    }
-
-    async function admAddText(id, btn) {
-      const t = document.getElementById("txtCur").value.trim();
-      if (!t) return toast("اكتب النص أولاً");
-      btn.disabled = true;
-      try {
-        applyState(await apiPost({ app_action: "add_text", btnId: id, text: t }));
-        toast("✅ تم حفظ النص");
-      } catch (e) { toast("⚠️ تعذّر الحفظ"); }
-      btn.disabled = false;
-    }
-
-    async function admDelItem(id, idx) {
-      try {
-        applyState(await apiPost({ app_action: "del_item", btnId: id, idx }));
-        toast("🗑️ تم حذف العنصر");
-      } catch (e) { toast("⚠️ تعذّر الحذف"); }
-    }
-
-    async function admUploadFile(id, btn) {
-      const inp = document.getElementById("flCur");
-      if (!inp.files || !inp.files[0]) return toast("اختر ملفاً أو صورة أولاً");
-      const file = inp.files[0];
-      if (file.size > 15 * 1024 * 1024) return toast("⚠️ الحد الأقصى للرفع المباشر 15MB");
-      btn.disabled = true;
-      btn.textContent = "⏳ رفع...";
-      const reader = new FileReader();
-      reader.onload = async () => {
-        try {
-          const r = await apiPost({
-            app_action: "upload_item",
-            btnId: id,
-            fileName: file.name,
-            mimeType: file.type || "application/octet-stream",
-            base64: reader.result
-          });
-          if (r.ok) {
-            applyState(r);
-            toast("✅ تم رفع الملف وحفظه بنجاح");
-          } else {
-            toast("⚠️ " + (r.error || "فشل الرفع"));
-          }
-        } catch (e) {
-          toast("⚠️ تعذّر الرفع");
-        }
-        btn.disabled = false;
-        btn.textContent = "📤 رفع ملف/صورة";
-      };
-      reader.readAsDataURL(file);
+      document.getElementById("admBtns").innerHTML = navTop +
+        '<div class="card-box"><div class="sec-h">➕ إضافة زر جديد داخل (' + ex(node.label) + ')</div>' +
+        '<input id="newBtnName" class="inp" placeholder="اسم الزر" /><input id="newBtnDesc" class="inp" placeholder="تفاصيل الزر (اختياري)" />' +
+        '<select id="newBtnCol">' + colorOpts + '</select><select id="newBtnW"><option value="full">عرض كامل</option><option value="pair">زرين بصف واحد</option></select>' +
+        '<button class="btn" data-act="adm_create">➕ إضافة الزر الآن</button></div>' + itemsBlock + (kidsHtml || '<div class="card-box" style="text-align:center;color:#c2b495">لا توجد أزرار فرعية هنا.</div>');
     }
 
     function renderAdminMedia() {
-      const b1 = STATE.banners[0] || "";
-      const b2 = STATE.banners[1] || "";
-      document.getElementById("admImgs").innerHTML = `
-        <div class="card-box">
-          <div class="sec-h">🏛️ شعار القسم الذهبي (اختياري للاستبدال بصورة)</div>
-          <input type="file" accept="image/*" id="logoInp" class="inp" style="padding:7px" />
-          <div style="display:flex;gap:7px;margin-top:8px">
-            <button class="btn" style="margin:0" onclick="uploadLogo(this)">📤 حفظ الشعار</button>
-            ${STATE.logo ? `<button class="btn btn-danger" style="margin:0;width:auto;padding:0 14px" onclick="clearLogo()">استعادة الذهبي</button>` : ""}
-          </div>
-        </div>
-      ` + [1, 2].map((slot, i) => {
+      const b1 = STATE.banners[0] || "", b2 = STATE.banners[1] || "";
+      let h = '<div class="card-box"><div class="sec-h">🏛️ شعار القسم (اختياري للاستبدال بصورة)</div><input type="file" accept="image/*" id="logoInp" class="inp" style="padding:7px" />' +
+        '<div style="display:flex;gap:7px;margin-top:8px"><button class="btn" style="margin:0" data-act="up_logo">📤 حفظ الشعار</button>' +
+        (STATE.logo ? '<button class="btn btn-danger" style="margin:0;width:auto;padding:0 14px" data-act="clr_logo">استعادة الذهبي</button>' : '') + '</div></div>';
+      [1, 2].forEach((slot, i) => {
         const src = i === 0 ? b1 : b2;
-        return `<div class="card-box">
-          <div class="sec-h">🖼️ بنر الواجهة رقم ${slot}</div>
-          ${src ? `<img src="${src}" style="width:100%;height:130px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1px solid var(--gold-border)" />` : ""}
-          <input type="file" accept="image/*" id="imgSlot_${slot}" class="inp" style="padding:7px" />
-          <div style="display:flex;gap:7px;margin-top:8px">
-            <button class="btn" style="margin:0" onclick="uploadBanner(${slot},this)">📤 حفظ الصورة ${slot}</button>
-            ${src ? `<button class="btn btn-danger" style="margin:0;width:auto;padding:0 14px" onclick="clearBanner(${slot})">حذف</button>` : ""}
-          </div>
-        </div>`;
-      }).join("");
-    }
-
-    function compressImage(file, maxW, quality) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          const scale = Math.min(1, maxW / img.width);
-          const c = document.createElement("canvas");
-          c.width = Math.round(img.width * scale);
-          c.height = Math.round(img.height * scale);
-          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-          resolve(c.toDataURL("image/jpeg", quality));
-        };
-        img.onerror = reject;
-        img.src = URL.createObjectURL(file);
+        h += '<div class="card-box"><div class="sec-h">🖼️ بنر الواجهة رقم ' + slot + '</div>' + (src ? '<img src="' + src + '" style="width:100%;height:130px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1px solid var(--gold-rim)" />' : '') +
+          '<input type="file" accept="image/*" id="imgSlot_' + slot + '" class="inp" style="padding:7px" /><div style="display:flex;gap:7px;margin-top:8px">' +
+          '<button class="btn" style="margin:0" data-act="up_ban" data-val="' + slot + '">📤 حفظ الصورة ' + slot + '</button>' +
+          (src ? '<button class="btn btn-danger" style="margin:0;width:auto;padding:0 14px" data-act="clr_ban" data-val="' + slot + '">حذف</button>' : '') + '</div></div>';
       });
+      document.getElementById("admImgs").innerHTML = h;
     }
 
-    async function uploadLogo(btn) {
-      const inp = document.getElementById("logoInp");
-      if (!inp.files || !inp.files[0]) return toast("اختر صورة للشعار");
-      btn.disabled = true;
-      btn.textContent = "⏳ حفظ...";
-      try {
-        const dataUrl = await compressImage(inp.files[0], 320, 0.84);
-        applyState(await apiPost({ app_action: "save_logo", dataUrl }));
-        toast("✅ تم تحديث الشعار");
-      } catch (e) { toast("⚠️ فشل الحفظ"); }
-      btn.disabled = false;
-      btn.textContent = "📤 حفظ الشعار";
+    function applyState(r) {
+      if (!r) return; if (r.banned) return showBannedView(); if (!r.ok) return;
+      let admFlag = !!r.isAdmin; if (CLIENT_UN && CLIENT_UN !== ADMIN_UN_LOCK) admFlag = false;
+      STATE = { ok: true, isAdmin: admFlag, logo: r.logo || "", banners: r.banners || [], nodes: r.nodes || STATE.nodes };
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ logo: STATE.logo, banners: STATE.banners, nodes: STATE.nodes })); } catch (e) {}
+      applyLogo(); updateUnreadBadge(r.unreadSupport || 0); openNode(STATE.nodes[CUR_NODE] ? CUR_NODE : "root", false);
+      document.getElementById("mainNav").classList.toggle("is-adm", admFlag);
+      document.getElementById("navAdmin").style.display = admFlag ? "flex" : "none";
+      document.getElementById("admQuickBtn").classList.toggle("show", admFlag);
+      if (admFlag) { if (document.getElementById("admBtns").style.display === "block") renderAdminButtons(); if (document.getElementById("admImgs").style.display === "block") renderAdminMedia(); }
     }
 
-    async function clearLogo() {
-      try {
-        applyState(await apiPost({ app_action: "save_logo", dataUrl: "" }));
-        toast("✅ تمت استعادة الشعار الذهبي");
-      } catch (e) { toast("⚠️ تعذّر الاستعادة"); }
-    }
-
-    async function uploadBanner(slot, btn) {
-      const inp = document.getElementById("imgSlot_" + slot);
-      if (!inp.files || !inp.files[0]) return toast("اختر صورة أولاً");
-      btn.disabled = true;
-      btn.textContent = "⏳ حفظ...";
-      try {
-        const dataUrl = await compressImage(inp.files[0], 720, 0.72);
-        applyState(await apiPost({ app_action: "save_banner", slot, dataUrl }));
-        toast("✅ تم حفظ الصورة " + slot);
-      } catch (e) { toast("⚠️ فشل الحفظ"); }
-      btn.disabled = false;
-      btn.textContent = "📤 حفظ الصورة " + slot;
-    }
-
-    async function clearBanner(slot) {
-      try {
-        applyState(await apiPost({ app_action: "save_banner", slot, dataUrl: "" }));
-        toast("🗑️ تم حذف الصورة");
-      } catch (e) { toast("⚠️ تعذّر الحذف"); }
-    }
-
-    // إقلاع فائق السرعة: شعار فوري + كاش محلي + Firebase (إن وُجد) + تحديث حي من السكربت
-    (async function boot() {
-      applyLogo();
-      let hadCache = false;
-      try {
-        const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
-        if (cached && cached.nodes) {
-          hadCache = true;
-          STATE = cached;
-          applyLogo();
-          openNode("root", false);
-          if (STATE.isAdmin) {
-            document.getElementById("adminBar").classList.add("show");
-            document.getElementById("admQuickBtn").classList.add("show");
-          }
-        }
-      } catch (e) {}
-
-      if (!hadCache) {
-        document.getElementById("nodeContent").innerHTML = '<div class="empty">⏳ جاري تحميل الأقسام...</div>';
+    document.addEventListener("keydown", ev => {
+      if (ev.target && ev.target.id === "chatInput" && ev.key === "Enter" && !ev.shiftKey) {
+        ev.preventDefault();
+        if (STATE.isAdmin && SUP_ADM_ACTIVE_UID) sendAdminSupportMsg(); else if (!STATE.isAdmin) sendUserSupportMsg();
       }
+    });
 
-      if (FIREBASE_DB_URL) {
-        fetch(FIREBASE_DB_URL.replace(/\/+$/, "") + "/public_v7.json")
-          .then(r => r.json())
-          .then(fb => { if (fb && fb.nodes) applyState(fb, true); })
-          .catch(() => {});
-      }
+    document.addEventListener("click", ev => {
+      if (ev.target && ev.target.id === "modalBg") return closeModal();
+      const el = ev.target.closest ? ev.target.closest("[data-act]") : null; if (!el) return;
+      const act = el.getAttribute("data-act"), id = el.getAttribute("data-id") || "", val = el.getAttribute("data-val") || "", idx = Number(el.getAttribute("data-idx") || 0);
 
-      try {
-        const res = await fetch(`${GAS_URL}?api=data&uid=${encodeURIComponent(UID)}&un=${encodeURIComponent(UN)}&_t=${Date.now()}`);
-        applyState(await res.json(), false);
-      } catch (e) {
-        if (!hadCache) {
-          document.getElementById("nodeContent").innerHTML = '<div class="empty">⚠️ تأكد من نشر الإصدار الجديد في Apps Script بصلاحية (أي شخص).</div>';
-        }
+      if (act === "open_node") return openNode(id, true);
+      if (act === "back") { const c = STATE.nodes[CUR_NODE]; return openNode(c && c.parent ? c.parent : "root", false); }
+      if (act === "home") return openNode("root", false);
+      if (act === "read_item") return openFileViewer(id, idx);
+      if (act === "dl_item") return downloadToChat(id, idx, el);
+      if (act === "close_viewer") { document.getElementById("viewerBg").classList.remove("show"); document.getElementById("viewerBody").innerHTML = ""; if (ACTIVE_BLOB_URL) { try { URL.revokeObjectURL(ACTIVE_BLOB_URL); } catch (e) {} ACTIVE_BLOB_URL = ""; } return; }
+      if (act === "close_modal") return closeModal();
+      if (act === "mode") return switchMode(val);
+      if (act === "atab") return switchAdminTab(val);
+      if (act === "ufilter") { USER_FILTER = val; return renderDashboardView(); }
+      if (act === "open_prof") return openUserProfile(el.getAttribute("data-un") || "", id);
+      if (act === "toggle_det") { const d = document.getElementById(val); if (d) d.classList.toggle("show"); return; }
+
+      if (act === "pick_attach") { const fi = document.getElementById("chatFileInp"); if (fi) fi.click(); return; }
+      if (act === "clr_attach") return clearStagedFile();
+      if (act === "sup_u_send") return sendUserSupportMsg();
+      if (act === "sup_a_flt") { SUP_ADM_FILTER = val; return renderAdminSupportInbox(); }
+      if (act === "sup_a_open") return openAdminChatRoom(id);
+      if (act === "sup_a_back") return loadAdminSupportInbox();
+      if (act === "sup_a_send") return sendAdminSupportMsg();
+      if (act === "sup_view_media") return openChatMediaViewer(id, el.getAttribute("data-fn") || "مرفق", val);
+      if (act === "sup_dl_media") return downloadChatMedia(id, val, el);
+      if (act === "sup_a_prof") { if (SUP_ADM_ACTIVE_USER) openUserProfile(SUP_ADM_ACTIVE_USER.un || "", SUP_ADM_ACTIVE_USER.id); return; }
+      if (act === "sup_a_clear_menu") return openModal("🗑️ خيارات حذف المحادثة", '<button class="btn" data-act="sup_a_clear_u">🧹 حذف من عند المستخدم فقط (تبقى محفوظة عندك)</button><button class="btn btn-danger" data-act="sup_a_wipe">🗑️ حذف نهائي من الطرفين</button><button class="btn-out" data-act="close_modal">إلغاء</button>');
+      if (act === "sup_a_hid") return callServer({ app_action: "sup_adm_hide_msg", targetUid: SUP_ADM_ACTIVE_UID, msgId: id }).then(r => { if (r && r.ok) { SUP_ADM_REV = r.rev; SUP_ADM_MSGS = r.msgs; renderAdminChatBubbles(false); toast("👁️‍🗨️ تم الإخفاء عن المستخدم"); } }).catch(() => {});
+      if (act === "sup_a_del") return callServer({ app_action: "sup_adm_del_msg", targetUid: SUP_ADM_ACTIVE_UID, msgId: id }).then(r => { if (r && r.ok) { SUP_ADM_REV = r.rev; SUP_ADM_MSGS = r.msgs; renderAdminChatBubbles(false); toast("🗑️ تم الحذف نهائياً"); } }).catch(() => {});
+      if (act === "sup_a_clear_u") { closeModal(); return callServer({ app_action: "sup_adm_clear_user", targetUid: SUP_ADM_ACTIVE_UID }).then(r => { if (r && r.ok) { SUP_ADM_REV = r.rev; SUP_ADM_MSGS = r.msgs; renderAdminChatBubbles(false); toast("🧹 مُسحت من عند المستخدم وبقيت محفوظة عندك"); } }).catch(() => {}); }
+      if (act === "sup_a_wipe") { closeModal(); return callServer({ app_action: "sup_adm_wipe_all", targetUid: SUP_ADM_ACTIVE_UID }).then(r => { if (r && r.ok) { SUP_ADM_REV = r.rev; SUP_ADM_MSGS = []; renderAdminChatBubbles(false); toast("🗑️ تم الحذف من الطرفين"); } }).catch(() => {}); }
+      if (act === "adm_msg_user") { switchMode("support"); return openAdminChatRoom(id); }
+
+      if (act === "adm_go") { ADM_NODE = id; return renderAdminButtons(); }
+      if (act === "adm_edit") {
+        const b = STATE.nodes[id]; if (!b) return;
+        const opts = COLOR_OPTIONS.map(c => '<option value="' + c.id + '"' + (b.color === c.id ? " selected" : "") + '>' + c.label + '</option>').join("");
+        return openModal("✏️ تعديل الزر واللون", '<input id="edLbl" class="inp" value="' + ex(b.label) + '" /><textarea id="edDesc">' + ex(b.desc || "") + '</textarea><select id="edCol">' + opts + '</select><div class="modal-actions"><button class="btn" style="margin:0" data-act="save_edit" data-id="' + ex(id) + '">💾 حفظ</button><button class="btn-out" style="margin:0;width:auto;padding:0 16px" data-act="close_modal">إلغاء</button></div>');
       }
+      if (act === "adm_del") {
+        const b = STATE.nodes[id]; if (!b) return;
+        return openModal("🗑️ تأكيد الحذف", '<div style="font-family:var(--font-ui);font-size:14.5px;color:#e5dcc6;line-height:1.7">حذف <b>' + ex(b.label) + '</b> وجميع أزراره وملفاته نهائياً؟</div><div class="modal-actions"><button class="btn btn-danger" style="margin:0" data-act="confirm_del" data-id="' + ex(id) + '">🗑️ نعم، احذف</button><button class="btn-out" style="margin:0;width:auto;padding:0 16px" data-act="close_modal">إلغاء</button></div>');
+      }
+      if (act === "toggle_ban") {
+        const doBan = val === "1"; el.disabled = true;
+        return callServer({ app_action: "toggle_ban", targetUid: id, ban: doBan }).then(r => { if (r && r.ok && r.dash) { DASH_DATA = r.dash; renderDashboardView(); toast(doBan ? "🔒 تم حظر المستخدم" : "✅ تم فك الحظر"); } el.disabled = false; }).catch(() => { el.disabled = false; });
+      }
+      if (act === "adm_mv") return callServer({ app_action: "move_btn", btnId: id, dir: Number(val) }).then(applyState).catch(() => {});
+      if (act === "adm_create") {
+        const lbl = document.getElementById("newBtnName").value.trim(), dsc = document.getElementById("newBtnDesc").value.trim(), col = document.getElementById("newBtnCol").value, wm = document.getElementById("newBtnW").value;
+        if (!lbl) return toast("اكتب اسم الزر أولاً"); el.disabled = true;
+        return callServer({ app_action: "add_btn", parentId: ADM_NODE, label: lbl, desc: dsc, color: col, widthMode: wm }).then(r => { if (r && r.ok) { applyState(r); toast("✅ تمت الإضافة"); } else toast((r && r.error) || "⚠️ غير مصرح"); el.disabled = false; }).catch(() => { el.disabled = false; });
+      }
+      if (act === "save_edit") {
+        const eLbl = document.getElementById("edLbl").value.trim(), eDsc = document.getElementById("edDesc").value.trim(), eCol = document.getElementById("edCol").value;
+        if (!eLbl) return toast("اكتب الاسم أولاً"); el.disabled = true;
+        return callServer({ app_action: "update_btn", btnId: id, label: eLbl, desc: eDsc, color: eCol }).then(r => { applyState(r); closeModal(); toast("✅ تم الحفظ"); el.disabled = false; }).catch(() => { el.disabled = false; });
+      }
+      if (act === "confirm_del") { el.disabled = true; return callServer({ app_action: "del_btn", btnId: id }).then(r => { applyState(r); closeModal(); toast("🗑️ تم الحذف"); el.disabled = false; }).catch(() => { el.disabled = false; }); }
+      if (act === "adm_add_txt") { const txt = document.getElementById("txtCur").value.trim(); if (!txt) return toast("اكتب النص أولاً"); el.disabled = true; return callServer({ app_action: "add_text", btnId: id, text: txt }).then(r => { applyState(r); toast("✅ تم الحفظ"); el.disabled = false; }).catch(() => { el.disabled = false; }); }
+      if (act === "adm_del_item") return callServer({ app_action: "del_item", btnId: id, idx }).then(r => { applyState(r); toast("🗑️ تم الحذف"); }).catch(() => {});
+      if (act === "adm_up_file") {
+        const inp = document.getElementById("flCur"); if (!inp || !inp.files || !inp.files[0]) return toast("اختر ملفاً أولاً");
+        const file = inp.files[0]; if (file.size > 15 * 1024 * 1024) return toast("⚠️ الحد الأقصى 15MB");
+        el.disabled = true; el.textContent = "⏳ رفع...";
+        return readFileBase64(file).then(b64 => callServer({ app_action: "upload_item", btnId: id, fileName: file.name, mimeType: file.type || "application/octet-stream", base64: b64 }))
+          .then(r => { if (r && r.ok) { applyState(r); toast("✅ تم رفع الملف"); } else toast("⚠️ " + ((r && r.error) || "فشل الرفع")); el.disabled = false; el.textContent = "📤 رفع ملف"; })
+          .catch(() => { toast("⚠️ تعذّر الرفع"); el.disabled = false; el.textContent = "📤 رفع ملف"; });
+      }
+      if (act === "up_logo") { const li = document.getElementById("logoInp"); if (!li || !li.files[0]) return toast("اختر صورة"); el.disabled = true; el.textContent = "⏳..."; return compressImage(li.files[0], 320, 0.84).then(du => callServer({ app_action: "save_logo", dataUrl: du })).then(r => { applyState(r); toast("✅ تم التحديث"); el.disabled = false; el.textContent = "📤 حفظ الشعار"; }).catch(() => { el.disabled = false; el.textContent = "📤 حفظ الشعار"; }); }
+      if (act === "clr_logo") return callServer({ app_action: "save_logo", dataUrl: "" }).then(r => { applyState(r); toast("✅ تمت الاستعادة"); }).catch(() => {});
+      if (act === "up_ban") { const bi = document.getElementById("imgSlot_" + val); if (!bi || !bi.files[0]) return toast("اختر صورة"); el.disabled = true; el.textContent = "⏳..."; return compressImage(bi.files[0], 720, 0.72).then(du => callServer({ app_action: "save_banner", slot: Number(val), dataUrl: du })).then(r => { applyState(r); toast("✅ تم الحفظ"); el.disabled = false; el.textContent = "📤 حفظ الصورة " + val; }).catch(() => { el.disabled = false; el.textContent = "📤 حفظ الصورة " + val; }); }
+      if (act === "clr_ban") return callServer({ app_action: "save_banner", slot: Number(val), dataUrl: "" }).then(r => { applyState(r); toast("🗑️ تم الحذف"); }).catch(() => {});
+    });
+
+    setInterval(() => {
+      if (CUR_MODE === "support") return;
+      callServer({ app_action: "unread_ping" }).then(r => { if (r && r.ok) updateUnreadBadge(r.unreadSupport || 0); }).catch(() => {});
+    }, 15000);
+
+    (function boot() {
+      initPcbCanvas();
+      applyState(STATE);
+      if (INIT_TAB === "support") switchMode("support");
+      callServer({ app_action: "sync_state" }).then(r => {
+        if (r && r.banned) return showBannedView();
+        if (r && r.ok) applyState(r);
+      }).catch(() => {});
     })();
   </script>
 </body>
 </html>
+<!-- === END index.html v18 === -->
