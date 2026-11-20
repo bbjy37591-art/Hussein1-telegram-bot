@@ -5,65 +5,314 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>الهندسة الكهربائية • جامعة بغداد</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Cairo:wght@500;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Aref+Ruqaa:wght@700&family=Cairo:wght@600;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #050507;
-      --card: linear-gradient(145deg, #17140d, #0a0a0e);
-      --gold: linear-gradient(135deg, #9a7118 0%, #f5d36c 48%, #d4af37 74%, #865f12 100%);
-      --gtxt: linear-gradient(90deg, #fff0ba 0%, #f5d36c 45%, #d4af37 100%);
-      --border: rgba(212, 175, 55, 0.32);
-      --muted: #b6aa8d;
+      --phantom: #040406;
+      --phantom-deep: #08080b;
+      --phantom-card: linear-gradient(145deg, #15120c 0%, #060609 58%, #120f0a 100%);
+      --gold-strong: linear-gradient(135deg, #8c6211 0%, #f9e28c 42%, #d4af37 70%, #7a520b 100%);
+      --gold-text: linear-gradient(90deg, #fff6cf 0%, #f7da73 48%, #d4af37 100%);
+      --gold-border: rgba(212, 175, 55, 0.44);
+      --gold-soft: rgba(212, 175, 55, 0.12);
+      --muted: #b9ac8f;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
     body {
-      font-family: 'Cairo', sans-serif;
-      background: radial-gradient(circle at top center, #20180a 0%, var(--bg) 56%);
-      color: #f7f3e8;
+      font-family: 'Amiri', 'Cairo', serif;
+      background-color: var(--phantom);
+      background-image:
+        radial-gradient(circle at 50% -12%, rgba(212, 175, 55, 0.25) 0%, rgba(4, 4, 6, 0) 56%),
+        radial-gradient(circle at 85% 92%, rgba(212, 175, 55, 0.08) 0%, rgba(4, 4, 6, 0) 45%),
+        linear-gradient(180deg, #0a0806 0%, #040406 45%, #070609 100%);
+      color: #faf4e6;
       min-height: 100vh;
-      padding: 14px 13px 34px;
+      padding: 14px 13px 38px;
+      overflow-x: hidden;
     }
+
+    /* الترويسة الملكية الفانتوم والذهبي مع خطوط الدائرة الإلكترونية */
     .hero {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-top: 3px solid #d4af37;
-      border-radius: 22px;
-      padding: 18px 14px 16px;
+      position: relative;
+      background: var(--phantom-card);
+      border: 1.5px solid var(--gold-border);
+      border-top: 3px solid #f7da73;
+      border-radius: 24px;
+      padding: 20px 14px 18px;
       text-align: center;
-      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.78);
-      margin-bottom: 13px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(212, 175, 55, 0.09);
+      margin-bottom: 14px;
+      overflow: hidden;
     }
-    .hero-emblem { font-size: 25px; filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.75)); }
+    .hero-circuit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+    }
+    .hero-inner { position: relative; z-index: 2; }
+
+    .adm-badge-top {
+      display: none;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--gold-strong);
+      color: #080705;
+      font-family: 'Cairo', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 4px 11px;
+      border-radius: 99px;
+      border: 1px solid #fff3c4;
+      cursor: pointer;
+      z-index: 5;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.45);
+    }
+    .adm-badge-top.show { display: inline-flex; align-items: center; gap: 4px; }
+
+    .emblem-wrap {
+      width: 116px;
+      height: 116px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.52));
+    }
+    .emblem-wrap img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2.5px solid #f7da73;
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.4);
+    }
+
     .hero-title {
       font-family: 'Aref Ruqaa', serif;
       font-size: 31px;
-      line-height: 1.45;
-      background: var(--gtxt);
+      line-height: 1.5;
+      background: var(--gold-text);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.28));
     }
-    .hero-uni {
+    .hero-dev {
       display: inline-block;
-      margin-top: 4px;
-      padding: 3px 16px;
+      margin-top: 5px;
+      padding: 4px 18px;
       border-radius: 99px;
-      font-size: 13px;
-      font-weight: 800;
-      color: #f5d36c;
-      background: rgba(212, 175, 55, 0.1);
-      border: 1px solid rgba(212, 175, 55, 0.36);
+      font-family: 'Cairo', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      color: #080705;
+      background: var(--gold-strong);
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
     }
+
+    /* البنرات الاختيارية */
     .banners { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 13px; }
     .banners.single { grid-template-columns: 1fr; }
-    .banners img { width: 100%; height: 136px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border); display: block; }
+    .banners img {
+      width: 100%;
+      height: 136px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1.5px solid var(--gold-border);
+      display: block;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.65);
+    }
     .banners.single img { height: 170px; }
 
+    /* مسار التنقل (ملف داخل ملف) */
+    .crumb {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(9, 9, 13, 0.96));
+      border: 1px solid var(--gold-border);
+      border-radius: 15px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+    }
+    .crumb.show { display: flex; }
+    .crumb-path {
+      font-family: 'Aref Ruqaa', serif;
+      font-size: 17px;
+      color: #f7da73;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .crumb-act {
+      border: 1px solid var(--gold-border);
+      background: #12100a;
+      color: #f7da73;
+      font-family: 'Cairo', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 9px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* حاوية المجلدات المتداخلة والأزرار */
+    .folder-shell {
+      animation: fadeUp 0.2s ease;
+    }
+    .folder-shell.nested {
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.09) 0%, rgba(8, 8, 12, 0.85) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.34);
+      border-top: 2px solid #f7da73;
+      border-radius: 18px;
+      padding: 12px 11px;
+      box-shadow: 0 -4px 0 -1px rgba(212, 175, 55, 0.22), 0 10px 26px rgba(0, 0, 0, 0.65);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .rows-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .btn-row { display: grid; gap: 10px; }
+
+    /* الأزرار الملكية بـ 8 ألوان متدرجة */
+    .bcard {
+      position: relative;
+      border-radius: 16px;
+      padding: 16px 13px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.15s ease;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      border: 1.5px solid var(--gold-border);
+      background: var(--phantom-card);
+      color: #fff6dc;
+      overflow: hidden;
+    }
+    .bcard:active { transform: scale(0.96); }
+
+    /* 1. أسود ملكي فانتوم */
+    .c-phantom {
+      background: linear-gradient(145deg, #17140f 0%, #050507 55%, #12100b 100%);
+      border-color: rgba(212, 175, 55, 0.55);
+      color: #f9e28c;
+    }
+    /* 2. ذهبي معدني قوي */
+    .c-gold {
+      background: linear-gradient(135deg, #9a6d14 0%, #fae38f 44%, #d4af37 72%, #7a520b 100%);
+      border-color: #fff4c6;
+      color: #080705;
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.36);
+    }
+    .c-gold .blabel, .c-gold .bmeta { color: #080705 !important; }
+    /* 3. ياقوتي ملكي */
+    .c-ruby {
+      background: linear-gradient(135deg, #750d1a 0%, #c81e2b 50%, #45070c 100%);
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fff5f5;
+    }
+    /* 4. زمردي فاخر */
+    .c-emerald {
+      background: linear-gradient(135deg, #06523e 0%, #059669 52%, #022c22 100%);
+      border-color: rgba(52, 211, 153, 0.68);
+      color: #ecfdf5;
+    }
+    /* 5. لازوردي عميق */
+    .c-azure {
+      background: linear-gradient(135deg, #0b2f66 0%, #1d4ed8 52%, #081838 100%);
+      border-color: rgba(96, 165, 250, 0.68);
+      color: #eff6ff;
+    }
+    /* 6. بنفسجي إمبراطوري */
+    .c-imperial {
+      background: linear-gradient(135deg, #3f086b 0%, #7e22ce 52%, #240442 100%);
+      border-color: rgba(192, 132, 252, 0.68);
+      color: #faf5ff;
+    }
+    /* 7. ناري متوهج */
+    .c-fiery {
+      background: linear-gradient(135deg, #822f10 0%, #ea580c 52%, #431407 100%);
+      border-color: rgba(251, 146, 60, 0.72);
+      color: #fff7ed;
+    }
+    /* 8. فضي نيزكي */
+    .c-silver {
+      background: linear-gradient(135deg, #2b2b30 0%, #585862 50%, #17171a 100%);
+      border-color: rgba(212, 212, 216, 0.68);
+      color: #f4f4f5;
+    }
+
+    .blabel {
+      font-family: 'Aref Ruqaa', 'Amiri', serif;
+      font-size: 20.5px;
+      font-weight: 700;
+      line-height: 1.55;
+      letter-spacing: 0.2px;
+    }
+    .bmeta {
+      font-family: 'Cairo', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    /* وصف الزر والملفات الداخلية */
+    .desc-box {
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--gold-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-family: 'Amiri', serif;
+      font-size: 17.5px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+    .items-wrap { margin-top: 12px; }
+    .item {
+      background: linear-gradient(145deg, rgba(24, 20, 12, 0.94), rgba(8, 8, 12, 0.97));
+      border: 1px solid var(--gold-border);
+      border-radius: 15px;
+      padding: 12px 13px;
+      margin-bottom: 9px;
+      font-family: 'Amiri', serif;
+      font-size: 17px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .item a { color: #f9e28c; text-decoration: underline; }
+    .file-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .file-send {
+      border: none;
+      background: var(--gold-strong);
+      color: #080705;
+      font-family: 'Cairo', sans-serif;
+      font-size: 11.5px;
+      font-weight: 900;
+      padding: 8px 13px;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
+    }
+    .file-send:active { transform: scale(0.95); }
+
+    /* لوحة الإدارة والداشبورد (تظهر حصراً لـ @tessla22) */
     .admin-bar {
       display: none;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      background: rgba(16, 15, 19, 0.95);
-      border: 1px solid var(--border);
+      background: rgba(14, 13, 18, 0.96);
+      border: 1px solid var(--gold-border);
       padding: 5px;
       border-radius: 15px;
       margin-bottom: 13px;
@@ -73,213 +322,200 @@
       border: none;
       background: transparent;
       color: var(--muted);
-      font-family: inherit;
-      font-size: 13px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 12.5px;
       font-weight: 800;
       padding: 9px 6px;
       border-radius: 11px;
       cursor: pointer;
     }
-    .nav-pill.active { background: var(--gold); color: #080705; }
-
-    .crumb {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: rgba(212, 175, 55, 0.08);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 9px 12px;
-      margin-bottom: 12px;
-    }
-    .crumb.show { display: flex; }
-    .crumb-title { font-size: 14px; font-weight: 900; color: #f5d36c; }
-    .crumb-back {
-      border: 1px solid var(--border);
-      background: #14120c;
-      color: #f5d36c;
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 5px 11px;
-      border-radius: 9px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .rows-wrap { display: flex; flex-direction: column; gap: 9px; }
-    .btn-row { display: grid; gap: 9px; }
-    .bcard {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 15px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.1s ease, border-color 0.15s;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
-    }
-    .bcard:active { transform: scale(0.96); border-color: #f5d36c; }
-    .bcard.c-danger { border-color: rgba(239, 68, 68, 0.6); background: linear-gradient(145deg, #2d1215, #12090b); }
-    .bcard.c-success { border-color: rgba(34, 197, 94, 0.55); background: linear-gradient(145deg, #0f291a, #09120d); }
-    .bcard.c-primary { border-color: rgba(59, 130, 246, 0.6); background: linear-gradient(145deg, #10203a, #090e18); }
-    .blabel { font-size: 14.5px; font-weight: 800; color: #fff6dc; line-height: 1.5; }
-    .bmeta { font-size: 11px; color: #d4af37; margin-top: 4px; }
-
-    .desc-box {
-      background: rgba(212, 175, 55, 0.06);
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 13px;
-      padding: 11px 13px;
-      margin-bottom: 11px;
-      font-size: 13.5px;
-      line-height: 1.75;
-      white-space: pre-wrap;
-    }
-    .items-wrap { margin-top: 10px; }
-    .item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(212, 175, 55, 0.24);
-      border-radius: 13px;
-      padding: 11px 12px;
-      margin-bottom: 8px;
-      font-size: 13.5px;
-      line-height: 1.7;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .item a { color: #f5d36c; text-decoration: underline; }
-    .file-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .file-send {
-      border: none;
-      background: var(--gold);
-      color: #080705;
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 900;
-      padding: 7px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .btn {
-      width: 100%;
-      border: none;
-      border-radius: 13px;
-      padding: 11px 14px;
-      font-family: inherit;
-      font-size: 13.5px;
-      font-weight: 900;
-      color: #080705;
-      background: var(--gold);
-      cursor: pointer;
-      margin-top: 6px;
-    }
-    .btn:disabled { opacity: 0.6; }
-    .btn-out {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 10px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 800;
-      color: #f5d36c;
-      background: rgba(212, 175, 55, 0.06);
-      cursor: pointer;
-      margin-top: 8px;
-    }
-    .btn-danger { border: 1px solid rgba(239, 68, 68, 0.45); background: rgba(239, 68, 68, 0.14); color: #fca5a5; }
-
-    .ai-launch {
-      margin-top: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 12px;
-      border-radius: 15px;
-      border: 1px solid rgba(212, 175, 55, 0.45);
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(15, 14, 18, 0.96));
-      color: #f5d36c;
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .panel {
-      display: none;
-      background: var(--card);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      border-radius: 20px;
-      padding: 15px 13px;
-    }
-    .panel.show { display: block; }
-    .ptitle { font-size: 16px; font-weight: 900; color: #f5d36c; margin-bottom: 10px; border-bottom: 1px solid rgba(212, 175, 55, 0.24); padding-bottom: 8px; }
-    .chat-box { max-height: 330px; overflow-y: auto; padding: 6px 2px; margin-bottom: 10px; }
-    .msg { padding: 10px 12px; border-radius: 13px; margin-bottom: 8px; font-size: 13px; line-height: 1.75; white-space: pre-wrap; }
-    .msg.u { background: rgba(212, 175, 55, 0.16); border: 1px solid rgba(212, 175, 55, 0.35); color: #fff6dc; margin-left: 18px; }
-    .msg.a { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); color: #e8e1d0; margin-right: 12px; }
-    .chat-form { display: flex; gap: 7px; }
-    .inp, textarea, select {
-      width: 100%;
-      background: #0d0d11;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      color: #fff6dc;
-      font-family: inherit;
-      font-size: 13px;
-      padding: 10px 12px;
-      outline: none;
-    }
-    textarea { min-height: 60px; resize: vertical; }
+    .nav-pill.active { background: var(--gold-strong); color: #080705; }
 
     .subtabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
     .subtab {
-      border: 1px solid var(--border);
+      border: 1px solid var(--gold-border);
       background: #100f14;
       color: var(--muted);
-      font-family: inherit;
-      font-size: 12px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 11.5px;
       font-weight: 800;
       padding: 8px 4px;
       border-radius: 10px;
       cursor: pointer;
     }
-    .subtab.active { background: var(--gold); color: #080705; border-color: transparent; }
+    .subtab.active { background: var(--gold-strong); color: #080705; border-color: transparent; }
+
     .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .kpi { background: #0f0e13; border: 1px solid var(--border); border-radius: 14px; padding: 12px 10px; text-align: center; }
-    .kpi-num { font-size: 21px; font-weight: 900; color: #f5d36c; }
-    .kpi-lbl { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
-    .card-box { background: #0f0e13; border: 1px solid var(--border); border-radius: 15px; padding: 13px; margin-bottom: 11px; }
-    .sec-h { font-size: 14px; font-weight: 900; color: #f5d36c; margin-bottom: 9px; }
+    .kpi {
+      background: #0e0d12;
+      border: 1px solid var(--gold-border);
+      border-radius: 14px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+    .kpi.danger-kpi {
+      border-color: rgba(239, 68, 68, 0.65);
+      background: linear-gradient(145deg, #270c10, #0d0809);
+    }
+    .kpi-num { font-family: 'Cairo', sans-serif; font-size: 22px; font-weight: 900; color: #f9e28c; }
+    .kpi.danger-kpi .kpi-num { color: #f87171; }
+    .kpi-lbl { font-family: 'Cairo', sans-serif; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .card-box {
+      background: #0e0d12;
+      border: 1px solid var(--gold-border);
+      border-radius: 15px;
+      padding: 13px;
+      margin-bottom: 11px;
+      font-family: 'Cairo', sans-serif;
+    }
+    .sec-h { font-size: 13.5px; font-weight: 900; color: #f9e28c; margin-bottom: 9px; }
+
+    .filter-row { display: flex; gap: 6px; margin-bottom: 10px; }
+    .f-pill {
+      flex: 1;
+      border: 1px solid var(--gold-border);
+      background: #121116;
+      color: var(--muted);
+      font-family: 'Cairo', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 4px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+    .f-pill.active { background: var(--gold-strong); color: #080705; border-color: transparent; }
+
     .bar-row { margin-bottom: 8px; }
-    .bar-top { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 4px; }
+    .bar-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
     .bar-track { height: 7px; background: rgba(255, 255, 255, 0.08); border-radius: 99px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--gold); border-radius: 99px; }
-    .u-row { border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+    .bar-fill { height: 100%; background: var(--gold-strong); border-radius: 99px; }
+
+    .u-row {
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+    .u-row.is-blocked { border-color: rgba(239, 68, 68, 0.6); background: rgba(239, 68, 68, 0.08); }
     .u-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .u-link { color: #f5d36c; font-weight: 800; font-size: 13.5px; text-decoration: none; cursor: pointer; }
-    .u-un { color: var(--muted); font-size: 11.5px; direction: ltr; display: inline-block; }
-    .u-badge { background: rgba(212, 175, 55, 0.14); border: 1px solid var(--border); color: #f5d36c; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 8px; white-space: nowrap; }
-    .u-det { display: none; margin-top: 9px; padding-top: 8px; border-top: 1px dashed rgba(212, 175, 55, 0.25); font-size: 12px; color: #dcd3bf; line-height: 1.7; }
+    .u-link { color: #f9e28c; font-weight: 800; font-size: 13px; text-decoration: none; cursor: pointer; }
+    .u-un { color: var(--muted); font-size: 11px; direction: ltr; display: inline-block; }
+    .u-badge {
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px solid var(--gold-border);
+      color: #f9e28c;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    .u-badge.blk { background: rgba(239, 68, 68, 0.22); border-color: rgba(239, 68, 68, 0.65); color: #fca5a5; }
+    .u-det {
+      display: none;
+      margin-top: 9px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(212, 175, 55, 0.25);
+      font-size: 11.5px;
+      color: #dcd3bf;
+      line-height: 1.7;
+    }
     .u-det.show { display: block; }
     .mini-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
-    .mbtn { border: 1px solid var(--border); background: rgba(212, 175, 55, 0.1); color: #f5d36c; font-family: inherit; font-size: 11.5px; font-weight: 800; padding: 5px 9px; border-radius: 8px; cursor: pointer; }
-    .mbtn.del { border-color: rgba(239, 68, 68, 0.5); color: #fca5a5; background: rgba(239, 68, 68, 0.12); }
+    .mbtn {
+      border: 1px solid var(--gold-border);
+      background: rgba(212, 175, 55, 0.1);
+      color: #f9e28c;
+      font-family: 'Cairo', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 9px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .mbtn.del { border-color: rgba(239, 68, 68, 0.55); color: #fca5a5; background: rgba(239, 68, 68, 0.14); }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 13px;
+      padding: 11px 14px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      color: #080705;
+      background: var(--gold-strong);
+      cursor: pointer;
+      margin-top: 7px;
+    }
+    .btn:disabled { opacity: 0.55; }
+    .btn-out {
+      width: 100%;
+      border: 1px solid var(--gold-border);
+      border-radius: 13px;
+      padding: 10px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #f9e28c;
+      background: rgba(212, 175, 55, 0.08);
+      cursor: pointer;
+      margin-top: 7px;
+    }
+    .btn-danger { border: 1px solid rgba(239, 68, 68, 0.55); background: rgba(239, 68, 68, 0.16); color: #fca5a5; }
+
+    .inp, textarea, select {
+      width: 100%;
+      background: #09090d;
+      border: 1px solid var(--gold-border);
+      border-radius: 11px;
+      color: #fff6dc;
+      font-family: 'Cairo', sans-serif;
+      font-size: 12.5px;
+      padding: 10px 12px;
+      outline: none;
+      margin-top: 6px;
+    }
+    textarea { min-height: 62px; resize: vertical; }
+
+    /* نافذة التعديل والحذف المخصصة (بديل آمن لـ prompt/confirm على الآيفون) */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-bg.show { display: flex; }
+    .modal-card {
+      width: 100%;
+      max-width: 370px;
+      background: var(--phantom-card);
+      border: 1.5px solid #f7da73;
+      border-radius: 18px;
+      padding: 16px;
+      font-family: 'Cairo', sans-serif;
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.92);
+    }
+    .modal-title { font-size: 15px; font-weight: 900; color: #f9e28c; margin-bottom: 10px; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 12px; }
 
     .foot {
-      margin-top: 22px;
+      margin-top: 24px;
       padding: 11px;
       border-radius: 14px;
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      border: 1px solid var(--gold-border);
       background: rgba(212, 175, 55, 0.06);
       text-align: center;
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #f5d36c;
+      font-family: 'Aref Ruqaa', serif;
+      font-size: 19px;
+      color: #f9e28c;
     }
     .toast {
       position: fixed;
@@ -287,68 +523,73 @@
       left: 50%;
       transform: translateX(-50%) translateY(90px);
       background: #14110a;
-      color: #f5d36c;
-      border: 1px solid #d4af37;
+      color: #f9e28c;
+      border: 1.5px solid #d4af37;
       padding: 10px 18px;
       border-radius: 13px;
-      font-size: 13px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 12.5px;
       font-weight: 800;
-      transition: transform 0.22s ease;
+      transition: transform 0.2s ease;
       width: 90%;
       max-width: 360px;
       text-align: center;
-      z-index: 999;
+      z-index: 1100;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
-    .empty { text-align: center; color: var(--muted); padding: 24px 8px; font-size: 13.5px; }
+    .empty { text-align: center; color: var(--muted); padding: 28px 8px; font-family: 'Amiri', serif; font-size: 18px; }
   </style>
 </head>
 <body>
 
   <div class="hero">
-    <div class="hero-emblem">⚡</div>
-    <div class="hero-title">الهندسة الكهربائية</div>
-    <div class="hero-uni">جامعة بغداد</div>
+    <svg class="hero-circuit" viewBox="0 0 400 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#d4af37" stroke-width="1.2" fill="none">
+        <path d="M0,45 H70 L95,70 H130" /><circle cx="130" cy="70" r="2.8" fill="#f7da73" />
+        <path d="M0,105 H55 L78,128 H115" /><circle cx="115" cy="128" r="2.8" fill="#f7da73" />
+        <path d="M0,170 H85 L108,148" /><circle cx="108" cy="148" r="2.5" fill="#d4af37" />
+        <path d="M400,45 H330 L305,70 H270" /><circle cx="270" cy="70" r="2.8" fill="#f7da73" />
+        <path d="M400,105 H345 L322,128 H285" /><circle cx="285" cy="128" r="2.8" fill="#f7da73" />
+        <path d="M400,170 H315 L292,148" /><circle cx="292" cy="148" r="2.5" fill="#d4af37" />
+      </g>
+    </svg>
+
+    <button id="admQuickBtn" class="adm-badge-top" onclick="switchMode('admin')">👑 الإدارة (@tessla22)</button>
+
+    <div class="hero-inner">
+      <div id="emblemWrap" class="emblem-wrap"></div>
+      <div class="hero-title">الهندسة الكهربائية • جامعة بغداد</div>
+      <div class="hero-dev">بإشراف المهندس حسين علاء اللامي</div>
+    </div>
   </div>
 
+  <!-- شريط التبديل (يظهر حصراً لـ @tessla22) -->
   <div id="adminBar" class="admin-bar">
-    <button class="nav-pill active" id="navMain" onclick="switchMode('main')">⚡ الأقسام والأزرار</button>
-    <button class="nav-pill" id="navAdmin" onclick="switchMode('admin')">👑 لوحة الإدارة</button>
+    <button class="nav-pill active" id="navMain" onclick="switchMode('main')">🏛️ الأقسام والملفات</button>
+    <button class="nav-pill" id="navAdmin" onclick="switchMode('admin')">👑 لوحة الإدارة والداشبورد</button>
   </div>
 
+  <!-- واجهة المستخدمين (سريعة، نظيفة، بدون شريط كشف حظر أو مساعد ذكي) -->
   <div id="viewMain">
     <div id="bannersWrap" class="banners" style="display:none;"></div>
 
     <div id="crumb" class="crumb">
-      <div id="crumbTitle" class="crumb-title"></div>
-      <div style="display:flex;gap:6px">
-        <button class="crumb-back" onclick="goBack()">🔙 رجوع</button>
-        <button class="crumb-back" onclick="openNode('root')">🏠</button>
+      <div id="crumbPath" class="crumb-path"></div>
+      <div style="display:flex;gap:5px">
+        <button class="crumb-act" onclick="goBack()">🔙 رجوع</button>
+        <button class="crumb-act" onclick="openNode('root',false)">🏠</button>
       </div>
     </div>
 
     <div id="nodeContent"></div>
-
-    <button id="aiLaunchBtn" class="ai-launch" onclick="openAI()">🤖 المساعد الذكي — اسأل عن البوت أو أي سؤال هندسي وعام</button>
-
-    <div id="aiPanel" class="panel" style="margin-top:10px;">
-      <div class="ptitle">🤖 المساعد الذكي (تحليلي وسريع)</div>
-      <div id="chatBox" class="chat-box">
-        <div class="msg a">أهلاً بك! أنا المساعد الذكي لتطبيق الهندسة الكهربائية • جامعة بغداد. اسألني من أنا، أو عن مميزات البوت وأقسامه، أو أي سؤال دراسي أو علمي وسأجيبك بتحليل دقيق وفوري.</div>
-      </div>
-      <div class="chat-form">
-        <input id="aiInp" class="inp" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')sendAI()" />
-        <button id="aiSendBtn" class="file-send" onclick="sendAI()">إرسال</button>
-      </div>
-      <button class="btn-out" onclick="closeAI()">🔙 العودة للأقسام</button>
-    </div>
   </div>
 
+  <!-- لوحة الإدارة الخاصة بـ @tessla22 فقط -->
   <div id="viewAdmin" style="display:none;">
     <div class="subtabs">
-      <button class="subtab active" id="stDash" onclick="switchAdminTab('dash')">📊 الداشبورد</button>
-      <button class="subtab" id="stBtns" onclick="switchAdminTab('btns')">🔘 الأزرار والملفات</button>
-      <button class="subtab" id="stImgs" onclick="switchAdminTab('imgs')">🖼️ صور التطبيق</button>
+      <button class="subtab active" id="stDash" onclick="switchAdminTab('dash')">📊 الداشبورد والحظر</button>
+      <button class="subtab" id="stBtns" onclick="switchAdminTab('btns')">📂 الأقسام والملفات</button>
+      <button class="subtab" id="stImgs" onclick="switchAdminTab('imgs')">🖼️ الشعار والصور</button>
     </div>
     <div id="admDash"></div>
     <div id="admBtns" style="display:none;"></div>
@@ -356,17 +597,83 @@
   </div>
 
   <div class="foot">المهندس حسين علاء اللامي</div>
+
+  <!-- نافذة التعديل والحذف المخصصة -->
+  <div id="modalBg" class="modal-bg" onclick="if(event.target===this)closeModal()">
+    <div class="modal-card">
+      <div id="modalTitle" class="modal-title"></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbxf7izpVY1XvxprccTS3IrHGKHQKa34pLBJXvj2aYUkV-Vh3iJ6qiSxRFwIg76XzLc/exec";
-    const CACHE_KEY = "ee_uob_tree_v6";
+    // (اختياري) ضع رابط Firebase Realtime Database بدون شرطة مائلة أخيرة لتسريع القراءة الفوري:
+    const FIREBASE_DB_URL = "";
+    const CACHE_KEY = "ee_uob_royal_v7";
+
+    const DEFAULT_EMBLEM_SVG = `
+      <svg viewBox="0 0 240 240" width="112" height="112" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gMain" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fff5c8" />
+            <stop offset="38%" stop-color="#f7da73" />
+            <stop offset="72%" stop-color="#c99a26" />
+            <stop offset="100%" stop-color="#7c540b" />
+          </linearGradient>
+          <radialGradient id="gBg" cx="50%" cy="45%" r="55%">
+            <stop offset="0%" stop-color="#241b0b" />
+            <stop offset="100%" stop-color="#050507" />
+          </radialGradient>
+          <path id="topArc" d="M 46,120 A 74,74 0 1,1 194,120" />
+          <path id="botArc" d="M 196,122 A 76,76 0 1,1 44,122" />
+        </defs>
+        <circle cx="120" cy="120" r="114" fill="url(#gBg)" stroke="url(#gMain)" stroke-width="4" />
+        <circle cx="120" cy="120" r="103" fill="none" stroke="url(#gMain)" stroke-width="6" stroke-dasharray="10 6" />
+        <circle cx="120" cy="120" r="91" fill="none" stroke="url(#gMain)" stroke-width="2" />
+        <circle cx="120" cy="120" r="62" fill="#090806" stroke="url(#gMain)" stroke-width="2.2" />
+        <text fill="url(#gMain)" font-family="Cairo,sans-serif" font-size="13.5" font-weight="900" letter-spacing="1.2">
+          <textPath href="#topArc" startOffset="50%" text-anchor="middle">UNIVERSITY OF BAGHDAD</textPath>
+        </text>
+        <text fill="url(#gMain)" font-family="Cairo,sans-serif" font-size="10.8" font-weight="800" letter-spacing="0.5">
+          <textPath href="#botArc" startOffset="50%" text-anchor="middle">Department of Electrical Engineering</textPath>
+        </text>
+        <text x="41" y="124" fill="#f9e28c" font-family="Cairo,sans-serif" font-size="10" font-weight="900" text-anchor="middle">1950</text>
+        <text x="199" y="124" fill="#f9e28c" font-family="Cairo,sans-serif" font-size="10" font-weight="900" text-anchor="middle">1950</text>
+        <g stroke="url(#gMain)" stroke-width="1.6" fill="none" opacity="0.92">
+          <line x1="76" y1="98" x2="90" y2="98" /><circle cx="74" cy="98" r="2.2" fill="#f9e28c" />
+          <line x1="72" y1="120" x2="88" y2="120" /><circle cx="70" cy="120" r="2.5" fill="#f9e28c" />
+          <line x1="76" y1="142" x2="90" y2="142" /><circle cx="74" cy="142" r="2.2" fill="#f9e28c" />
+          <line x1="150" y1="98" x2="164" y2="98" /><circle cx="166" cy="98" r="2.2" fill="#f9e28c" />
+          <line x1="152" y1="120" x2="168" y2="120" /><circle cx="170" cy="120" r="2.5" fill="#f9e28c" />
+          <line x1="150" y1="142" x2="164" y2="142" /><circle cx="166" cy="142" r="2.2" fill="#f9e28c" />
+          <line x1="108" y1="68" x2="108" y2="80" /><line x1="120" y1="64" x2="120" y2="78" /><line x1="132" y1="68" x2="132" y2="80" />
+          <line x1="108" y1="160" x2="108" y2="172" /><line x1="120" y1="162" x2="120" y2="176" /><line x1="132" y1="160" x2="132" y2="172" />
+        </g>
+        <text x="120" y="148" fill="url(#gMain)" stroke="#4a3104" stroke-width="1.5" font-family="Georgia,serif" font-size="84" font-weight="900" text-anchor="middle">E</text>
+        <text x="137" y="108" fill="#fff2be" font-family="Cairo,sans-serif" font-size="8.5" font-weight="900">150</text>
+        <text x="137" y="140" fill="#fff2be" font-family="Cairo,sans-serif" font-size="8.5" font-weight="900">IST.</text>
+      </svg>
+    `;
+
+    const COLOR_OPTIONS = [
+      { id: "phantom", label: "🖤 أسود ملكي فانتوم" },
+      { id: "gold", label: "✨ ذهبي معدني قوي" },
+      { id: "ruby", label: "♦️ ياقوتي ملكي" },
+      { id: "emerald", label: "💚 زمردي فاخر" },
+      { id: "azure", label: "💙 لازوردي عميق" },
+      { id: "imperial", label: "💜 بنفسجي إمبراطوري" },
+      { id: "fiery", label: "🔥 ناري متوهج" },
+      { id: "silver", label: "🩶 فضي نيزكي" }
+    ];
 
     const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
     if (tg) {
       tg.ready();
       tg.expand();
-      try { tg.setHeaderColor("#050507"); tg.setBackgroundColor("#050507"); } catch (e) {}
+      try { tg.setHeaderColor("#040406"); tg.setBackgroundColor("#040406"); } catch (e) {}
     }
 
     const qs = new URLSearchParams(window.location.search);
@@ -375,15 +682,41 @@
     const UN = (tgU && tgU.username ? tgU.username : (qs.get("un") || "")).replace(/^@/, "");
     const NAME = tgU ? [tgU.first_name, tgU.last_name].filter(Boolean).join(" ") : (qs.get("name") || "");
 
-    let STATE = { isAdmin: false, banners: [], nodes: { root: { id: "root", label: "الرئيسية", rows: [], items: [] } } };
+    let STATE = {
+      isAdmin: false,
+      logo: "",
+      banners: [],
+      nodes: { root: { id: "root", label: "الرئيسية", desc: "", color: "phantom", rows: [], items: [] } }
+    };
     let CUR_NODE = "root";
     let ADM_NODE = "root";
-    let DASH = null;
+    let DASH_DATA = null;
+    let USER_FILTER = "all";
 
-    function ex(s) { return String(s || "").replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m])); }
-    function linkify(s) { return ex(s).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank">$1</a>'); }
-    function toast(m) { const t = document.getElementById("toast"); t.textContent = m; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2500); }
-    function haptic() { try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
+    function ex(s) {
+      return String(s || "").replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
+    }
+    function linkify(s) {
+      return ex(s).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank">$1</a>');
+    }
+    function toast(m) {
+      const t = document.getElementById("toast");
+      t.textContent = m;
+      t.classList.add("show");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+    }
+    function haptic() {
+      try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light"); } catch (e) {}
+    }
+    function openModal(title, bodyHtml) {
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalBody").innerHTML = bodyHtml;
+      document.getElementById("modalBg").classList.add("show");
+    }
+    function closeModal() {
+      document.getElementById("modalBg").classList.remove("show");
+    }
 
     async function apiPost(payload) {
       const res = await fetch(GAS_URL, {
@@ -394,42 +727,67 @@
       return await res.json();
     }
 
+    function applyLogo() {
+      const wrap = document.getElementById("emblemWrap");
+      wrap.innerHTML = STATE.logo ? `<img src="${STATE.logo}" alt="شعار القسم" />` : DEFAULT_EMBLEM_SVG;
+    }
+
     function renderBanners() {
       const wrap = document.getElementById("bannersWrap");
       const imgs = (STATE.banners || []).filter(Boolean);
-      if (!imgs.length || CUR_NODE !== "root") { wrap.style.display = "none"; return; }
+      if (!imgs.length || CUR_NODE !== "root") {
+        wrap.style.display = "none";
+        return;
+      }
       wrap.className = "banners" + (imgs.length === 1 ? " single" : "");
       wrap.innerHTML = imgs.map(src => `<img src="${src}" alt="" />`).join("");
       wrap.style.display = "grid";
     }
 
-    function openNode(id, logIt) {
+    function buildBreadcrumb(id) {
+      const parts = [];
+      let cur = STATE.nodes[id];
+      let guard = 0;
+      while (cur && cur.id !== "root" && guard < 15) {
+        parts.unshift(cur.label);
+        cur = STATE.nodes[cur.parent];
+        guard++;
+      }
+      return "🏠 الرئيسية ◂ " + parts.join(" ◂ ");
+    }
+
+    function openNode(id, deliverToChat) {
       haptic();
       const node = STATE.nodes[id] || STATE.nodes.root;
       CUR_NODE = node.id;
-      document.getElementById("aiPanel").classList.remove("show");
-      document.getElementById("nodeContent").style.display = "block";
-      document.getElementById("aiLaunchBtn").style.display = "flex";
 
-      if (logIt && node.id !== "root") {
+      // عند الضغط على أي زر يتم إرسال اسم الزر وتفاصيله وملفاته مباشرة للمحادثة
+      if (deliverToChat && node.id !== "root") {
+        if (UID && UID !== "0") {
+          const hasFiles = (node.items || []).length > 0;
+          toast(hasFiles ? "⚡ تم إرسال التفاصيل والملفات إلى محادثتك فوراً" : "⚡ تم إرسال تفاصيل القسم إلى محادثتك");
+        }
         fetch(GAS_URL, {
-          method: "POST", keepalive: true,
+          method: "POST",
+          keepalive: true,
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ app_action: "log_click", uid: UID, un: UN, name: NAME, btnId: node.id })
+          body: JSON.stringify({ app_action: "open_and_send", uid: UID, un: UN, name: NAME, btnId: node.id })
         }).catch(() => {});
       }
 
       renderBanners();
       const crumb = document.getElementById("crumb");
-      if (node.id === "root") crumb.classList.remove("show");
-      else {
-        document.getElementById("crumbTitle").textContent = "⚡ " + node.label;
+      if (node.id === "root") {
+        crumb.classList.remove("show");
+      } else {
+        document.getElementById("crumbPath").textContent = buildBreadcrumb(node.id);
         crumb.classList.add("show");
       }
 
-      let html = "";
+      let html = `<div class="folder-shell ${node.id !== "root" ? "nested" : ""}">`;
       if (node.desc) html += `<div class="desc-box">${linkify(node.desc)}</div>`;
 
+      // عرض المجلدات والأزرار المتداخلة بالألوان الـ 8 والخط المزخرف
       const rows = node.rows || [];
       if (rows.length) {
         html += '<div class="rows-wrap">';
@@ -440,9 +798,9 @@
           kids.forEach(k => {
             const subC = (k.rows || []).reduce((a, r) => a + r.length, 0);
             const itC = (k.items || []).length;
-            const cClass = k.color ? (" c-" + k.color) : "";
-            const meta = [subC ? ("📁 " + subC) : "", itC ? ("📎 " + itC) : ""].filter(Boolean).join(" • ");
-            html += `<div class="bcard${cClass}" onclick="openNode('${k.id}',true)">
+            const cClass = "c-" + (k.color || "phantom");
+            const meta = [subC ? ("📂 " + subC + " فرعي") : "", itC ? ("📎 " + itC + " ملف") : ""].filter(Boolean).join(" • ");
+            html += `<div class="bcard ${cClass}" onclick="openNode('${k.id}',true)">
               <div class="blabel">${ex(k.label)}</div>
               ${meta ? `<div class="bmeta">${meta}</div>` : ""}
             </div>`;
@@ -452,30 +810,32 @@
         html += "</div>";
       }
 
+      // عرض الملفات والشروحات مع إرسال فوري فردي للمحادثة
       const items = node.items || [];
       if (items.length) {
         const ic = { photo: "🖼️ صورة", document: "📄 ملف", video: "🎬 فيديو", audio: "🎵 صوت", voice: "🎙️ بصمة" };
         html += '<div class="items-wrap">';
-        let fileCount = 0;
         items.forEach((it, idx) => {
           if (it.type === "text") {
             html += `<div class="item">${linkify(it.text)}</div>`;
           } else {
-            fileCount++;
             const title = (ic[it.type] || "📎 ملف") + (it.file_name ? " : " + ex(it.file_name) : "");
-            const cap = it.text ? `<div style="margin-top:4px;color:#cfc6b0;font-size:12px">${linkify(it.text)}</div>` : "";
-            html += `<div class="item"><div class="file-row"><div><b style="color:#f5d36c">${title}</b>${cap}</div><button class="file-send" onclick="sendItemFast('${node.id}',${idx},this)">⚡ إرسال</button></div></div>`;
+            const cap = it.text ? `<div style="margin-top:4px;color:#cfc6b0;font-size:13px">${linkify(it.text)}</div>` : "";
+            html += `<div class="item">
+              <div class="file-row">
+                <div><b style="color:#f9e28c">${title}</b>${cap}</div>
+                <button class="file-send" onclick="sendSingle('${node.id}',${idx},this)">⚡ إرسال</button>
+              </div>
+            </div>`;
           }
         });
-        if (fileCount > 1) {
-          html += `<button class="btn" onclick="sendItemFast('${node.id}',null,this)">⚡ إرسال جميع الملفات لمحادثة تليجرام فوراً</button>`;
-        }
         html += "</div>";
       }
 
       if (!rows.length && !items.length && !node.desc) {
-        html = '<div class="empty">لا توجد أقسام أو ملفات مضافة هنا حالياً.</div>';
+        html += '<div class="empty">لا توجد أقسام أو ملفات مضافة في هذا القسم حالياً.</div>';
       }
+      html += "</div>";
       document.getElementById("nodeContent").innerHTML = html;
     }
 
@@ -484,52 +844,23 @@
       openNode(cur && cur.parent ? cur.parent : "root", false);
     }
 
-    function sendItemFast(btnId, idx, btnEl) {
+    function sendSingle(btnId, idx, btnEl) {
       haptic();
       const orig = btnEl.textContent;
-      btnEl.textContent = "✅ تم الإرسال";
+      btnEl.textContent = "✅ أُرسل";
       toast("⚡ تم إرسال الملف إلى محادثتك في تليجرام فوراً");
       fetch(GAS_URL, {
-        method: "POST", keepalive: true,
+        method: "POST",
+        keepalive: true,
         headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ app_action: "deliver", uid: UID, un: UN, name: NAME, btnId: btnId, idx: idx })
+        body: JSON.stringify({ app_action: "deliver_item", uid: UID, un: UN, name: NAME, btnId: btnId, idx: idx })
       }).catch(() => {});
-      setTimeout(() => { btnEl.textContent = orig; }, 1600);
+      setTimeout(() => { btnEl.textContent = orig; }, 1400);
     }
 
-    function openAI() {
-      haptic();
-      document.getElementById("nodeContent").style.display = "none";
-      document.getElementById("bannersWrap").style.display = "none";
-      document.getElementById("crumb").classList.remove("show");
-      document.getElementById("aiLaunchBtn").style.display = "none";
-      document.getElementById("aiPanel").classList.add("show");
-      document.getElementById("aiInp").focus();
-    }
-    function closeAI() { openNode(CUR_NODE, false); }
-
-    async function sendAI() {
-      const inp = document.getElementById("aiInp");
-      const q = inp.value.trim();
-      if (!q) return;
-      const box = document.getElementById("chatBox");
-      box.innerHTML += `<div class="msg u">${ex(q)}</div>`;
-      const waitId = "w_" + Date.now();
-      box.innerHTML += `<div id="${waitId}" class="msg a">⚡ جاري التحليل...</div>`;
-      box.scrollTop = box.scrollHeight;
-      inp.value = "";
-      document.getElementById("aiSendBtn").disabled = true;
-      try {
-        const r = await apiPost({ app_action: "ask_ai", question: q });
-        document.getElementById(waitId).textContent = r.reply || "تعذّر الحصول على رد.";
-      } catch (e) {
-        document.getElementById(waitId).textContent = "⚠️ تعذّر الاتصال بالمحرك، حاول مجدداً.";
-      }
-      document.getElementById("aiSendBtn").disabled = false;
-      box.scrollTop = box.scrollHeight;
-    }
-
+    // ==================== لوحة الإدارة والداشبورد (خاصة بـ @tessla22 فقط) ====================
     function switchMode(m) {
+      haptic();
       document.getElementById("navMain").classList.toggle("active", m === "main");
       document.getElementById("navAdmin").classList.toggle("active", m === "admin");
       document.getElementById("viewMain").style.display = m === "main" ? "block" : "none";
@@ -538,13 +869,14 @@
     }
 
     function switchAdminTab(t) {
+      haptic();
       ["dash", "btns", "imgs"].forEach(k => {
         document.getElementById("st" + k[0].toUpperCase() + k.slice(1)).classList.toggle("active", k === t);
         document.getElementById("adm" + k[0].toUpperCase() + k.slice(1)).style.display = k === t ? "block" : "none";
       });
       if (t === "dash") loadAdminDashboard();
       if (t === "btns") renderAdminButtons();
-      if (t === "imgs") renderAdminBanners();
+      if (t === "imgs") renderAdminMedia();
     }
 
     function openUserProfile(un, id) {
@@ -555,62 +887,97 @@
 
     async function loadAdminDashboard() {
       const wrap = document.getElementById("admDash");
-      wrap.innerHTML = '<div class="card-box" style="text-align:center;color:#b6aa8d">⏳ جاري تحميل الإحصائيات...</div>';
+      wrap.innerHTML = '<div class="card-box" style="text-align:center;color:#b9ac8f">⏳ جاري تحديث الداشبورد...</div>';
       try {
         const r = await apiPost({ app_action: "admin_stats" });
-        if (!r.ok) { wrap.innerHTML = '<div class="card-box">غير مصرح.</div>'; return; }
-        DASH = r.dash;
-        const d = DASH;
-        const topBtn = d.top_buttons.length ? d.top_buttons[0].label : "لا يوجد";
-        const maxC = d.top_buttons.length ? Math.max(1, d.top_buttons[0].clicks) : 1;
-
-        const bars = d.top_buttons.slice(0, 10).map(b => `
-          <div class="bar-row">
-            <div class="bar-top"><span>${ex(b.label)}</span><span style="color:#f5d36c">${b.clicks} (اليوم: ${b.today_clicks})</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:${Math.round((b.clicks / maxC) * 100)}%"></div></div>
-          </div>`).join("") || '<div style="font-size:12.5px;color:#b6aa8d">لا توجد نقرات بعد.</div>';
-
-        const usersHtml = d.users.map((u, i) => {
-          const hist = (u.history || []).map(h => `• [${h.d} ${h.t}] <b>${ex(h.label)}</b> (${ex(h.src)})`).join("<br>") || "لم يستخدم أي زر بعد.";
-          const counts = Object.entries(u.btn_counts || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${ex(k)}: ${v}`).join(" • ");
-          return `<div class="u-row">
-            <div class="u-head">
-              <div><a class="u-link" onclick="openUserProfile('${ex(u.un)}','${u.id}')">${ex(u.name)}</a><br><span class="u-un">${u.un ? "@" + ex(u.un) : "ID: " + u.id}</span></div>
-              <div class="u-badge">اليوم: ${u.today_clicks} | الكل: ${u.total_clicks}</div>
-            </div>
-            <div class="mini-btns">
-              <button class="mbtn" onclick="openUserProfile('${ex(u.un)}','${u.id}')">👤 فتح الحساب</button>
-              <button class="mbtn" onclick="document.getElementById('ud_${i}').classList.toggle('show')">📋 تفاصيل الاستخدام</button>
-            </div>
-            <div id="ud_${i}" class="u-det">
-              <div>🕒 <b>آخر تواجد:</b> ${ex(u.last_seen)} | 🤖 <b>الذكاء:</b> ${u.ai_uses}</div>
-              ${counts ? `<div style="margin-top:4px">📌 <b>الأقسام:</b> ${counts}</div>` : ""}
-              <div style="margin-top:5px;color:#f5d36c"><b>سجل الدخول الأخير:</b></div><div>${hist}</div>
-            </div>
-          </div>`;
-        }).join("") || '<div style="font-size:12.5px;color:#b6aa8d">لا يوجد مستخدمون بعد.</div>';
-
-        wrap.innerHTML = `
-          <div class="kpi-grid">
-            <div class="kpi"><div class="kpi-num">${d.total_users}</div><div class="kpi-lbl">إجمالي المستخدمين</div></div>
-            <div class="kpi"><div class="kpi-num">${d.today_clicks}</div><div class="kpi-lbl">استخدام اليوم</div></div>
-            <div class="kpi"><div class="kpi-num">${d.total_clicks}</div><div class="kpi-lbl">إجمالي الاستخدام</div></div>
-            <div class="kpi"><div class="kpi-num" style="font-size:13.5px;padding-top:6px">${ex(topBtn)}</div><div class="kpi-lbl">الأكثر استخداماً</div></div>
-          </div>
-          <div class="card-box"><div class="sec-h">🏆 الأزرار والمراحل الأكثر استخداماً</div>${bars}</div>
-          <div class="card-box"><div class="sec-h">👥 المستخدمون وتفاصيلهم (${d.users.length})</div>${usersHtml}</div>`;
+        if (!r.ok) {
+          wrap.innerHTML = '<div class="card-box">⛔ الإدارة محصورة على @tessla22 فقط.</div>';
+          return;
+        }
+        DASH_DATA = r.dash;
+        renderDashboardView();
       } catch (e) {
-        wrap.innerHTML = '<div class="card-box">تعذّر تحميل الإحصائيات.</div>';
+        wrap.innerHTML = '<div class="card-box">⚠️ تعذّر تحميل الإحصائيات.</div>';
       }
+    }
+
+    function setUserFilter(f) {
+      USER_FILTER = f;
+      renderDashboardView();
+    }
+
+    function renderDashboardView() {
+      const d = DASH_DATA;
+      if (!d) return;
+      const maxC = d.top_buttons.length ? Math.max(1, d.top_buttons[0].clicks) : 1;
+
+      const bars = d.top_buttons.slice(0, 10).map(b => `
+        <div class="bar-row">
+          <div class="bar-top"><span>${ex(b.label)}</span><span style="color:#f9e28c">${b.clicks} (اليوم: ${b.today_clicks})</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round((b.clicks / maxC) * 100)}%"></div></div>
+        </div>`).join("") || '<div style="font-size:12px;color:#b9ac8f">لا توجد نقرات مسجلة بعد.</div>';
+
+      const filteredUsers = d.users.filter(u => {
+        if (USER_FILTER === "blocked") return u.blocked;
+        if (USER_FILTER === "active") return !u.blocked;
+        return true;
+      });
+
+      const usersHtml = filteredUsers.map((u, i) => {
+        const hist = (u.history || []).map(h => `• [${h.d} ${h.t}] <b>${ex(h.label)}</b>`).join("<br>") || "لا يوجد سجل.";
+        const counts = Object.entries(u.btn_counts || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${ex(k)}: ${v}`).join(" • ");
+        return `<div class="u-row ${u.blocked ? "is-blocked" : ""}">
+          <div class="u-head">
+            <div>
+              <a class="u-link" onclick="openUserProfile('${ex(u.un)}','${u.id}')">${ex(u.name)}</a><br>
+              <span class="u-un">${u.un ? "@" + ex(u.un) : "ID: " + u.id}</span>
+            </div>
+            <div style="text-align:left">
+              ${u.blocked ? `<div class="u-badge blk">🚫 حظر البوت</div>` : `<div class="u-badge">✅ نشط • اليوم: ${u.today_clicks}</div>`}
+            </div>
+          </div>
+          <div class="mini-btns">
+            <button class="mbtn" onclick="openUserProfile('${ex(u.un)}','${u.id}')">👤 فتح الحساب</button>
+            <button class="mbtn" onclick="document.getElementById('ud_${i}').classList.toggle('show')">📋 التفاصيل (${u.total_clicks})</button>
+          </div>
+          <div id="ud_${i}" class="u-det">
+            ${u.blocked ? `<div style="color:#fca5a5"><b>⚠️ تاريخ حظر البوت:</b> ${ex(u.blocked_at || u.last_seen)}</div>` : ""}
+            <div>🕒 <b>آخر تواجد:</b> ${ex(u.last_seen)}</div>
+            ${counts ? `<div style="margin-top:4px">📌 <b>الأقسام:</b> ${counts}</div>` : ""}
+            <div style="margin-top:5px;color:#f9e28c"><b>سجل الدخول الأخير:</b></div>
+            <div>${hist}</div>
+          </div>
+        </div>`;
+      }).join("") || '<div style="font-size:12px;color:#b9ac8f;text-align:center;padding:12px 0">لا يوجد مستخدمون ضمن هذا الفلتر.</div>';
+
+      document.getElementById("admDash").innerHTML = `
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-num">${d.total_users}</div><div class="kpi-lbl">إجمالي المستخدمين</div></div>
+          <div class="kpi danger-kpi"><div class="kpi-num">${d.blocked_users}</div><div class="kpi-lbl">🚫 حظروا البوت</div></div>
+          <div class="kpi"><div class="kpi-num">${d.today_clicks}</div><div class="kpi-lbl">استخدام اليوم</div></div>
+          <div class="kpi"><div class="kpi-num">${d.total_clicks}</div><div class="kpi-lbl">إجمالي النقرات</div></div>
+        </div>
+        <div class="card-box"><div class="sec-h">🏆 الأقسام الأكثر استخداماً</div>${bars}</div>
+        <div class="card-box">
+          <div class="sec-h">👥 المستخدمون وإحصائية الحظر (${filteredUsers.length})</div>
+          <div class="filter-row">
+            <button class="f-pill ${USER_FILTER === "all" ? "active" : ""}" onclick="setUserFilter('all')">الكل (${d.total_users})</button>
+            <button class="f-pill ${USER_FILTER === "blocked" ? "active" : ""}" onclick="setUserFilter('blocked')">🚫 المحظورين (${d.blocked_users})</button>
+            <button class="f-pill ${USER_FILTER === "active" ? "active" : ""}" onclick="setUserFilter('active')">✅ النشطين (${d.active_users})</button>
+          </div>
+          ${usersHtml}
+        </div>
+      `;
     }
 
     function renderAdminButtons() {
       const node = STATE.nodes[ADM_NODE] || STATE.nodes.root;
       ADM_NODE = node.id;
 
+      const colorOpts = COLOR_OPTIONS.map(c => `<option value="${c.id}">${c.label}</option>`).join("");
       const navTop = node.id !== "root"
         ? `<div class="card-box" style="display:flex;justify-content:space-between;align-items:center">
-            <b style="color:#f5d36c">📂 أنت داخل: ${ex(node.label)}</b>
+            <b style="color:#f9e28c">📂 أنت داخل: ${ex(node.label)}</b>
             <div style="display:flex;gap:5px">
               <button class="mbtn" onclick="ADM_NODE='${node.parent || "root"}';renderAdminButtons()">🔙 للأعلى</button>
               <button class="mbtn" onclick="ADM_NODE='root';renderAdminButtons()">🏠</button>
@@ -622,125 +989,215 @@
 
       const kidsHtml = kidsList.map(b => `
         <div class="card-box">
-          <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
             <b style="color:#fff6dc">${ex(b.label)}</b>
             <span class="u-badge">فرعي: ${(b.rows || []).reduce((a, r) => a + r.length, 0)} | ملفات: ${(b.items || []).length}</span>
           </div>
           <div class="mini-btns">
-            <button class="mbtn" onclick="ADM_NODE='${b.id}';renderAdminButtons()">📂 دخول وإضافة فرعي/ملفات</button>
+            <button class="mbtn" onclick="ADM_NODE='${b.id}';renderAdminButtons()">📂 دخول (ملف داخل ملف)</button>
             <button class="mbtn" onclick="admMove('${b.id}',-1)">⬆️</button>
             <button class="mbtn" onclick="admMove('${b.id}',1)">⬇️</button>
-            <button class="mbtn" onclick="admEdit('${b.id}')">✏️ الاسم</button>
-            <button class="mbtn del" onclick="admDelBtn('${b.id}')">🗑️ حذف</button>
+            <button class="mbtn" onclick="openEditModal('${b.id}')">✏️ تعديل واللون</button>
+            <button class="mbtn del" onclick="openDeleteModal('${b.id}')">🗑️ حذف</button>
           </div>
         </div>`).join("");
 
       const itemsBlock = node.id !== "root" ? `
         <div class="card-box">
-          <div class="sec-h">📎 محتويات وملفات (${ex(node.label)})</div>
+          <div class="sec-h">📎 ملفات ومحتويات (${ex(node.label)}) — تُرسل فوراً عند الضغط</div>
           ${(node.items || []).map((it, idx) => `
             <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:5px;font-size:12px">
-              <span>${it.type === "text" ? "📝 " + ex(it.text.slice(0, 40)) : "📎 " + ex(it.file_name || it.type)}</span>
+              <span>${it.type === "text" ? "📝 " + ex(it.text.slice(0, 38)) : "📎 " + ex(it.file_name || it.type)}</span>
               <button class="mbtn del" onclick="admDelItem('${node.id}',${idx})">حذف</button>
-            </div>`).join("") || '<div style="font-size:12px;color:#b6aa8d;margin-bottom:8px">لا توجد ملفات أو نصوص داخل هذا الزر بعد.</div>'}
-          <textarea id="txtCur" placeholder="أضف شرحاً أو ملاحظة أو رابطاً داخل هذا الزر..."></textarea>
-          <button class="btn" style="padding:8px;font-size:12.5px" onclick="admAddText('${node.id}')">➕ حفظ النص</button>
+            </div>`).join("") || '<div style="font-size:12px;color:#b9ac8f;margin-bottom:8px">لا توجد ملفات داخل هذا القسم بعد.</div>'}
+          <textarea id="txtCur" placeholder="أضف شرحاً أو رابطاً أو ملاحظة..."></textarea>
+          <button class="btn" style="padding:8px;font-size:12px" onclick="admAddText('${node.id}',this)">➕ حفظ النص</button>
           <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
-            <input type="file" id="flCur" class="inp" style="padding:6px;font-size:11.5px" />
-            <button class="file-send" onclick="admUploadFile('${node.id}',this)">📤 رفع ملف</button>
+            <input type="file" id="flCur" class="inp" style="padding:6px;margin:0;font-size:11px" />
+            <button class="file-send" onclick="admUploadFile('${node.id}',this)">📤 رفع ملف/صورة</button>
           </div>
         </div>` : "";
 
       document.getElementById("admBtns").innerHTML = `
         ${navTop}
         <div class="card-box">
-          <div class="sec-h">➕ إضافة زر جديد داخل (${ex(node.label)})</div>
-          <input id="newBtnName" class="inp" placeholder="اسم الزر (مثال: ⚡ المرحلة الرابعة)" />
-          <select id="newBtnCol" style="margin-top:7px">
-            <option value="">لون الزر: افتراضي (أسود وذهبي)</option>
-            <option value="danger">🔴 أحمر</option>
-            <option value="success">🟢 أخضر</option>
-            <option value="primary">🔵 أزرق</option>
+          <div class="sec-h">➕ إضافة قسم / مجلد داخل (${ex(node.label)})</div>
+          <input id="newBtnName" class="inp" placeholder="اسم القسم (مثال: المرحلة الرابعة)" />
+          <input id="newBtnDesc" class="inp" placeholder="وصف مختصر يُرسل للمحادثة عند الضغط (اختياري)" />
+          <select id="newBtnCol">${colorOpts}</select>
+          <select id="newBtnW">
+            <option value="full">عرض كامل (صف مستقل)</option>
+            <option value="pair">بجانب الزر السابق (زرين في صف واحد)</option>
           </select>
-          <button class="btn" onclick="admCreateBtn(this)">➕ إضافة الزر الآن (يتزامن مع البوت)</button>
+          <button class="btn" onclick="admCreateBtn(this)">➕ إضافة الآن</button>
         </div>
         ${itemsBlock}
-        ${kidsHtml || '<div class="card-box" style="text-align:center;color:#b6aa8d">لا توجد أزرار فرعية هنا بعد.</div>'}
+        ${kidsHtml || '<div class="card-box" style="text-align:center;color:#b9ac8f">لا توجد أقسام فرعية هنا بعد.</div>'}
       `;
     }
 
-    function applyState(r) {
+    function openEditModal(id) {
+      const b = STATE.nodes[id];
+      if (!b) return;
+      const opts = COLOR_OPTIONS.map(c => `<option value="${c.id}" ${b.color === c.id ? "selected" : ""}>${c.label}</option>`).join("");
+      openModal("✏️ تعديل القسم واللون", `
+        <input id="edLbl" class="inp" value="${ex(b.label)}" placeholder="اسم القسم" />
+        <textarea id="edDesc" placeholder="الوصف (اختياري)">${ex(b.desc || "")}</textarea>
+        <select id="edCol">${opts}</select>
+        <div class="modal-actions">
+          <button class="btn" style="margin:0" onclick="saveEditModal('${id}',this)">💾 حفظ التعديلات</button>
+          <button class="btn-out" style="margin:0;width:auto;padding:0 16px" onclick="closeModal()">إلغاء</button>
+        </div>
+      `);
+    }
+
+    async function saveEditModal(id, btn) {
+      const label = document.getElementById("edLbl").value.trim();
+      const desc = document.getElementById("edDesc").value.trim();
+      const color = document.getElementById("edCol").value;
+      if (!label) return toast("الاسم لا يمكن أن يكون فارغاً");
+      btn.disabled = true;
+      try {
+        applyState(await apiPost({ app_action: "update_btn", btnId: id, label, desc, color }));
+        closeModal();
+        toast("✅ تم حفظ التعديلات");
+      } catch (e) { toast("⚠️ تعذّر الحفظ"); }
+      btn.disabled = false;
+    }
+
+    function openDeleteModal(id) {
+      const b = STATE.nodes[id];
+      if (!b) return;
+      openModal("🗑️ تأكيد الحذف النهائي", `
+        <div style="font-size:13px;color:#e5dcc6;line-height:1.7">هل تريد حذف قسم <b>${ex(b.label)}</b> وجميع مجلداته الفرعية وملفاته نهائياً؟</div>
+        <div class="modal-actions">
+          <button class="btn btn-danger" style="margin:0" onclick="confirmDeleteBtn('${id}',this)">🗑️ نعم، احذف نهائياً</button>
+          <button class="btn-out" style="margin:0;width:auto;padding:0 16px" onclick="closeModal()">إلغاء</button>
+        </div>
+      `);
+    }
+
+    async function confirmDeleteBtn(id, btn) {
+      btn.disabled = true;
+      try {
+        applyState(await apiPost({ app_action: "del_btn", btnId: id }));
+        closeModal();
+        toast("🗑️ تم الحذف بنجاح");
+      } catch (e) { toast("⚠️ تعذّر الحذف"); }
+      btn.disabled = false;
+    }
+
+    function applyState(r, preserveAdmin) {
       if (!r || !r.ok) return;
-      STATE = { isAdmin: r.isAdmin, banners: r.banners || [], nodes: r.nodes || STATE.nodes };
+      const admFlag = preserveAdmin ? STATE.isAdmin : !!r.isAdmin;
+      STATE = {
+        isAdmin: admFlag,
+        logo: r.logo || "",
+        banners: r.banners || [],
+        nodes: r.nodes || STATE.nodes
+      };
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(STATE)); } catch (e) {}
+      applyLogo();
       openNode(STATE.nodes[CUR_NODE] ? CUR_NODE : "root", false);
       if (STATE.isAdmin) {
         document.getElementById("adminBar").classList.add("show");
+        document.getElementById("admQuickBtn").classList.add("show");
         if (document.getElementById("admBtns").style.display === "block") renderAdminButtons();
-        if (document.getElementById("admImgs").style.display === "block") renderAdminBanners();
+        if (document.getElementById("admImgs").style.display === "block") renderAdminMedia();
       }
     }
 
     async function admCreateBtn(btn) {
       const label = document.getElementById("newBtnName").value.trim();
+      const desc = document.getElementById("newBtnDesc").value.trim();
       const color = document.getElementById("newBtnCol").value;
-      if (!label) return toast("اكتب اسم الزر أولاً");
+      const widthMode = document.getElementById("newBtnW").value;
+      if (!label) return toast("اكتب اسم القسم أولاً");
       btn.disabled = true;
-      applyState(await apiPost({ app_action: "add_btn", parentId: ADM_NODE, label, color, rowIdx: -1 }));
-      toast("✅ تمت الإضافة في التطبيق والبوت");
+      try {
+        applyState(await apiPost({ app_action: "add_btn", parentId: ADM_NODE, label, desc, color, widthMode }));
+        toast("✅ تمت الإضافة بنجاح");
+      } catch (e) { toast("⚠️ تعذّرت الإضافة"); }
       btn.disabled = false;
     }
-    async function admDelBtn(id) {
-      if (!confirm("حذف هذا الزر وجميع أزراره الفرعية وملفاته؟")) return;
-      applyState(await apiPost({ app_action: "del_btn", btnId: id }));
-      toast("🗑️ تم الحذف");
+
+    async function admMove(id, dir) {
+      try {
+        applyState(await apiPost({ app_action: "move_btn", btnId: id, dir }));
+      } catch (e) { toast("⚠️ تعذّر تعديل الترتيب"); }
     }
-    async function admMove(id, dir) { applyState(await apiPost({ app_action: "move_btn", btnId: id, dir })); }
-    async function admEdit(id) {
-      const n = prompt("الاسم الجديد للزر:", STATE.nodes[id] ? STATE.nodes[id].label : "");
-      if (!n || !n.trim()) return;
-      applyState(await apiPost({ app_action: "update_btn", btnId: id, label: n.trim() }));
-      toast("✅ تم التعديل");
-    }
-    async function admAddText(id) {
+
+    async function admAddText(id, btn) {
       const t = document.getElementById("txtCur").value.trim();
       if (!t) return toast("اكتب النص أولاً");
-      applyState(await apiPost({ app_action: "add_text", btnId: id, text: t }));
-      toast("✅ تم حفظ النص");
+      btn.disabled = true;
+      try {
+        applyState(await apiPost({ app_action: "add_text", btnId: id, text: t }));
+        toast("✅ تم حفظ النص");
+      } catch (e) { toast("⚠️ تعذّر الحفظ"); }
+      btn.disabled = false;
     }
+
     async function admDelItem(id, idx) {
-      applyState(await apiPost({ app_action: "del_item", btnId: id, idx }));
-      toast("🗑️ تم الحذف");
+      try {
+        applyState(await apiPost({ app_action: "del_item", btnId: id, idx }));
+        toast("🗑️ تم حذف العنصر");
+      } catch (e) { toast("⚠️ تعذّر الحذف"); }
     }
+
     async function admUploadFile(id, btn) {
       const inp = document.getElementById("flCur");
-      if (!inp.files || !inp.files[0]) return toast("اختر ملفاً أولاً");
+      if (!inp.files || !inp.files[0]) return toast("اختر ملفاً أو صورة أولاً");
       const file = inp.files[0];
-      if (file.size > 12 * 1024 * 1024) return toast("⚠️ الملفات فوق 12MB ارفعها من البوت مباشرة");
-      btn.disabled = true; btn.textContent = "⏳ جاري الرفع...";
+      if (file.size > 15 * 1024 * 1024) return toast("⚠️ الحد الأقصى للرفع المباشر 15MB");
+      btn.disabled = true;
+      btn.textContent = "⏳ رفع...";
       const reader = new FileReader();
       reader.onload = async () => {
         try {
-          const r = await apiPost({ app_action: "upload_item", btnId: id, fileName: file.name, mimeType: file.type || "application/octet-stream", base64: reader.result });
-          if (r.ok) { applyState(r); toast("✅ تم رفع الملف للتطبيق والبوت معاً"); }
-          else toast("⚠️ " + (r.error || "فشل الرفع"));
-        } catch (e) { toast("⚠️ تعذّر الرفع"); }
-        btn.disabled = false; btn.textContent = "📤 رفع ملف";
+          const r = await apiPost({
+            app_action: "upload_item",
+            btnId: id,
+            fileName: file.name,
+            mimeType: file.type || "application/octet-stream",
+            base64: reader.result
+          });
+          if (r.ok) {
+            applyState(r);
+            toast("✅ تم رفع الملف وحفظه بنجاح");
+          } else {
+            toast("⚠️ " + (r.error || "فشل الرفع"));
+          }
+        } catch (e) {
+          toast("⚠️ تعذّر الرفع");
+        }
+        btn.disabled = false;
+        btn.textContent = "📤 رفع ملف/صورة";
       };
       reader.readAsDataURL(file);
     }
 
-    function renderAdminBanners() {
-      const b1 = STATE.banners[0] || "", b2 = STATE.banners[1] || "";
-      document.getElementById("admImgs").innerHTML = [1, 2].map((slot, i) => {
+    function renderAdminMedia() {
+      const b1 = STATE.banners[0] || "";
+      const b2 = STATE.banners[1] || "";
+      document.getElementById("admImgs").innerHTML = `
+        <div class="card-box">
+          <div class="sec-h">🏛️ شعار القسم الذهبي (اختياري للاستبدال بصورة)</div>
+          <input type="file" accept="image/*" id="logoInp" class="inp" style="padding:7px" />
+          <div style="display:flex;gap:7px;margin-top:8px">
+            <button class="btn" style="margin:0" onclick="uploadLogo(this)">📤 حفظ الشعار</button>
+            ${STATE.logo ? `<button class="btn btn-danger" style="margin:0;width:auto;padding:0 14px" onclick="clearLogo()">استعادة الذهبي</button>` : ""}
+          </div>
+        </div>
+      ` + [1, 2].map((slot, i) => {
         const src = i === 0 ? b1 : b2;
         return `<div class="card-box">
-          <div class="sec-h">🖼️ الصورة رقم ${slot} في واجهة التطبيق</div>
-          ${src ? `<img src="${src}" style="width:100%;height:140px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1px solid var(--border)" />` : '<div style="font-size:12px;color:#b6aa8d;margin-bottom:8px">لا توجد صورة مرفوعة.</div>'}
-          <input type="file" accept="image/*" id="imgSlot_${slot}" class="inp" style="padding:7px;font-size:12px" />
+          <div class="sec-h">🖼️ بنر الواجهة رقم ${slot}</div>
+          ${src ? `<img src="${src}" style="width:100%;height:130px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1px solid var(--gold-border)" />` : ""}
+          <input type="file" accept="image/*" id="imgSlot_${slot}" class="inp" style="padding:7px" />
           <div style="display:flex;gap:7px;margin-top:8px">
             <button class="btn" style="margin:0" onclick="uploadBanner(${slot},this)">📤 حفظ الصورة ${slot}</button>
-            ${src ? `<button class="btn btn-danger" style="margin:0;width:auto;padding:0 16px" onclick="clearBanner(${slot})">حذف</button>` : ""}
+            ${src ? `<button class="btn btn-danger" style="margin:0;width:auto;padding:0 14px" onclick="clearBanner(${slot})">حذف</button>` : ""}
           </div>
         </div>`;
       }).join("");
@@ -762,39 +1219,83 @@
       });
     }
 
+    async function uploadLogo(btn) {
+      const inp = document.getElementById("logoInp");
+      if (!inp.files || !inp.files[0]) return toast("اختر صورة للشعار");
+      btn.disabled = true;
+      btn.textContent = "⏳ حفظ...";
+      try {
+        const dataUrl = await compressImage(inp.files[0], 320, 0.84);
+        applyState(await apiPost({ app_action: "save_logo", dataUrl }));
+        toast("✅ تم تحديث الشعار");
+      } catch (e) { toast("⚠️ فشل الحفظ"); }
+      btn.disabled = false;
+      btn.textContent = "📤 حفظ الشعار";
+    }
+
+    async function clearLogo() {
+      try {
+        applyState(await apiPost({ app_action: "save_logo", dataUrl: "" }));
+        toast("✅ تمت استعادة الشعار الذهبي");
+      } catch (e) { toast("⚠️ تعذّر الاستعادة"); }
+    }
+
     async function uploadBanner(slot, btn) {
       const inp = document.getElementById("imgSlot_" + slot);
       if (!inp.files || !inp.files[0]) return toast("اختر صورة أولاً");
-      btn.disabled = true; btn.textContent = "⏳ جاري الحفظ...";
+      btn.disabled = true;
+      btn.textContent = "⏳ حفظ...";
       try {
         const dataUrl = await compressImage(inp.files[0], 720, 0.72);
         applyState(await apiPost({ app_action: "save_banner", slot, dataUrl }));
-        toast("✅ تم حفظ الصورة رقم " + slot);
-      } catch (e) { toast("⚠️ تعذّر حفظ الصورة"); }
-      btn.disabled = false; btn.textContent = "📤 حفظ الصورة " + slot;
+        toast("✅ تم حفظ الصورة " + slot);
+      } catch (e) { toast("⚠️ فشل الحفظ"); }
+      btn.disabled = false;
+      btn.textContent = "📤 حفظ الصورة " + slot;
     }
 
     async function clearBanner(slot) {
-      applyState(await apiPost({ app_action: "save_banner", slot, dataUrl: "" }));
-      toast("🗑️ تم حذف الصورة");
+      try {
+        applyState(await apiPost({ app_action: "save_banner", slot, dataUrl: "" }));
+        toast("🗑️ تم حذف الصورة");
+      } catch (e) { toast("⚠️ تعذّر الحذف"); }
     }
 
+    // إقلاع فائق السرعة: شعار فوري + كاش محلي + Firebase (إن وُجد) + تحديث حي من السكربت
     (async function boot() {
+      applyLogo();
+      let hadCache = false;
       try {
         const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
         if (cached && cached.nodes) {
+          hadCache = true;
           STATE = cached;
+          applyLogo();
           openNode("root", false);
-          if (STATE.isAdmin) document.getElementById("adminBar").classList.add("show");
+          if (STATE.isAdmin) {
+            document.getElementById("adminBar").classList.add("show");
+            document.getElementById("admQuickBtn").classList.add("show");
+          }
         }
       } catch (e) {}
 
+      if (!hadCache) {
+        document.getElementById("nodeContent").innerHTML = '<div class="empty">⏳ جاري تحميل الأقسام...</div>';
+      }
+
+      if (FIREBASE_DB_URL) {
+        fetch(FIREBASE_DB_URL.replace(/\/+$/, "") + "/public_v7.json")
+          .then(r => r.json())
+          .then(fb => { if (fb && fb.nodes) applyState(fb, true); })
+          .catch(() => {});
+      }
+
       try {
         const res = await fetch(`${GAS_URL}?api=data&uid=${encodeURIComponent(UID)}&un=${encodeURIComponent(UN)}&_t=${Date.now()}`);
-        applyState(await res.json());
+        applyState(await res.json(), false);
       } catch (e) {
-        if (!Object.keys(STATE.nodes.root.rows || []).length) {
-          document.getElementById("nodeContent").innerHTML = '<div class="empty">⚠️ تأكد من نشر الإصدار الجديد في Apps Script.</div>';
+        if (!hadCache) {
+          document.getElementById("nodeContent").innerHTML = '<div class="empty">⚠️ تأكد من نشر الإصدار الجديد في Apps Script بصلاحية (أي شخص).</div>';
         }
       }
     })();
