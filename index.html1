@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>الهندسة الكهربائية • جامعة بغداد</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Cairo:wght@500;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050507;
+      --card: linear-gradient(145deg, #17140d, #0a0a0e);
+      --gold: linear-gradient(135deg, #9a7118 0%, #f5d36c 48%, #d4af37 74%, #865f12 100%);
+      --gtxt: linear-gradient(90deg, #fff0ba 0%, #f5d36c 45%, #d4af37 100%);
+      --border: rgba(212, 175, 55, 0.32);
+      --muted: #b6aa8d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: radial-gradient(circle at top center, #20180a 0%, var(--bg) 56%);
+      color: #f7f3e8;
+      min-height: 100vh;
+      padding: 14px 13px 34px;
+    }
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid #d4af37;
+      border-radius: 22px;
+      padding: 18px 14px 16px;
+      text-align: center;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.78);
+      margin-bottom: 13px;
+    }
+    .hero-emblem { font-size: 25px; filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.75)); }
+    .hero-title {
+      font-family: 'Aref Ruqaa', serif;
+      font-size: 31px;
+      line-height: 1.45;
+      background: var(--gtxt);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-uni {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 3px 16px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #f5d36c;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.36);
+    }
+    .banners { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 13px; }
+    .banners.single { grid-template-columns: 1fr; }
+    .banners img { width: 100%; height: 136px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border); display: block; }
+    .banners.single img { height: 170px; }
+
+    .admin-bar {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: rgba(16, 15, 19, 0.95);
+      border: 1px solid var(--border);
+      padding: 5px;
+      border-radius: 15px;
+      margin-bottom: 13px;
+    }
+    .admin-bar.show { display: grid; }
+    .nav-pill {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 9px 6px;
+      border-radius: 11px;
+      cursor: pointer;
+    }
+    .nav-pill.active { background: var(--gold); color: #080705; }
+
+    .crumb {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+    }
+    .crumb.show { display: flex; }
+    .crumb-title { font-size: 14px; font-weight: 900; color: #f5d36c; }
+    .crumb-back {
+      border: 1px solid var(--border);
+      background: #14120c;
+      color: #f5d36c;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 11px;
+      border-radius: 9px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .rows-wrap { display: flex; flex-direction: column; gap: 9px; }
+    .btn-row { display: grid; gap: 9px; }
+    .bcard {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 15px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.1s ease, border-color 0.15s;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+    }
+    .bcard:active { transform: scale(0.96); border-color: #f5d36c; }
+    .bcard.c-danger { border-color: rgba(239, 68, 68, 0.6); background: linear-gradient(145deg, #2d1215, #12090b); }
+    .bcard.c-success { border-color: rgba(34, 197, 94, 0.55); background: linear-gradient(145deg, #0f291a, #09120d); }
+    .bcard.c-primary { border-color: rgba(59, 130, 246, 0.6); background: linear-gradient(145deg, #10203a, #090e18); }
+    .blabel { font-size: 14.5px; font-weight: 800; color: #fff6dc; line-height: 1.5; }
+    .bmeta { font-size: 11px; color: #d4af37; margin-top: 4px; }
+
+    .desc-box {
+      background: rgba(212, 175, 55, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 13px;
+      padding: 11px 13px;
+      margin-bottom: 11px;
+      font-size: 13.5px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+    }
+    .items-wrap { margin-top: 10px; }
+    .item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      border-radius: 13px;
+      padding: 11px 12px;
+      margin-bottom: 8px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .item a { color: #f5d36c; text-decoration: underline; }
+    .file-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .file-send {
+      border: none;
+      background: var(--gold);
+      color: #080705;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 7px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 13px;
+      padding: 11px 14px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #080705;
+      background: var(--gold);
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .btn:disabled { opacity: 0.6; }
+    .btn-out {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      color: #f5d36c;
+      background: rgba(212, 175, 55, 0.06);
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .btn-danger { border: 1px solid rgba(239, 68, 68, 0.45); background: rgba(239, 68, 68, 0.14); color: #fca5a5; }
+
+    .ai-launch {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(15, 14, 18, 0.96));
+      color: #f5d36c;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .panel {
+      display: none;
+      background: var(--card);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 20px;
+      padding: 15px 13px;
+    }
+    .panel.show { display: block; }
+    .ptitle { font-size: 16px; font-weight: 900; color: #f5d36c; margin-bottom: 10px; border-bottom: 1px solid rgba(212, 175, 55, 0.24); padding-bottom: 8px; }
+    .chat-box { max-height: 330px; overflow-y: auto; padding: 6px 2px; margin-bottom: 10px; }
+    .msg { padding: 10px 12px; border-radius: 13px; margin-bottom: 8px; font-size: 13px; line-height: 1.75; white-space: pre-wrap; }
+    .msg.u { background: rgba(212, 175, 55, 0.16); border: 1px solid rgba(212, 175, 55, 0.35); color: #fff6dc; margin-left: 18px; }
+    .msg.a { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); color: #e8e1d0; margin-right: 12px; }
+    .chat-form { display: flex; gap: 7px; }
+    .inp, textarea, select {
+      width: 100%;
+      background: #0d0d11;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: #fff6dc;
+      font-family: inherit;
+      font-size: 13px;
+      padding: 10px 12px;
+      outline: none;
+    }
+    textarea { min-height: 60px; resize: vertical; }
+
+    .subtabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+    .subtab {
+      border: 1px solid var(--border);
+      background: #100f14;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 8px 4px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .subtab.active { background: var(--gold); color: #080705; border-color: transparent; }
+    .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .kpi { background: #0f0e13; border: 1px solid var(--border); border-radius: 14px; padding: 12px 10px; text-align: center; }
+    .kpi-num { font-size: 21px; font-weight: 900; color: #f5d36c; }
+    .kpi-lbl { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .card-box { background: #0f0e13; border: 1px solid var(--border); border-radius: 15px; padding: 13px; margin-bottom: 11px; }
+    .sec-h { font-size: 14px; font-weight: 900; color: #f5d36c; margin-bottom: 9px; }
+    .bar-row { margin-bottom: 8px; }
+    .bar-top { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 4px; }
+    .bar-track { height: 7px; background: rgba(255, 255, 255, 0.08); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--gold); border-radius: 99px; }
+    .u-row { border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+    .u-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .u-link { color: #f5d36c; font-weight: 800; font-size: 13.5px; text-decoration: none; cursor: pointer; }
+    .u-un { color: var(--muted); font-size: 11.5px; direction: ltr; display: inline-block; }
+    .u-badge { background: rgba(212, 175, 55, 0.14); border: 1px solid var(--border); color: #f5d36c; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 8px; white-space: nowrap; }
+    .u-det { display: none; margin-top: 9px; padding-top: 8px; border-top: 1px dashed rgba(212, 175, 55, 0.25); font-size: 12px; color: #dcd3bf; line-height: 1.7; }
+    .u-det.show { display: block; }
+    .mini-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+    .mbtn { border: 1px solid var(--border); background: rgba(212, 175, 55, 0.1); color: #f5d36c; font-family: inherit; font-size: 11.5px; font-weight: 800; padding: 5px 9px; border-radius: 8px; cursor: pointer; }
+    .mbtn.del { border-color: rgba(239, 68, 68, 0.5); color: #fca5a5; background: rgba(239, 68, 68, 0.12); }
+
+    .foot {
+      margin-top: 22px;
+      padding: 11px;
+      border-radius: 14px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      background: rgba(212, 175, 55, 0.06);
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #f5d36c;
+    }
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(90px);
+      background: #14110a;
+      color: #f5d36c;
+      border: 1px solid #d4af37;
+      padding: 10px 18px;
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 800;
+      transition: transform 0.22s ease;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+      z-index: 999;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .empty { text-align: center; color: var(--muted); padding: 24px 8px; font-size: 13.5px; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-emblem">⚡</div>
+    <div class="hero-title">الهندسة الكهربائية</div>
+    <div class="hero-uni">جامعة بغداد</div>
+  </div>
+
+  <div id="adminBar" class="admin-bar">
+    <button class="nav-pill active" id="navMain" onclick="switchMode('main')">⚡ الأقسام والأزرار</button>
+    <button class="nav-pill" id="navAdmin" onclick="switchMode('admin')">👑 لوحة الإدارة</button>
+  </div>
+
+  <div id="viewMain">
+    <div id="bannersWrap" class="banners" style="display:none;"></div>
+
+    <div id="crumb" class="crumb">
+      <div id="crumbTitle" class="crumb-title"></div>
+      <div style="display:flex;gap:6px">
+        <button class="crumb-back" onclick="goBack()">🔙 رجوع</button>
+        <button class="crumb-back" onclick="openNode('root')">🏠</button>
+      </div>
+    </div>
+
+    <div id="nodeContent"></div>
+
+    <button id="aiLaunchBtn" class="ai-launch" onclick="openAI()">🤖 المساعد الذكي — اسأل عن البوت أو أي سؤال هندسي وعام</button>
+
+    <div id="aiPanel" class="panel" style="margin-top:10px;">
+      <div class="ptitle">🤖 المساعد الذكي (تحليلي وسريع)</div>
+      <div id="chatBox" class="chat-box">
+        <div class="msg a">أهلاً بك! أنا المساعد الذكي لتطبيق الهندسة الكهربائية • جامعة بغداد. اسألني من أنا، أو عن مميزات البوت وأقسامه، أو أي سؤال دراسي أو علمي وسأجيبك بتحليل دقيق وفوري.</div>
+      </div>
+      <div class="chat-form">
+        <input id="aiInp" class="inp" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')sendAI()" />
+        <button id="aiSendBtn" class="file-send" onclick="sendAI()">إرسال</button>
+      </div>
+      <button class="btn-out" onclick="closeAI()">🔙 العودة للأقسام</button>
+    </div>
+  </div>
+
+  <div id="viewAdmin" style="display:none;">
+    <div class="subtabs">
+      <button class="subtab active" id="stDash" onclick="switchAdminTab('dash')">📊 الداشبورد</button>
+      <button class="subtab" id="stBtns" onclick="switchAdminTab('btns')">🔘 الأزرار والملفات</button>
+      <button class="subtab" id="stImgs" onclick="switchAdminTab('imgs')">🖼️ صور التطبيق</button>
+    </div>
+    <div id="admDash"></div>
+    <div id="admBtns" style="display:none;"></div>
+    <div id="admImgs" style="display:none;"></div>
+  </div>
+
+  <div class="foot">المهندس حسين علاء اللامي</div>
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxf7izpVY1XvxprccTS3IrHGKHQKa34pLBJXvj2aYUkV-Vh3iJ6qiSxRFwIg76XzLc/exec";
+    const CACHE_KEY = "ee_uob_tree_v6";
+
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      try { tg.setHeaderColor("#050507"); tg.setBackgroundColor("#050507"); } catch (e) {}
+    }
+
+    const qs = new URLSearchParams(window.location.search);
+    const tgU = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user : null;
+    const UID = tgU ? String(tgU.id) : (qs.get("uid") || "0");
+    const UN = (tgU && tgU.username ? tgU.username : (qs.get("un") || "")).replace(/^@/, "");
+    const NAME = tgU ? [tgU.first_name, tgU.last_name].filter(Boolean).join(" ") : (qs.get("name") || "");
+
+    let STATE = { isAdmin: false, banners: [], nodes: { root: { id: "root", label: "الرئيسية", rows: [], items: [] } } };
+    let CUR_NODE = "root";
+    let ADM_NODE = "root";
+    let DASH = null;
+
+    function ex(s) { return String(s || "").replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m])); }
+    function linkify(s) { return ex(s).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank">$1</a>'); }
+    function toast(m) { const t = document.getElementById("toast"); t.textContent = m; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2500); }
+    function haptic() { try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
+
+    async function apiPost(payload) {
+      const res = await fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(Object.assign({ uid: UID, un: UN, name: NAME }, payload))
+      });
+      return await res.json();
+    }
+
+    function renderBanners() {
+      const wrap = document.getElementById("bannersWrap");
+      const imgs = (STATE.banners || []).filter(Boolean);
+      if (!imgs.length || CUR_NODE !== "root") { wrap.style.display = "none"; return; }
+      wrap.className = "banners" + (imgs.length === 1 ? " single" : "");
+      wrap.innerHTML = imgs.map(src => `<img src="${src}" alt="" />`).join("");
+      wrap.style.display = "grid";
+    }
+
+    function openNode(id, logIt) {
+      haptic();
+      const node = STATE.nodes[id] || STATE.nodes.root;
+      CUR_NODE = node.id;
+      document.getElementById("aiPanel").classList.remove("show");
+      document.getElementById("nodeContent").style.display = "block";
+      document.getElementById("aiLaunchBtn").style.display = "flex";
+
+      if (logIt && node.id !== "root") {
+        fetch(GAS_URL, {
+          method: "POST", keepalive: true,
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ app_action: "log_click", uid: UID, un: UN, name: NAME, btnId: node.id })
+        }).catch(() => {});
+      }
+
+      renderBanners();
+      const crumb = document.getElementById("crumb");
+      if (node.id === "root") crumb.classList.remove("show");
+      else {
+        document.getElementById("crumbTitle").textContent = "⚡ " + node.label;
+        crumb.classList.add("show");
+      }
+
+      let html = "";
+      if (node.desc) html += `<div class="desc-box">${linkify(node.desc)}</div>`;
+
+      const rows = node.rows || [];
+      if (rows.length) {
+        html += '<div class="rows-wrap">';
+        rows.forEach(row => {
+          const kids = row.map(cid => STATE.nodes[cid]).filter(Boolean);
+          if (!kids.length) return;
+          html += `<div class="btn-row" style="grid-template-columns:repeat(${kids.length},1fr)">`;
+          kids.forEach(k => {
+            const subC = (k.rows || []).reduce((a, r) => a + r.length, 0);
+            const itC = (k.items || []).length;
+            const cClass = k.color ? (" c-" + k.color) : "";
+            const meta = [subC ? ("📁 " + subC) : "", itC ? ("📎 " + itC) : ""].filter(Boolean).join(" • ");
+            html += `<div class="bcard${cClass}" onclick="openNode('${k.id}',true)">
+              <div class="blabel">${ex(k.label)}</div>
+              ${meta ? `<div class="bmeta">${meta}</div>` : ""}
+            </div>`;
+          });
+          html += "</div>";
+        });
+        html += "</div>";
+      }
+
+      const items = node.items || [];
+      if (items.length) {
+        const ic = { photo: "🖼️ صورة", document: "📄 ملف", video: "🎬 فيديو", audio: "🎵 صوت", voice: "🎙️ بصمة" };
+        html += '<div class="items-wrap">';
+        let fileCount = 0;
+        items.forEach((it, idx) => {
+          if (it.type === "text") {
+            html += `<div class="item">${linkify(it.text)}</div>`;
+          } else {
+            fileCount++;
+            const title = (ic[it.type] || "📎 ملف") + (it.file_name ? " : " + ex(it.file_name) : "");
+            const cap = it.text ? `<div style="margin-top:4px;color:#cfc6b0;font-size:12px">${linkify(it.text)}</div>` : "";
+            html += `<div class="item"><div class="file-row"><div><b style="color:#f5d36c">${title}</b>${cap}</div><button class="file-send" onclick="sendItemFast('${node.id}',${idx},this)">⚡ إرسال</button></div></div>`;
+          }
+        });
+        if (fileCount > 1) {
+          html += `<button class="btn" onclick="sendItemFast('${node.id}',null,this)">⚡ إرسال جميع الملفات لمحادثة تليجرام فوراً</button>`;
+        }
+        html += "</div>";
+      }
+
+      if (!rows.length && !items.length && !node.desc) {
+        html = '<div class="empty">لا توجد أقسام أو ملفات مضافة هنا حالياً.</div>';
+      }
+      document.getElementById("nodeContent").innerHTML = html;
+    }
+
+    function goBack() {
+      const cur = STATE.nodes[CUR_NODE];
+      openNode(cur && cur.parent ? cur.parent : "root", false);
+    }
+
+    function sendItemFast(btnId, idx, btnEl) {
+      haptic();
+      const orig = btnEl.textContent;
+      btnEl.textContent = "✅ تم الإرسال";
+      toast("⚡ تم إرسال الملف إلى محادثتك في تليجرام فوراً");
+      fetch(GAS_URL, {
+        method: "POST", keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ app_action: "deliver", uid: UID, un: UN, name: NAME, btnId: btnId, idx: idx })
+      }).catch(() => {});
+      setTimeout(() => { btnEl.textContent = orig; }, 1600);
+    }
+
+    function openAI() {
+      haptic();
+      document.getElementById("nodeContent").style.display = "none";
+      document.getElementById("bannersWrap").style.display = "none";
+      document.getElementById("crumb").classList.remove("show");
+      document.getElementById("aiLaunchBtn").style.display = "none";
+      document.getElementById("aiPanel").classList.add("show");
+      document.getElementById("aiInp").focus();
+    }
+    function closeAI() { openNode(CUR_NODE, false); }
+
+    async function sendAI() {
+      const inp = document.getElementById("aiInp");
+      const q = inp.value.trim();
+      if (!q) return;
+      const box = document.getElementById("chatBox");
+      box.innerHTML += `<div class="msg u">${ex(q)}</div>`;
+      const waitId = "w_" + Date.now();
+      box.innerHTML += `<div id="${waitId}" class="msg a">⚡ جاري التحليل...</div>`;
+      box.scrollTop = box.scrollHeight;
+      inp.value = "";
+      document.getElementById("aiSendBtn").disabled = true;
+      try {
+        const r = await apiPost({ app_action: "ask_ai", question: q });
+        document.getElementById(waitId).textContent = r.reply || "تعذّر الحصول على رد.";
+      } catch (e) {
+        document.getElementById(waitId).textContent = "⚠️ تعذّر الاتصال بالمحرك، حاول مجدداً.";
+      }
+      document.getElementById("aiSendBtn").disabled = false;
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function switchMode(m) {
+      document.getElementById("navMain").classList.toggle("active", m === "main");
+      document.getElementById("navAdmin").classList.toggle("active", m === "admin");
+      document.getElementById("viewMain").style.display = m === "main" ? "block" : "none";
+      document.getElementById("viewAdmin").style.display = m === "admin" ? "block" : "none";
+      if (m === "admin") loadAdminDashboard();
+    }
+
+    function switchAdminTab(t) {
+      ["dash", "btns", "imgs"].forEach(k => {
+        document.getElementById("st" + k[0].toUpperCase() + k.slice(1)).classList.toggle("active", k === t);
+        document.getElementById("adm" + k[0].toUpperCase() + k.slice(1)).style.display = k === t ? "block" : "none";
+      });
+      if (t === "dash") loadAdminDashboard();
+      if (t === "btns") renderAdminButtons();
+      if (t === "imgs") renderAdminBanners();
+    }
+
+    function openUserProfile(un, id) {
+      const link = un ? ("https://t.me/" + un) : ("tg://user?id=" + id);
+      if (tg && tg.openTelegramLink && un) tg.openTelegramLink(link);
+      else window.open(link, "_blank");
+    }
+
+    async function loadAdminDashboard() {
+      const wrap = document.getElementById("admDash");
+      wrap.innerHTML = '<div class="card-box" style="text-align:center;color:#b6aa8d">⏳ جاري تحميل الإحصائيات...</div>';
+      try {
+        const r = await apiPost({ app_action: "admin_stats" });
+        if (!r.ok) { wrap.innerHTML = '<div class="card-box">غير مصرح.</div>'; return; }
+        DASH = r.dash;
+        const d = DASH;
+        const topBtn = d.top_buttons.length ? d.top_buttons[0].label : "لا يوجد";
+        const maxC = d.top_buttons.length ? Math.max(1, d.top_buttons[0].clicks) : 1;
+
+        const bars = d.top_buttons.slice(0, 10).map(b => `
+          <div class="bar-row">
+            <div class="bar-top"><span>${ex(b.label)}</span><span style="color:#f5d36c">${b.clicks} (اليوم: ${b.today_clicks})</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.round((b.clicks / maxC) * 100)}%"></div></div>
+          </div>`).join("") || '<div style="font-size:12.5px;color:#b6aa8d">لا توجد نقرات بعد.</div>';
+
+        const usersHtml = d.users.map((u, i) => {
+          const hist = (u.history || []).map(h => `• [${h.d} ${h.t}] <b>${ex(h.label)}</b> (${ex(h.src)})`).join("<br>") || "لم يستخدم أي زر بعد.";
+          const counts = Object.entries(u.btn_counts || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${ex(k)}: ${v}`).join(" • ");
+          return `<div class="u-row">
+            <div class="u-head">
+              <div><a class="u-link" onclick="openUserProfile('${ex(u.un)}','${u.id}')">${ex(u.name)}</a><br><span class="u-un">${u.un ? "@" + ex(u.un) : "ID: " + u.id}</span></div>
+              <div class="u-badge">اليوم: ${u.today_clicks} | الكل: ${u.total_clicks}</div>
+            </div>
+            <div class="mini-btns">
+              <button class="mbtn" onclick="openUserProfile('${ex(u.un)}','${u.id}')">👤 فتح الحساب</button>
+              <button class="mbtn" onclick="document.getElementById('ud_${i}').classList.toggle('show')">📋 تفاصيل الاستخدام</button>
+            </div>
+            <div id="ud_${i}" class="u-det">
+              <div>🕒 <b>آخر تواجد:</b> ${ex(u.last_seen)} | 🤖 <b>الذكاء:</b> ${u.ai_uses}</div>
+              ${counts ? `<div style="margin-top:4px">📌 <b>الأقسام:</b> ${counts}</div>` : ""}
+              <div style="margin-top:5px;color:#f5d36c"><b>سجل الدخول الأخير:</b></div><div>${hist}</div>
+            </div>
+          </div>`;
+        }).join("") || '<div style="font-size:12.5px;color:#b6aa8d">لا يوجد مستخدمون بعد.</div>';
+
+        wrap.innerHTML = `
+          <div class="kpi-grid">
+            <div class="kpi"><div class="kpi-num">${d.total_users}</div><div class="kpi-lbl">إجمالي المستخدمين</div></div>
+            <div class="kpi"><div class="kpi-num">${d.today_clicks}</div><div class="kpi-lbl">استخدام اليوم</div></div>
+            <div class="kpi"><div class="kpi-num">${d.total_clicks}</div><div class="kpi-lbl">إجمالي الاستخدام</div></div>
+            <div class="kpi"><div class="kpi-num" style="font-size:13.5px;padding-top:6px">${ex(topBtn)}</div><div class="kpi-lbl">الأكثر استخداماً</div></div>
+          </div>
+          <div class="card-box"><div class="sec-h">🏆 الأزرار والمراحل الأكثر استخداماً</div>${bars}</div>
+          <div class="card-box"><div class="sec-h">👥 المستخدمون وتفاصيلهم (${d.users.length})</div>${usersHtml}</div>`;
+      } catch (e) {
+        wrap.innerHTML = '<div class="card-box">تعذّر تحميل الإحصائيات.</div>';
+      }
+    }
+
+    function renderAdminButtons() {
+      const node = STATE.nodes[ADM_NODE] || STATE.nodes.root;
+      ADM_NODE = node.id;
+
+      const navTop = node.id !== "root"
+        ? `<div class="card-box" style="display:flex;justify-content:space-between;align-items:center">
+            <b style="color:#f5d36c">📂 أنت داخل: ${ex(node.label)}</b>
+            <div style="display:flex;gap:5px">
+              <button class="mbtn" onclick="ADM_NODE='${node.parent || "root"}';renderAdminButtons()">🔙 للأعلى</button>
+              <button class="mbtn" onclick="ADM_NODE='root';renderAdminButtons()">🏠</button>
+            </div>
+          </div>` : "";
+
+      const kidsList = [];
+      (node.rows || []).forEach(r => r.forEach(cid => { if (STATE.nodes[cid]) kidsList.push(STATE.nodes[cid]); }));
+
+      const kidsHtml = kidsList.map(b => `
+        <div class="card-box">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <b style="color:#fff6dc">${ex(b.label)}</b>
+            <span class="u-badge">فرعي: ${(b.rows || []).reduce((a, r) => a + r.length, 0)} | ملفات: ${(b.items || []).length}</span>
+          </div>
+          <div class="mini-btns">
+            <button class="mbtn" onclick="ADM_NODE='${b.id}';renderAdminButtons()">📂 دخول وإضافة فرعي/ملفات</button>
+            <button class="mbtn" onclick="admMove('${b.id}',-1)">⬆️</button>
+            <button class="mbtn" onclick="admMove('${b.id}',1)">⬇️</button>
+            <button class="mbtn" onclick="admEdit('${b.id}')">✏️ الاسم</button>
+            <button class="mbtn del" onclick="admDelBtn('${b.id}')">🗑️ حذف</button>
+          </div>
+        </div>`).join("");
+
+      const itemsBlock = node.id !== "root" ? `
+        <div class="card-box">
+          <div class="sec-h">📎 محتويات وملفات (${ex(node.label)})</div>
+          ${(node.items || []).map((it, idx) => `
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:5px;font-size:12px">
+              <span>${it.type === "text" ? "📝 " + ex(it.text.slice(0, 40)) : "📎 " + ex(it.file_name || it.type)}</span>
+              <button class="mbtn del" onclick="admDelItem('${node.id}',${idx})">حذف</button>
+            </div>`).join("") || '<div style="font-size:12px;color:#b6aa8d;margin-bottom:8px">لا توجد ملفات أو نصوص داخل هذا الزر بعد.</div>'}
+          <textarea id="txtCur" placeholder="أضف شرحاً أو ملاحظة أو رابطاً داخل هذا الزر..."></textarea>
+          <button class="btn" style="padding:8px;font-size:12.5px" onclick="admAddText('${node.id}')">➕ حفظ النص</button>
+          <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
+            <input type="file" id="flCur" class="inp" style="padding:6px;font-size:11.5px" />
+            <button class="file-send" onclick="admUploadFile('${node.id}',this)">📤 رفع ملف</button>
+          </div>
+        </div>` : "";
+
+      document.getElementById("admBtns").innerHTML = `
+        ${navTop}
+        <div class="card-box">
+          <div class="sec-h">➕ إضافة زر جديد داخل (${ex(node.label)})</div>
+          <input id="newBtnName" class="inp" placeholder="اسم الزر (مثال: ⚡ المرحلة الرابعة)" />
+          <select id="newBtnCol" style="margin-top:7px">
+            <option value="">لون الزر: افتراضي (أسود وذهبي)</option>
+            <option value="danger">🔴 أحمر</option>
+            <option value="success">🟢 أخضر</option>
+            <option value="primary">🔵 أزرق</option>
+          </select>
+          <button class="btn" onclick="admCreateBtn(this)">➕ إضافة الزر الآن (يتزامن مع البوت)</button>
+        </div>
+        ${itemsBlock}
+        ${kidsHtml || '<div class="card-box" style="text-align:center;color:#b6aa8d">لا توجد أزرار فرعية هنا بعد.</div>'}
+      `;
+    }
+
+    function applyState(r) {
+      if (!r || !r.ok) return;
+      STATE = { isAdmin: r.isAdmin, banners: r.banners || [], nodes: r.nodes || STATE.nodes };
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(STATE)); } catch (e) {}
+      openNode(STATE.nodes[CUR_NODE] ? CUR_NODE : "root", false);
+      if (STATE.isAdmin) {
+        document.getElementById("adminBar").classList.add("show");
+        if (document.getElementById("admBtns").style.display === "block") renderAdminButtons();
+        if (document.getElementById("admImgs").style.display === "block") renderAdminBanners();
+      }
+    }
+
+    async function admCreateBtn(btn) {
+      const label = document.getElementById("newBtnName").value.trim();
+      const color = document.getElementById("newBtnCol").value;
+      if (!label) return toast("اكتب اسم الزر أولاً");
+      btn.disabled = true;
+      applyState(await apiPost({ app_action: "add_btn", parentId: ADM_NODE, label, color, rowIdx: -1 }));
+      toast("✅ تمت الإضافة في التطبيق والبوت");
+      btn.disabled = false;
+    }
+    async function admDelBtn(id) {
+      if (!confirm("حذف هذا الزر وجميع أزراره الفرعية وملفاته؟")) return;
+      applyState(await apiPost({ app_action: "del_btn", btnId: id }));
+      toast("🗑️ تم الحذف");
+    }
+    async function admMove(id, dir) { applyState(await apiPost({ app_action: "move_btn", btnId: id, dir })); }
+    async function admEdit(id) {
+      const n = prompt("الاسم الجديد للزر:", STATE.nodes[id] ? STATE.nodes[id].label : "");
+      if (!n || !n.trim()) return;
+      applyState(await apiPost({ app_action: "update_btn", btnId: id, label: n.trim() }));
+      toast("✅ تم التعديل");
+    }
+    async function admAddText(id) {
+      const t = document.getElementById("txtCur").value.trim();
+      if (!t) return toast("اكتب النص أولاً");
+      applyState(await apiPost({ app_action: "add_text", btnId: id, text: t }));
+      toast("✅ تم حفظ النص");
+    }
+    async function admDelItem(id, idx) {
+      applyState(await apiPost({ app_action: "del_item", btnId: id, idx }));
+      toast("🗑️ تم الحذف");
+    }
+    async function admUploadFile(id, btn) {
+      const inp = document.getElementById("flCur");
+      if (!inp.files || !inp.files[0]) return toast("اختر ملفاً أولاً");
+      const file = inp.files[0];
+      if (file.size > 12 * 1024 * 1024) return toast("⚠️ الملفات فوق 12MB ارفعها من البوت مباشرة");
+      btn.disabled = true; btn.textContent = "⏳ جاري الرفع...";
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const r = await apiPost({ app_action: "upload_item", btnId: id, fileName: file.name, mimeType: file.type || "application/octet-stream", base64: reader.result });
+          if (r.ok) { applyState(r); toast("✅ تم رفع الملف للتطبيق والبوت معاً"); }
+          else toast("⚠️ " + (r.error || "فشل الرفع"));
+        } catch (e) { toast("⚠️ تعذّر الرفع"); }
+        btn.disabled = false; btn.textContent = "📤 رفع ملف";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderAdminBanners() {
+      const b1 = STATE.banners[0] || "", b2 = STATE.banners[1] || "";
+      document.getElementById("admImgs").innerHTML = [1, 2].map((slot, i) => {
+        const src = i === 0 ? b1 : b2;
+        return `<div class="card-box">
+          <div class="sec-h">🖼️ الصورة رقم ${slot} في واجهة التطبيق</div>
+          ${src ? `<img src="${src}" style="width:100%;height:140px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1px solid var(--border)" />` : '<div style="font-size:12px;color:#b6aa8d;margin-bottom:8px">لا توجد صورة مرفوعة.</div>'}
+          <input type="file" accept="image/*" id="imgSlot_${slot}" class="inp" style="padding:7px;font-size:12px" />
+          <div style="display:flex;gap:7px;margin-top:8px">
+            <button class="btn" style="margin:0" onclick="uploadBanner(${slot},this)">📤 حفظ الصورة ${slot}</button>
+            ${src ? `<button class="btn btn-danger" style="margin:0;width:auto;padding:0 16px" onclick="clearBanner(${slot})">حذف</button>` : ""}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    function compressImage(file, maxW, quality) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, maxW / img.width);
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width * scale);
+          c.height = Math.round(img.height * scale);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          resolve(c.toDataURL("image/jpeg", quality));
+        };
+        img.onerror = reject;
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    async function uploadBanner(slot, btn) {
+      const inp = document.getElementById("imgSlot_" + slot);
+      if (!inp.files || !inp.files[0]) return toast("اختر صورة أولاً");
+      btn.disabled = true; btn.textContent = "⏳ جاري الحفظ...";
+      try {
+        const dataUrl = await compressImage(inp.files[0], 720, 0.72);
+        applyState(await apiPost({ app_action: "save_banner", slot, dataUrl }));
+        toast("✅ تم حفظ الصورة رقم " + slot);
+      } catch (e) { toast("⚠️ تعذّر حفظ الصورة"); }
+      btn.disabled = false; btn.textContent = "📤 حفظ الصورة " + slot;
+    }
+
+    async function clearBanner(slot) {
+      applyState(await apiPost({ app_action: "save_banner", slot, dataUrl: "" }));
+      toast("🗑️ تم حذف الصورة");
+    }
+
+    (async function boot() {
+      try {
+        const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+        if (cached && cached.nodes) {
+          STATE = cached;
+          openNode("root", false);
+          if (STATE.isAdmin) document.getElementById("adminBar").classList.add("show");
+        }
+      } catch (e) {}
+
+      try {
+        const res = await fetch(`${GAS_URL}?api=data&uid=${encodeURIComponent(UID)}&un=${encodeURIComponent(UN)}&_t=${Date.now()}`);
+        applyState(await res.json());
+      } catch (e) {
+        if (!Object.keys(STATE.nodes.root.rows || []).length) {
+          document.getElementById("nodeContent").innerHTML = '<div class="empty">⚠️ تأكد من نشر الإصدار الجديد في Apps Script.</div>';
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
